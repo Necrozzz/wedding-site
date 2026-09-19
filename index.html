@@ -24,13 +24,20 @@
     font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 500;
     text-align: center;
-    margin: 0 0 8px;
+    margin: 0 0 32px;
   }
-  .subtitle {
-    text-align: center;
-    color: #555555;
-    margin: 0 0 40px;
+  .frame {
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    padding: 28px 24px 24px;
+    margin: 0;
+    min-width: 0;
+  }
+  .frame > legend {
+    padding: 0 10px;
     font-size: 1rem;
+    color: #555555;
+    text-align: left;
   }
   #rsvp-form {
     display: flex;
@@ -51,6 +58,16 @@
     font-size: 0.8rem;
     color: #777777;
     font-weight: 400;
+  }
+  .required-mark {
+    color: #c0392b;
+    font-weight: 700;
+    margin-left: 1px;
+  }
+  .required-note {
+    font-size: 0.8rem;
+    color: #777777;
+    margin: -8px 0 0;
   }
   input[type="text"],
   input[type="email"],
@@ -132,8 +149,8 @@
   <form name="rsvp" netlify netlify-honeypot="bot-field" hidden>
     <input type="text" name="fullName">
     <input type="email" name="email">
-    <input type="text" name="side">
     <input type="number" name="totalGuests">
+    <input type="text" name="side">
     <input type="text" name="hotelStay">
     <input type="text" name="children">
     <textarea name="message"></textarea>
@@ -142,62 +159,68 @@
 
   <div class="wrap">
     <h1>This is our Wedding Page.</h1>
-    <p class="subtitle">Please register below to let us know you're joining us.</p>
 
-    <form id="rsvp-form">
-      <div class="field">
-        <label for="fullName">Full Name</label>
-        <input type="text" id="fullName" name="fullName" required autocomplete="name">
-      </div>
+    <fieldset class="frame" id="rsvp-frame">
+      <legend>Please register below to let us know you're joining us.</legend>
 
-      <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required autocomplete="email">
-      </div>
-
-      <div class="field">
-        <label>Which side do you represent?</label>
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="side" value="Bride" required> Bride</label>
-          <label class="radio-option"><input type="radio" name="side" value="Groom" required> Groom</label>
+      <form id="rsvp-form">
+        <div class="field">
+          <label for="fullName">Your Name</label>
+          <input type="text" id="fullName" name="fullName" required autocomplete="name">
         </div>
-      </div>
 
-      <div class="field">
-        <label for="totalGuests">Total Guests <span class="hint">(including yourself)</span></label>
-        <input type="number" id="totalGuests" name="totalGuests" min="1" step="1" required>
-      </div>
-
-      <div class="field">
-        <label>Will you be staying at our hotel?</label>
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="hotelStay" value="Yes" required> Yes</label>
-          <label class="radio-option"><input type="radio" name="hotelStay" value="No" required> No</label>
+        <div class="field">
+          <label for="email">Email <span class="required-mark">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email">
         </div>
-      </div>
 
-      <div class="field">
-        <label>Will you be bringing children?</label>
-        <div class="radio-group">
-          <label class="radio-option"><input type="radio" name="children" value="Yes" required> Yes</label>
-          <label class="radio-option"><input type="radio" name="children" value="No" required> No</label>
+        <div class="field">
+          <label for="totalGuests">Total Guests <span class="required-mark">*</span> <span class="hint">(including yourself, enter a number)</span></label>
+          <input type="number" id="totalGuests" name="totalGuests" min="1" step="1" required>
         </div>
-      </div>
 
-      <div class="field">
-        <label for="message">Message <span class="hint">(optional)</span></label>
-        <textarea id="message" name="message"></textarea>
-      </div>
+        <div class="field">
+          <label>Which team do you represent?</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="side" value="Bride" required> Bride</label>
+            <label class="radio-option"><input type="radio" name="side" value="Groom" required> Groom</label>
+          </div>
+        </div>
 
-      <button type="submit" id="submit-btn">Register</button>
-      <div id="status"></div>
-    </form>
+        <div class="field">
+          <label>Will you be staying at our hotel?</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="hotelStay" value="Yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="hotelStay" value="No" required> No</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Will you be bringing children?</label>
+          <div class="radio-group">
+            <label class="radio-option"><input type="radio" name="children" value="Yes" required> Yes</label>
+            <label class="radio-option"><input type="radio" name="children" value="No" required> No</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="message">Message <span class="hint">(optional)</span></label>
+          <textarea id="message" name="message"></textarea>
+        </div>
+
+        <p class="required-note"><span class="required-mark">*</span> Required field</p>
+
+        <button type="submit" id="submit-btn">Register</button>
+        <div id="status"></div>
+      </form>
+    </fieldset>
   </div>
 
   <script>
     const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
 
     const form = document.getElementById('rsvp-form');
+    const frame = document.getElementById('rsvp-frame');
     const statusEl = document.getElementById('status');
     const submitBtn = document.getElementById('submit-btn');
 
@@ -234,7 +257,7 @@
         const data = await res.json();
 
         if (data.result === 'success') {
-          form.outerHTML = '<div class="success-message">Thank you! Your registration has been received.</div>';
+          frame.outerHTML = '<div class="success-message">Thank you! Your registration has been received.</div>';
         } else {
           throw new Error(data.error || 'Something went wrong');
         }

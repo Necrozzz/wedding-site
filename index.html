@@ -32,7 +32,7 @@
     margin: 0 0 40px;
     font-size: 1rem;
   }
-  form {
+  #rsvp-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -127,6 +127,18 @@
 </style>
 </head>
 <body>
+  <!-- Static hidden form so Netlify's build-time parser detects and registers it.
+       This is never shown or submitted directly; the real form below is. -->
+  <form name="rsvp" netlify netlify-honeypot="bot-field" hidden>
+    <input type="text" name="fullName">
+    <input type="email" name="email">
+    <input type="number" name="totalGuests">
+    <input type="text" name="hotelStay">
+    <input type="text" name="children">
+    <textarea name="message"></textarea>
+    <input type="text" name="bot-field">
+  </form>
+
   <div class="wrap">
     <h1>This is our Wedding Page.</h1>
     <p class="subtitle">Please register below to let us know you're joining us.</p>
@@ -192,6 +204,17 @@
       for (const [key, value] of formData.entries()) {
         params.append(key, value);
       }
+
+      // Best-effort backup copy to Netlify Forms. Fire-and-forget: never blocks
+      // or affects the visible success/error state, which depends only on the
+      // primary Google Sheets submission below.
+      const backupParams = new URLSearchParams(params);
+      backupParams.append('form-name', 'rsvp');
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: backupParams
+      }).catch(() => {});
 
       try {
         const res = await fetch(ENDPOINT_URL, {

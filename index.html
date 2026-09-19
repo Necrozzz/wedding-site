@@ -92,6 +92,7 @@
   }
   .radio-group {
     display: flex;
+    flex-wrap: wrap;
     gap: 16px;
   }
   .radio-option {
@@ -188,10 +189,11 @@
         </div>
 
         <div class="field">
-          <label>Will you be staying at our hotel?</label>
+          <label>Will you be staying with us at DiliJazz?</label>
           <div class="radio-group">
             <label class="radio-option"><input type="radio" name="hotelStay" value="Yes" required> Yes</label>
             <label class="radio-option"><input type="radio" name="hotelStay" value="No" required> No</label>
+            <label class="radio-option"><input type="radio" name="hotelStay" value="Not sure yet" required> Not sure yet</label>
           </div>
         </div>
 

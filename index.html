@@ -132,6 +132,7 @@
   <form name="rsvp" netlify netlify-honeypot="bot-field" hidden>
     <input type="text" name="fullName">
     <input type="email" name="email">
+    <input type="text" name="side">
     <input type="number" name="totalGuests">
     <input type="text" name="hotelStay">
     <input type="text" name="children">
@@ -152,6 +153,14 @@
       <div class="field">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label>Which side do you represent?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="side" value="Bride" required> Bride</label>
+          <label class="radio-option"><input type="radio" name="side" value="Groom" required> Groom</label>
+        </div>
       </div>
 
       <div class="field">

@@ -5,39 +5,214 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Our Wedding</title>
 <style>
+  :root {
+    color-scheme: light;
+  }
   html, body {
     margin: 0;
-    height: 100%;
     background: #ffffff;
     color: #222222;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   }
   .wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    text-align: center;
-    padding: 24px;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 48px 24px 64px;
     box-sizing: border-box;
   }
   h1 {
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: 500;
-    margin: 0 0 12px;
+    text-align: center;
+    margin: 0 0 8px;
   }
-  p {
-    font-size: clamp(1rem, 3vw, 1.25rem);
+  .subtitle {
+    text-align: center;
     color: #555555;
-    margin: 0;
+    margin: 0 0 40px;
+    font-size: 1rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333333;
+  }
+  .hint {
+    font-size: 0.8rem;
+    color: #777777;
+    font-weight: 400;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 10px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  input:focus,
+  textarea:focus {
+    border-color: #888888;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  .radio-group {
+    display: flex;
+    gap: 16px;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #222222;
+  }
+  .radio-option input {
+    width: 16px;
+    height: 16px;
+  }
+  button {
+    margin-top: 8px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background: #222222;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  button:disabled {
+    background: #999999;
+    cursor: not-allowed;
+  }
+  #status {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    display: none;
+  }
+  #status.success {
+    color: #1a7f37;
+    display: block;
+  }
+  #status.error {
+    color: #c0392b;
+    display: block;
+  }
+  .success-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #222222;
+    padding: 40px 0;
   }
 </style>
 </head>
 <body>
   <div class="wrap">
     <h1>This is our Wedding Page.</h1>
-    <p>The content is coming soon!</p>
+    <p class="subtitle">Please register below to let us know you're joining us.</p>
+
+    <form id="rsvp-form">
+      <div class="field">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" required autocomplete="name">
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label for="totalGuests">Total Guests <span class="hint">(including yourself)</span></label>
+        <input type="number" id="totalGuests" name="totalGuests" min="1" step="1" required>
+      </div>
+
+      <div class="field">
+        <label>Will you be staying at our hotel?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="hotelStay" value="Yes" required> Yes</label>
+          <label class="radio-option"><input type="radio" name="hotelStay" value="No" required> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Will you be bringing children?</label>
+        <div class="radio-group">
+          <label class="radio-option"><input type="radio" name="children" value="Yes" required> Yes</label>
+          <label class="radio-option"><input type="radio" name="children" value="No" required> No</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="message">Message <span class="hint">(optional)</span></label>
+        <textarea id="message" name="message"></textarea>
+      </div>
+
+      <button type="submit" id="submit-btn">Register</button>
+      <div id="status"></div>
+    </form>
   </div>
+
+  <script>
+    const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
+
+    const form = document.getElementById('rsvp-form');
+    const statusEl = document.getElementById('status');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      statusEl.className = '';
+      statusEl.textContent = '';
+
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+      for (const [key, value] of formData.entries()) {
+        params.append(key, value);
+      }
+
+      try {
+        const res = await fetch(ENDPOINT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params
+        });
+        const data = await res.json();
+
+        if (data.result === 'success') {
+          form.outerHTML = '<div class="success-message">Thank you! Your registration has been received.</div>';
+        } else {
+          throw new Error(data.error || 'Something went wrong');
+        }
+      } catch (err) {
+        statusEl.className = 'error';
+        statusEl.textContent = 'Sorry, something went wrong. Please try again.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Register';
+      }
+    });
+  </script>
 </body>
 </html>

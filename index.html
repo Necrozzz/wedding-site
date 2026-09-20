@@ -3,276 +3,378 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Wedding</title>
-<style>
-  :root {
-    color-scheme: light;
-  }
-  html, body {
-    margin: 0;
-    background: #ffffff;
-    color: #222222;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-  }
-  .wrap {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 48px 24px 64px;
-    box-sizing: border-box;
-  }
-  h1 {
-    font-size: clamp(1.5rem, 5vw, 2.25rem);
-    font-weight: 500;
-    text-align: center;
-    margin: 0 0 32px;
-  }
-  .frame {
-    border: 1px solid #dddddd;
-    border-radius: 10px;
-    padding: 28px 24px 24px;
-    margin: 0;
-    min-width: 0;
-  }
-  .frame > legend {
-    padding: 0 10px;
-    font-size: 1rem;
-    color: #555555;
-    text-align: left;
-  }
-  #rsvp-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #333333;
-  }
-  .hint {
-    font-size: 0.8rem;
-    color: #777777;
-    font-weight: 400;
-  }
-  .required-mark {
-    color: #c0392b;
-    font-weight: 700;
-    margin-left: 1px;
-  }
-  .required-note {
-    font-size: 0.8rem;
-    color: #777777;
-    margin: -8px 0 0;
-  }
-  input[type="text"],
-  input[type="email"],
-  input[type="number"],
-  textarea {
-    font-family: inherit;
-    font-size: 1rem;
-    padding: 10px 12px;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-    outline: none;
-    box-sizing: border-box;
-    width: 100%;
-  }
-  input:focus,
-  textarea:focus {
-    border-color: #888888;
-  }
-  textarea {
-    resize: vertical;
-    min-height: 90px;
-  }
-  .radio-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .radio-option {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: #222222;
-  }
-  .radio-option input {
-    width: 16px;
-    height: 16px;
-  }
-  button {
-    margin-top: 8px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: #ffffff;
-    background: #222222;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  button:disabled {
-    background: #999999;
-    cursor: not-allowed;
-  }
-  #status {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.95rem;
-    display: none;
-  }
-  #status.success {
-    color: #1a7f37;
-    display: block;
-  }
-  #status.error {
-    color: #c0392b;
-    display: block;
-  }
-  .success-message {
-    text-align: center;
-    font-size: 1.1rem;
-    color: #222222;
-    padding: 40px 0;
-  }
-</style>
+<title>Gohar &amp; Roman — 24 · 10 · 2026</title>
+<meta name="description" content="Gohar &amp; Roman are getting married on October 24, 2026 in Dilijan, Armenia.">
+<meta name="theme-color" content="#F6F1E8">
+
+<meta property="og:title" content="Gohar &amp; Roman — 24 · 10 · 2026">
+<meta property="og:description" content="We're getting married, and we would love to celebrate with you. Dilijan, Armenia.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/img/dilijan-autumn.jpg">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F6F1E8'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23302B27' text-anchor='middle'%3EG%26amp;R%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <!-- Static hidden form so Netlify's build-time parser detects and registers it.
-       This is never shown or submitted directly; the real form below is. -->
-  <form name="rsvp" netlify netlify-honeypot="bot-field" hidden>
-    <input type="text" name="fullName">
-    <input type="email" name="email">
-    <input type="number" name="totalGuests">
-    <input type="text" name="side">
-    <input type="text" name="hotelStay">
-    <input type="text" name="children">
-    <textarea name="message"></textarea>
-    <input type="text" name="bot-field">
-  </form>
 
-  <div class="wrap">
-    <h1>This is our Wedding Page.</h1>
+<!-- Netlify build-time form registration (hidden, never submitted directly) -->
+<form name="rsvp" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="fullName">
+  <input type="email" name="email">
+  <input type="text" name="attending">
+  <input type="number" name="totalGuests">
+  <input type="text" name="side">
+  <input type="text" name="hotelStay">
+  <textarea name="message"></textarea>
+  <input type="text" name="bot-field">
+</form>
 
-    <fieldset class="frame" id="rsvp-frame">
-      <legend>Please register below to let us know you're joining us.</legend>
 
-      <form id="rsvp-form">
-        <div class="field">
-          <label for="fullName">Your Name</label>
-          <input type="text" id="fullName" name="fullName" required autocomplete="name">
-        </div>
+<!-- ============================================ LANGUAGE COVER ============ -->
+<div class="cover" id="cover">
+  <div class="cover__forest" aria-hidden="true"></div>
 
-        <div class="field">
-          <label for="email">Email <span class="required-mark">*</span></label>
-          <input type="email" id="email" name="email" required autocomplete="email">
-        </div>
-
-        <div class="field">
-          <label for="totalGuests">Total Number of Guests <span class="required-mark">*</span> <span class="hint">(including yourself)</span></label>
-          <input type="number" id="totalGuests" name="totalGuests" min="1" step="1" required>
-        </div>
-
-        <div class="field">
-          <label>Which team do you represent?</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="side" value="Bride" required> Bride</label>
-            <label class="radio-option"><input type="radio" name="side" value="Groom" required> Groom</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Will you be staying with us at DiliJazz?</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="hotelStay" value="Yes" required> Yes</label>
-            <label class="radio-option"><input type="radio" name="hotelStay" value="No" required> No</label>
-            <label class="radio-option"><input type="radio" name="hotelStay" value="Not sure yet" required> Not sure yet</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Will you be bringing children?</label>
-          <div class="radio-group">
-            <label class="radio-option"><input type="radio" name="children" value="Yes" required> Yes</label>
-            <label class="radio-option"><input type="radio" name="children" value="No" required> No</label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="message">Message <span class="hint">(optional)</span></label>
-          <textarea id="message" name="message"></textarea>
-        </div>
-
-        <p class="required-note"><span class="required-mark">*</span> Required field</p>
-
-        <button type="submit" id="submit-btn">Register</button>
-        <div id="status"></div>
-      </form>
-    </fieldset>
+  <div class="cover__inner">
+    <h1 class="cover__initials" data-var="coupleInitials">G &amp; R</h1>
+    <p class="cover__date" data-var="weddingDateShort">24 · 10 · 2026</p>
   </div>
 
-  <script>
-    const ENDPOINT_URL = 'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
+  <nav class="cover__langs" aria-label="Choose a language">
+    <button class="cover__lang" type="button" data-lang="am" lang="hy">Հայերեն</button>
+    <button class="cover__lang" type="button" data-lang="en">English</button>
+    <button class="cover__lang" type="button" data-lang="ru" lang="ru">Русский</button>
+  </nav>
+</div>
 
-    const form = document.getElementById('rsvp-form');
-    const frame = document.getElementById('rsvp-frame');
-    const statusEl = document.getElementById('status');
-    const submitBtn = document.getElementById('submit-btn');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting...';
-      statusEl.className = '';
-      statusEl.textContent = '';
+<!-- ================================================== PERSISTENT NAV ====== -->
+<header class="topbar" id="topbar">
+  <a class="topbar__mark" href="#top" data-var="coupleInitials">G &amp; R</a>
+  <nav class="langswitch" aria-label="Language">
+    <button class="langswitch__btn" type="button" data-lang="am">AM</button>
+    <span class="langswitch__sep">·</span>
+    <button class="langswitch__btn" type="button" data-lang="en" aria-current="true">EN</button>
+    <span class="langswitch__sep">·</span>
+    <button class="langswitch__btn" type="button" data-lang="ru">RU</button>
+  </nav>
+</header>
 
-      const formData = new FormData(form);
-      const params = new URLSearchParams();
-      for (const [key, value] of formData.entries()) {
-        params.append(key, value);
-      }
+<a class="rsvp-jump" id="rsvp-jump" href="#rsvp" data-i18n="nav.rsvp">RSVP</a>
 
-      // Best-effort backup copy to Netlify Forms. Fire-and-forget: never blocks
-      // or affects the visible success/error state, which depends only on the
-      // primary Google Sheets submission below.
-      const backupParams = new URLSearchParams(params);
-      backupParams.append('form-name', 'rsvp');
-      fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: backupParams
-      }).catch(() => {});
 
-      try {
-        const res = await fetch(ENDPOINT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: params
-        });
-        const data = await res.json();
+<main id="top">
 
-        if (data.result === 'success') {
-          frame.outerHTML = '<div class="success-message">Thank you! We are so looking forward to seeing you at our wedding &mdash; let&rsquo;s celebrate and have fun together!</div>';
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 5000);
-        } else {
-          throw new Error(data.error || 'Something went wrong');
-        }
-      } catch (err) {
-        statusEl.className = 'error';
-        statusEl.textContent = 'Sorry, something went wrong. Please try again.';
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Register';
-      }
-    });
-  </script>
+  <!-- ================================================== HERO ============== -->
+  <section class="hero wrap" id="hero">
+    <div class="hero__grid">
+      <div class="hero__text">
+        <h1 class="hero__title">
+          <span data-i18n="hero.l1">We’re</span><br>
+          <span data-i18n="hero.l2">getting</span><br>
+          <span data-i18n="hero.l3">married</span><span class="heart" aria-hidden="true">♥</span>
+        </h1>
+
+        <p class="hero__sub" data-i18n="hero.sub">And we would love to celebrate with you.</p>
+
+        <div class="hero__meta">
+          <span data-var="weddingDateUpper">OCTOBER 24, 2026</span>
+          <span data-var="locationUpper">DILIJAN, ARMENIA</span>
+        </div>
+
+        <div class="hero__cta">
+          <a class="btn" href="#invitation">
+            <span data-i18n="hero.cta">Open invitation</span>
+            <span class="arr" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <figure class="hero__figure reveal">
+        <!-- asset: hero-couple-image -->
+        <img src="assets/img/hero-couple.jpg" alt="Gohar and Roman together on an evening out" width="1280" height="766">
+      </figure>
+    </div>
+  </section>
+
+
+  <!-- ======================================= PERSONAL INVITATION ========== -->
+  <section class="section wrap" id="invitation">
+    <div class="invitation__grid">
+      <div class="invitation__body reveal">
+        <p data-i18n="inv.p1">Some of you have been by our side from the very start — and each of you is part of our lives in a special way.</p>
+        <p data-i18n="inv.p2">Now, as we take this next step together, we would love to have our favorite people around us.</p>
+        <p data-i18n="inv.p3">Come celebrate, laugh, dance and make some new memories with us.</p>
+        <p class="signoff" data-var="coupleName">Gohar &amp; Roman</p>
+      </div>
+
+      <figure class="invitation__figure reveal">
+        <!-- asset: couple-candid-01 -->
+        <img src="assets/img/couple-candid.jpg" alt="Gohar and Roman" width="1280" height="720" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+
+  <!-- ============================================ WHEN / WHERE / DAY ====== -->
+  <section class="section wrap" id="details">
+    <div class="details__head reveal">
+      <div>
+        <p class="label" data-i18n="det.label">The details</p>
+        <p class="details__date">
+          <span data-i18n="det.dow">Saturday</span>
+          <span data-i18n="det.md">October 24</span>
+          <span class="yr" data-i18n="det.yr">2026</span>
+        </p>
+      </div>
+
+      <div class="venue">
+        <strong data-var="venue">DiliJazz Hotel</strong><br>
+        <span class="venue__city" data-var="location">Dilijan, Armenia</span>
+        <div class="venue__cta">
+          <a class="btn" id="map-link" href="#" target="_blank" rel="noopener">
+            <span data-i18n="det.map">View on map</span>
+            <span class="arr" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="agenda reveal">
+      <p class="label" data-i18n="det.day">The day</p>
+      <ol class="agenda__list">
+        <li class="agenda__item">
+          <span class="agenda__time" data-var="welcomeTime">TBD</span>
+          <span class="agenda__what" data-i18n="det.a1">Welcome Reception</span>
+        </li>
+        <li class="agenda__item">
+          <span class="agenda__time" data-var="ceremonyTime">TBD</span>
+          <span class="agenda__what"><span data-i18n="det.a2">Ceremony</span><span class="agenda__tbc">TBC</span></span>
+        </li>
+        <li class="agenda__item">
+          <span class="agenda__time" data-var="dinnerTime">TBD</span>
+          <span class="agenda__what" data-i18n="det.a3">Dinner &amp; Party</span>
+        </li>
+        <li class="agenda__item">
+          <span class="agenda__time" data-var="afterpartyTime">TBD</span>
+          <span class="agenda__what" data-i18n="det.a4">Afterparty</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- ================================================ DILIJAN BREAK ======= -->
+  <section class="break" aria-label="Dilijan in October">
+    <!-- asset: dilijan-autumn-landscape -->
+    <img src="assets/img/dilijan-autumn.jpg" alt="Autumn forest hills around Dilijan, Armenia" width="2000" height="1498" loading="lazy">
+    <p class="break__caption" data-i18n="break.dilijan">Dilijan · October</p>
+  </section>
+
+
+  <!-- ================================================ DILIJAZZ HOTEL ====== -->
+  <section class="section wrap" id="hotel">
+    <div class="hotel__grid">
+      <div class="hotel__body reveal">
+        <h2 data-var="venue">DiliJazz Hotel</h2>
+        <p data-i18n="hotel.p1">Set in the forests of Dilijan, by the river, DiliJazz is a cozy retreat surrounded by nature.</p>
+        <p data-i18n="hotel.p2">The hotel offers a <strong>spa, indoor pool, sauna, jacuzzi and beautiful private gardens</strong> — all within the hotel grounds.</p>
+        <p class="hotel__note" data-i18n="hotel.p3">For our wedding, the hotel will be <strong>exclusively hosting our wedding party, with no other hotel guests during our celebration.</strong></p>
+      </div>
+
+      <figure class="hotel__figure reveal">
+        <!-- asset: dilijazz-exterior -->
+        <img src="assets/img/dilijazz-exterior.jpg" alt="DiliJazz Hotel seen from the front, surrounded by forested hills" width="1800" height="1200" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+
+  <!-- ================================================== STAY WITH US ====== -->
+  <section class="section wrap stay" id="stay">
+    <div class="stay__body reveal">
+      <h2 data-i18n="stay.h">Stay With Us</h2>
+      <p data-i18n="stay.p1">We’d love for the celebration not to end with the last dance.</p>
+      <p data-i18n="stay.p2">For our wedding, DiliJazz will be exclusively hosting our group — giving us the whole setting to celebrate together through the night and into the next morning.</p>
+      <p data-i18n="stay.p3">Stay late, celebrate with us, and join us for breakfast the next day.</p>
+    </div>
+
+    <figure class="stay__figure reveal">
+      <!-- asset: dilijazz-grounds -->
+      <img src="assets/img/dilijazz-grounds.jpg" alt="A chalet among the trees in the DiliJazz grounds, lit in the evening" width="1024" height="683" loading="lazy">
+    </figure>
+
+    <!-- rate block -->
+    <div class="rate reveal">
+      <div class="rate__head">
+        <p class="label" data-i18n="stay.forguests">For our guests</p>
+        <h3 data-i18n="stay.rateh">Your special wedding night rate at DiliJazz</h3>
+      </div>
+      <div class="rate__side">
+        <p class="rate__value" data-var="hotelDiscount">[XX% REDUCTION]</p>
+        <p class="rate__copy" data-i18n="stay.ratep">DiliJazz is offering our guests a special rate, and in addition, <strong>we’ll be covering part of your room cost ourselves as a little thank-you for being there to celebrate with us.</strong></p>
+      </div>
+    </div>
+
+    <!-- how to book -->
+    <div class="book reveal">
+      <h3 data-i18n="stay.bookh">How to Book</h3>
+      <ol class="book__steps">
+        <li class="book__step">
+          <span class="book__num">01</span>
+          <span data-i18n="stay.s1">Choose your preferred room on the DiliJazz website.</span>
+        </li>
+        <li class="book__step">
+          <span class="book__num">02</span>
+          <span><span data-i18n="stay.s2">Call DiliJazz at</span> <a id="hotel-phone" href="#" data-var="hotelPhone">[HOTEL PHONE NUMBER]</a></span>
+        </li>
+        <li class="book__step">
+          <span class="book__num">03</span>
+          <span data-i18n="stay.s3">Mention <strong>Gohar &amp; Roman’s wedding</strong> to receive the special rate.</span>
+        </li>
+      </ol>
+
+      <a class="btn" id="rooms-link" href="#" target="_blank" rel="noopener">
+        <span data-i18n="stay.rooms">Explore rooms</span>
+        <span class="arr" aria-hidden="true">→</span>
+      </a>
+
+      <p class="pet" data-i18n="stay.pet"><strong>Travelling with a pet?</strong> Pet-friendly rooms are available in selected room categories. Please mention your pet when calling the hotel.</p>
+    </div>
+  </section>
+
+
+  <!-- =================================================== WHAT TO WEAR ===== -->
+  <section class="section wrap wear" id="wear">
+    <div class="wear__grid">
+      <div class="reveal">
+        <p class="label" data-i18n="wear.label">What to wear</p>
+        <h2 data-i18n="wear.h">Evening / Cocktail</h2>
+        <p class="wear__sub" data-i18n="wear.sub">No colour restrictions</p>
+      </div>
+      <div class="wear__body lede reveal">
+        <p data-i18n="wear.p1">No colour restrictions — wear whatever makes you feel your best.</p>
+        <p data-i18n="wear.p2">We may spend a little time outdoors in the hotel’s garden and natural surroundings, so keep that in mind when choosing your shoes and layers.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================== COUPLE PHOTO BREAK ==== -->
+  <section class="break break--portrait" aria-hidden="true">
+    <!-- asset: couple-pre-rsvp -->
+    <img src="assets/img/couple-pre-rsvp.jpg" alt="" width="720" height="1280" loading="lazy" style="object-position: center 72%;">
+  </section>
+
+
+  <!-- ============================================================ RSVP ==== -->
+  <section class="section rsvp" id="rsvp">
+    <div class="wrap">
+      <div class="rsvp__head reveal">
+        <p class="label" data-i18n="rsvp.label">RSVP</p>
+        <h2 data-i18n="rsvp.h">Will You Join Us?</h2>
+        <p class="rsvp__hope" data-i18n="rsvp.hope">We hope you’ll be there!</p>
+        <p class="rsvp__deadline">
+          <span data-i18n="rsvp.by">Please RSVP by</span>
+          <span data-var="rsvpDeadline">[RSVP DEADLINE]</span>
+        </p>
+      </div>
+
+      <div class="formcard reveal" id="rsvp-card">
+        <form id="rsvp-form" novalidate-disabled>
+
+          <div class="field">
+            <label for="fullName" data-i18n="f.name">Your Name <span class="req">*</span></label>
+            <input type="text" id="fullName" name="fullName" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="email" data-i18n="f.email">Email <span class="req">*</span></label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+
+          <fieldset class="field">
+            <legend class="field__legend" data-i18n="f.attending">Will you join us? <span class="req">*</span></legend>
+            <div class="choices">
+              <label class="choice">
+                <input type="radio" name="attending" value="Yes" required>
+                <span data-i18n="f.att.yes">Yes, happily!</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="attending" value="No" required>
+                <span data-i18n="f.att.no">Sadly, I can’t make it.</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div id="conditional-fields" hidden>
+            <div class="field">
+              <label for="totalGuests" data-i18n="f.guests">Total Number of Guests <span class="req">*</span> <span class="hint">(including yourself)</span></label>
+              <input type="number" id="totalGuests" name="totalGuests" min="1" step="1" inputmode="numeric">
+            </div>
+
+            <fieldset class="field">
+              <legend class="field__legend" data-i18n="f.side">Which team do you represent?</legend>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="side" value="Bride"><span data-i18n="f.side.bride">Bride</span></label>
+                <label class="choice"><input type="radio" name="side" value="Groom"><span data-i18n="f.side.groom">Groom</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="field">
+              <legend class="field__legend" data-i18n="f.hotel">Will you be staying with us at DiliJazz?</legend>
+              <div class="choices">
+                <label class="choice"><input type="radio" name="hotelStay" value="Yes"><span data-i18n="f.hotel.yes">Yes</span></label>
+                <label class="choice"><input type="radio" name="hotelStay" value="No"><span data-i18n="f.hotel.no">No</span></label>
+                <label class="choice"><input type="radio" name="hotelStay" value="Not sure yet"><span data-i18n="f.hotel.maybe">Not sure yet</span></label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="field">
+            <label for="message" data-i18n="f.note">Leave us a note — if you’d like</label>
+            <textarea id="message" name="message"></textarea>
+          </div>
+
+          <p class="reqnote"><span class="req">*</span> <span data-i18n="f.required">Required field</span></p>
+
+          <button class="btn btn--solid" type="submit" id="submit-btn">
+            <span data-i18n="f.send">Send RSVP</span>
+            <span class="arr" aria-hidden="true">→</span>
+          </button>
+
+          <div id="status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================= CLOSING ==== -->
+  <section class="section wrap closing" id="closing">
+    <div class="closing__body reveal">
+      <p data-i18n="close.p1">Come ready to celebrate, dance, laugh and stay a little longer than planned.</p>
+      <p data-i18n="close.p2">We can’t wait to have you there with us! <span class="heart" aria-hidden="true">♥</span></p>
+      <p class="closing__names" data-var="coupleName">Gohar &amp; Roman</p>
+      <p class="closing__date" data-var="weddingDateShort">24 · 10 · 2026</p>
+    </div>
+  </section>
+
+  <section class="break" aria-hidden="true">
+    <!-- asset: couple-closing -->
+    <img src="assets/img/couple-closing.jpg" alt="" width="960" height="1280" loading="lazy" style="object-position: center 55%;">
+  </section>
+
+</main>
+
+<p class="credits">
+  Dilijan autumn photograph by Xelgen, <a href="https://commons.wikimedia.org/wiki/File:Dilijan_Autumn_Forest,_October_2024.jpg" target="_blank" rel="noopener">Wikimedia Commons</a>, CC BY-SA 4.0.
+  Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
+</p>
+
+<script src="assets/js/site.js"></script>
 </body>
 </html>

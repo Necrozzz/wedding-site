@@ -483,7 +483,22 @@ a { color: inherit; }
   text-shadow: 0 1px 14px rgba(0,0,0,.45);
 }
 
-.break--portrait { height: clamp(380px, 80vh, 760px); }
+/* Portrait couple photographs.
+   These are taller than they are wide, so they must NOT go in a full-bleed
+   band — cover-cropping a portrait into a wide strip leaves only a sliver of
+   the image. Shown whole instead, centred as an editorial plate. */
+.plate {
+  display: flex;
+  justify-content: center;
+  padding: clamp(40px, 7vw, 96px) var(--gutter);
+}
+.plate img {
+  width: auto;
+  max-width: min(100%, 440px);
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 2px;
+}
 
 /* ================================================= 7. DILIJAZZ HOTEL == */
 

@@ -19,17 +19,22 @@ const CONFIG = {
   locationUpper:    'DILIJAN, ARMENIA',
   venue:            'DiliJazz Hotel',
 
-  // --- agenda: times still to be confirmed -----------------------
-  welcomeTime:      'TBD',
-  ceremonyTime:     'TBD',
-  dinnerTime:       'TBD',
-  afterpartyTime:   'TBD',
+  // --- agenda: the ceremony time is still to be confirmed --------
+  welcomeTime:      '16:30',
+  ceremonyTime:     '17:30',
+  dinnerTime:       '18:00',
+  afterpartyTime:   '23:00',
 
   // --- RSVP ------------------------------------------------------
   rsvpDeadline:     '[REGISTRATION DEADLINE]',
 
   // --- hotel -----------------------------------------------------
-  hotelDiscount:    '[XX% REDUCTION]',          // TBD — confirm with DiliJazz
+  // 14% off from DiliJazz, plus 20% that Gohar & Roman cover themselves
+  hotelDiscount:      '34%',
+  hotelDiscountVenue: '14%',
+  hotelDiscountHost:  '20%',
+  // open to anyone extending their stay around the wedding date
+  extraNightsDiscount: '15%',
   hotelPhone:       '+374 60 52-15-15',         // from dilijazz.am — please verify
   hotelRoomsUrl:    'https://www.dilijazz.am/en/rooms/',
   mapUrl:           'https://www.google.com/maps/search/?api=1&query=DiliJazz+Hotel+%26+Restaurant+Dilijan+Armenia',
@@ -117,6 +122,34 @@ function initCover() {
 }
 
 /* --------------------------------------------------------------- motion -- */
+
+function initMenu() {
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('menu');
+  if (!btn || !menu) return;
+
+  const setOpen = (open) => {
+    btn.setAttribute('aria-expanded', String(open));
+    menu.classList.toggle('is-open', open);
+    menu.hidden = !open;
+    document.body.classList.toggle('is-locked', open);
+  };
+
+  btn.addEventListener('click', () => {
+    setOpen(btn.getAttribute('aria-expanded') !== 'true');
+  });
+
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => setOpen(false));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      btn.focus();
+    }
+  });
+}
 
 function initReveal() {
   const items = document.querySelectorAll('.reveal');
@@ -285,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initCover();
   initChrome();
+  initMenu();
   initReveal();
   initRSVP();
 });

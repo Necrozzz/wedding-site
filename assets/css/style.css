@@ -18,8 +18,9 @@
   --display: "Instrument Serif", "Cormorant Garamond", Georgia, serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
-  /* Rhythm */
-  --section-y: clamp(72px, 12vw, 160px);
+  /* Rhythm — one vertical step drives the whole page so the gaps stay even */
+  --section-y: clamp(52px, 6.5vw, 92px);
+  --block-y: clamp(30px, 4vw, 52px);
   --gutter: clamp(20px, 5vw, 64px);
   --measure: 34rem;
 
@@ -150,7 +151,7 @@ a { color: inherit; }
 .cover__inner {
   position: relative;
   z-index: 2;
-  margin-bottom: clamp(40px, 12vh, 120px);
+  margin-bottom: clamp(36px, 9vh, 88px);
 }
 
 .cover__initials {
@@ -280,7 +281,7 @@ a { color: inherit; }
   min-height: 100svh;
   display: grid;
   align-items: center;
-  padding-block: clamp(96px, 16vh, 150px) var(--section-y);
+  padding-block: clamp(84px, 12vh, 120px) var(--section-y);
 }
 
 .hero__grid {
@@ -331,9 +332,10 @@ a { color: inherit; }
 .hero__figure { position: relative; }
 .hero__figure img {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
-  object-position: center 30%;
+  /* keep the framing on the couple (left of centre in the frame) */
+  object-position: 32% center;
   border-radius: 2px;
 }
 
@@ -409,7 +411,7 @@ a { color: inherit; }
   .details__head { grid-template-columns: 1.4fr 1fr; }
 }
 
-.agenda { margin-top: clamp(56px, 9vw, 110px); }
+.agenda { margin-top: clamp(40px, 5.5vw, 72px); }
 .agenda__list {
   list-style: none;
   margin: clamp(24px, 4vw, 40px) 0 0;
@@ -483,19 +485,19 @@ a { color: inherit; }
   text-shadow: 0 1px 14px rgba(0,0,0,.45);
 }
 
-/* Portrait couple photographs.
-   These are taller than they are wide, so they must NOT go in a full-bleed
-   band — cover-cropping a portrait into a wide strip leaves only a sliver of
-   the image. Shown whole instead, centred as an editorial plate. */
+/* Couple photographs shown whole, centered as an editorial plate rather than
+   cover-cropped into a full-bleed band. No vertical padding of its own: the
+   surrounding sections already supply the page's vertical rhythm, so adding
+   more here would double the gap. */
 .plate {
   display: flex;
   justify-content: center;
-  padding: clamp(40px, 7vw, 96px) var(--gutter);
+  padding: 0 var(--gutter);
 }
 .plate img {
   width: auto;
-  max-width: min(100%, 440px);
-  max-height: 80vh;
+  max-width: min(100%, 880px);
+  max-height: 72vh;
   object-fit: contain;
   border-radius: 2px;
 }
@@ -533,6 +535,22 @@ a { color: inherit; }
   .hotel__figure { order: 2; }
 }
 
+.hotel__pair {
+  margin-top: var(--block-y);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(12px, 1.8vw, 20px);
+}
+.hotel__pair img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 2px;
+}
+@media (min-width: 720px) {
+  .hotel__pair { grid-template-columns: 1fr 1fr; }
+}
+
 /* ==================================================== 8. STAY WITH US == */
 
 .stay h2 {
@@ -543,7 +561,7 @@ a { color: inherit; }
 }
 .stay__body { max-width: var(--measure); }
 
-.stay__figure { margin-top: clamp(40px, 6vw, 68px); }
+.stay__figure { margin-top: var(--block-y); }
 .stay__figure img {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -553,7 +571,7 @@ a { color: inherit; }
 }
 
 .rate {
-  margin-top: clamp(44px, 7vw, 80px);
+  margin-top: clamp(36px, 4.5vw, 60px);
   background: var(--ivory-2);
   border-radius: 3px;
   padding: clamp(28px, 5vw, 56px);
@@ -582,7 +600,7 @@ a { color: inherit; }
   .rate__side { grid-column: 2; }
 }
 
-.book { margin-top: clamp(44px, 7vw, 80px); }
+.book { margin-top: clamp(36px, 4.5vw, 60px); }
 .book h3 {
   font-family: var(--display);
   font-size: clamp(1.5rem, 3.6vw, 2.1rem);
@@ -661,7 +679,7 @@ a { color: inherit; }
 
 .rsvp { background: var(--ivory-2); }
 
-.rsvp__head { text-align: center; margin-bottom: clamp(38px, 6vw, 62px); }
+.rsvp__head { text-align: center; margin-bottom: clamp(30px, 4vw, 48px); }
 .rsvp h2 {
   font-family: var(--display);
   font-size: clamp(2.6rem, 8vw, 4.6rem);
@@ -796,7 +814,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   font-family: var(--display);
   font-size: clamp(2.4rem, 8vw, 4.2rem);
   line-height: 1.05;
-  margin-top: clamp(38px, 6vw, 64px);
+  margin-top: clamp(28px, 4vw, 48px);
 }
 .closing__date {
   margin-top: 1.2em;
@@ -807,7 +825,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
 }
 
 .credits {
-  padding: 0 var(--gutter) clamp(26px, 4vw, 40px);
+  padding: clamp(28px, 4vw, 44px) var(--gutter) clamp(26px, 4vw, 40px);
   text-align: center;
   font-size: 0.66rem;
   letter-spacing: 0.04em;

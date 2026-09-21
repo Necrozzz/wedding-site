@@ -26,7 +26,7 @@ const CONFIG = {
   afterpartyTime:   'TBD',
 
   // --- RSVP ------------------------------------------------------
-  rsvpDeadline:     '[RSVP DEADLINE]',
+  rsvpDeadline:     '[REGISTRATION DEADLINE]',
 
   // --- hotel -----------------------------------------------------
   hotelDiscount:    '[XX% REDUCTION]',          // TBD — confirm with DiliJazz

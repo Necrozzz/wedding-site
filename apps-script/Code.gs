@@ -10,6 +10,7 @@
  */
 
 const SHEET_NAME = 'Sheet1';
+const SITE_URL = 'https://gohar-and-roman.netlify.app/';
 
 function doPost(e) {
   try {
@@ -72,6 +73,8 @@ function sendConfirmationEmail(params) {
     }
     body += '\nThe big day: Saturday, October 24, 2026 — DiliJazz Hotel, Dilijan, Armenia.\n';
     body += 'We have attached a calendar invite so you can save the date.\n\n';
+    body += 'All the details \u2014 the schedule, how to book your room and what to wear:\n';
+    body += SITE_URL + '\n\n';
     body += 'See you there!\n';
     body += 'Gohar & Roman\n';
   } else {
@@ -80,6 +83,8 @@ function sendConfirmationEmail(params) {
     if (params.message) {
       body += 'Your note: ' + params.message + '\n\n';
     }
+    body += 'If anything changes, the details are here:\n';
+    body += SITE_URL + '\n\n';
     body += 'With love,\n';
     body += 'Gohar & Roman\n';
   }
@@ -111,8 +116,12 @@ function buildWeddingIcs() {
   lines.push('DTSTART;VALUE=DATE:20261024');
   lines.push('DTEND;VALUE=DATE:20261025');
   lines.push('SUMMARY:Gohar & Roman Wedding');
-  lines.push('LOCATION:DiliJazz Hotel, Dilijan, Armenia');
-  lines.push('DESCRIPTION:We would love for you to join us on our special day!');
+  // RFC 5545 requires commas escaped inside TEXT values, or a strict
+  // parser truncates the address at the first one
+  lines.push('LOCATION:DiliJazz Hotel\, Dilijan\, Armenia');
+  lines.push('URL:' + SITE_URL);
+  lines.push('DESCRIPTION:We would love for you to join us on our special day! '
+             + 'All the details: ' + SITE_URL);
   lines.push('END:VEVENT');
   lines.push('END:VCALENDAR');
   return lines.join('\r\n');

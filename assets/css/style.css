@@ -12,6 +12,7 @@
   --espresso-45:  rgba(48, 43, 39, 0.45);
   --espresso-15:  rgba(48, 43, 39, 0.15);
   --rust:         #A9664F;
+  --brass:        #B8873B;        /* the saxophone in the monogram */
   --olive:        #59604A;
   /* deep blue for the supporting lines, as in the reference layout */
   --ink:          #2C3652;
@@ -251,6 +252,30 @@ a { color: inherit; }
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.32) 40%, rgba(0,0,0,.85) 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.32) 40%, rgba(0,0,0,.85) 100%);
   pointer-events: none;
+}
+
+/* ---- the monogram: G, a saxophone for the ampersand, R ---- */
+
+.sax-defs { position: absolute; }
+
+.monogram {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.03em;
+  line-height: 1;
+}
+.monogram__l { display: block; }
+.sax {
+  display: block;
+  height: 1.06em;
+  /* an inline <svg> carrying only a <use> has no intrinsic size, so without
+     this it falls back to 300px wide and shoves the R off the screen */
+  aspect-ratio: 54 / 108;
+  width: auto;
+  margin: 0 0.05em;
+  color: var(--brass);
+  /* the drawing sits a shade low against the caps beside it */
+  transform: translateY(-0.02em);
 }
 
 /* ======================================================== 2. TOP NAV == */

@@ -25,9 +25,6 @@ const CONFIG = {
   dinnerTime:       '18:00',
   afterpartyTime:   '23:00',
 
-  // --- RSVP ------------------------------------------------------
-  rsvpDeadline:     '[REGISTRATION DEADLINE]',
-
   // --- hotel -----------------------------------------------------
   // 14% off from DiliJazz, plus 20% that Gohar & Roman cover themselves
   hotelDiscount:      '34%',
@@ -36,6 +33,7 @@ const CONFIG = {
   // open to anyone extending their stay around the wedding date
   extraNightsDiscount: '15%',
   hotelPhone:       '+374 60 52-15-15',         // from dilijazz.am — please verify
+  hotelWhatsApp:    '+374 95 52-15-15',         // for guests booking from abroad
   hotelRoomsUrl:    'https://www.dilijazz.am/en/rooms/',
   mapUrl:           'https://www.google.com/maps/search/?api=1&query=DiliJazz+Hotel+%26+Restaurant+Dilijan+Armenia',
 
@@ -73,6 +71,9 @@ function applyVariables() {
 
   const phone = document.getElementById('hotel-phone');
   if (phone) phone.href = 'tel:' + CONFIG.hotelPhone.replace(/[^\d+]/g, '');
+
+  const whatsapp = document.getElementById('hotel-whatsapp');
+  if (whatsapp) whatsapp.href = 'https://wa.me/' + CONFIG.hotelWhatsApp.replace(/\D/g, '');
 }
 
 /* ------------------------------------------------------------ language -- */

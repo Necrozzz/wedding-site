@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=6">
+<link rel="stylesheet" href="assets/css/style.css?v=7">
 </head>
 <body>
 
@@ -192,7 +192,7 @@
         </li>
         <li class="agenda__item">
           <span class="agenda__time" data-var="afterpartyTime">23:00</span>
-          <span class="agenda__what"><span data-i18n="det.a4">Afterparty</span><span class="agenda__until" data-i18n="det.a4b">until you die</span></span>
+          <span class="agenda__what"><span data-i18n="det.a4">Afterparty</span><span class="agenda__until" data-i18n="det.a4b">until dawn</span></span>
         </li>
       </ol>
     </div>
@@ -262,14 +262,14 @@
           <span><b data-var="hotelDiscountVenue">14%</b> <span data-i18n="stay.splitv">venue discount</span></span>
           <span><b data-var="hotelDiscountHost">20%</b> <span data-i18n="stay.splith">host discount</span></span>
         </p>
-        <p class="rate__copy" data-i18n="stay.ratep">DiliJazz is offering our guests a special rate, and in addition, <strong>we’ll be covering part of your room cost ourselves as a little thank-you for being there to celebrate with us.</strong></p>
+        <p class="rate__copy" data-i18n="stay.ratep">DiliJazz is offering our guests a special rate, and <strong>we’re adding a little on top ourselves</strong> — we’d like the stay to be one less thing to think about.</p>
       </div>
     </div>
 
     <!-- extra nights around the wedding -->
     <div class="extranights reveal">
       <p class="label" data-i18n="stay.extralabel">Making a trip of it</p>
-      <p data-i18n="stay.extrap">DiliJazz is also offering <strong><span data-var="extraNightsDiscount">15%</span> off</strong> to every guest who stays on either side of the wedding date — so you can take your time in Dilijan.</p>
+      <p data-i18n="stay.extrap">Staying longer? DiliJazz is giving <strong>our guests <span data-var="extraNightsDiscount">15%</span> off</strong> the nights before and after the wedding — so there is time to see Dilijan properly.</p>
     </div>
 
     <!-- how to book -->
@@ -282,7 +282,10 @@
         </li>
         <li class="book__step">
           <span class="book__num">02</span>
-          <span><span data-i18n="stay.s2">Call DiliJazz at</span> <a id="hotel-phone" href="#" data-var="hotelPhone">[HOTEL PHONE NUMBER]</a></span>
+          <span>
+            <span data-i18n="stay.s2">Call DiliJazz at</span> <a id="hotel-phone" href="#" data-var="hotelPhone">[HOTEL PHONE NUMBER]</a>
+            <span class="book__alt"><span data-i18n="stay.s2b">Calling from abroad? Message them on WhatsApp at</span> <a id="hotel-whatsapp" href="#" target="_blank" rel="noopener" data-var="hotelWhatsApp">+374 95 52-15-15</a></span>
+          </span>
         </li>
         <li class="book__step">
           <span class="book__num">03</span>
@@ -305,7 +308,7 @@
     <div class="wear__grid">
       <div class="reveal">
         <p class="label" data-i18n="wear.label">What to wear</p>
-        <h2 data-i18n="wear.h">Evening / Cocktail</h2>
+        <h2 data-i18n="wear.h">Dress to Impress the Forest</h2>
         <p class="wear__sub" data-i18n="wear.sub">No color restrictions</p>
       </div>
       <div class="wear__body lede reveal">
@@ -331,10 +334,6 @@
       <div class="rsvp__head reveal">
         <h2 data-i18n="rsvp.h">Will You Join Us?</h2>
         <p class="rsvp__hope" data-i18n="rsvp.hope">We hope you’ll be there!</p>
-        <p class="rsvp__deadline">
-          <span data-i18n="rsvp.by">Please register by</span>
-          <span data-var="rsvpDeadline">[REGISTRATION DEADLINE]</span>
-        </p>
       </div>
 
       <div class="formcard reveal" id="rsvp-card">
@@ -431,6 +430,6 @@
   Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
 </p>
 
-<script src="assets/js/site.js?v=6"></script>
+<script src="assets/js/site.js?v=7"></script>
 </body>
 </html>

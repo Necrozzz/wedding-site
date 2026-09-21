@@ -745,19 +745,10 @@ a { color: inherit; }
   font-size: clamp(2.3rem, 8vw, 4.1rem);
   line-height: 1.04;
   color: var(--rust);
+  /* the inherited 1.15em paragraph margin scales with this very large
+     numeral and opens a 75px hole above the copy */
+  margin-bottom: clamp(12px, 1.6vw, 20px);
 }
-.rate__split {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35em 1.4em;
-  margin: 0.7em 0 1.4em;
-  font-size: 0.68rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--espresso-45);
-}
-.rate__split b { font-weight: 500; color: var(--espresso); }
-
 .rate__copy { max-width: 46ch; color: var(--espresso-70); }
 .rate__copy strong { font-weight: 500; color: var(--espresso); }
 

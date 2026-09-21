@@ -26,10 +26,8 @@ const CONFIG = {
   afterpartyTime:   '23:00',
 
   // --- hotel -----------------------------------------------------
-  // 14% off from DiliJazz, plus 20% that Gohar & Roman cover themselves
-  hotelDiscount:      '34%',
-  hotelDiscountVenue: '14%',
-  hotelDiscountHost:  '20%',
+  // the venue's rate plus what Gohar & Roman add, shown as one figure
+  hotelDiscount:      '30%',
   // open to anyone extending their stay around the wedding date
   extraNightsDiscount: '15%',
   hotelPhone:       '+374 60 52-15-15',         // from dilijazz.am — please verify

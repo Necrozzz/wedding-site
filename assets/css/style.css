@@ -749,6 +749,13 @@ a { color: inherit; }
      numeral and opens a 75px hole above the copy */
   margin-bottom: clamp(12px, 1.6vw, 20px);
 }
+/* "30%" alone reads as ambiguous - it could mean guests pay 30% */
+.rate__off {
+  font-size: 0.4em;
+  margin-left: 0.04em;
+  letter-spacing: 0.01em;
+}
+
 .rate__copy { max-width: 46ch; color: var(--espresso-70); }
 .rate__copy strong { font-weight: 500; color: var(--espresso); }
 

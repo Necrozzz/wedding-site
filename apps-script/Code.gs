@@ -1,7 +1,7 @@
 /**
  * Gohar & Roman — wedding RSVP endpoint
  *
- * Receives POSTs from wedding-r-n-g.netlify.app, appends a row to the
+ * Receives POSTs from gohar-and-roman.netlify.app, appends a row to the
  * "Wedding RSVPs" sheet and emails the guest a confirmation.
  *
  * Sheet columns (must match the appendRow order below):
@@ -97,7 +97,7 @@ function sendConfirmationEmail(params) {
 /* ------------------------------------------------------------------- ics */
 
 function buildWeddingIcs() {
-  const uid = Utilities.getUuid() + '@wedding-r-n-g.netlify.app';
+  const uid = Utilities.getUuid() + '@gohar-and-roman.netlify.app';
   const now = new Date();
   const dtstamp = Utilities.formatDate(now, 'UTC', "yyyyMMdd'T'HHmmss'Z'");
   const lines = [];

@@ -242,15 +242,14 @@ a { color: inherit; }
 .cover__forest {
   position: absolute;
   left: 0; right: 0; bottom: 0;
-  height: 54vh;
-  /* asset: cover forest — paths here are relative to this stylesheet */
-  background-image: url("../img/dilijan-forest-soft.jpg");
+  height: 58vh;
+  /* asset: generated ridge landscape — paths are relative to this stylesheet.
+     It already carries its own fog and fades into the ivory, so it needs no
+     mask and no opacity knocked off it. */
+  background-image: url("../img/cover-ridges.jpg?v=4");
   background-size: cover;
-  background-position: center 76%;
-  opacity: 0.52;
-  filter: saturate(0.5) brightness(1.06);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.18) 30%, rgba(0,0,0,.6) 62%, rgba(0,0,0,.95) 100%);
-          mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.18) 30%, rgba(0,0,0,.6) 62%, rgba(0,0,0,.95) 100%);
+  background-position: center bottom;
+  opacity: 1;
   pointer-events: none;
 }
 

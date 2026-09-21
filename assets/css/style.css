@@ -12,7 +12,6 @@
   --espresso-45:  rgba(48, 43, 39, 0.45);
   --espresso-15:  rgba(48, 43, 39, 0.15);
   --rust:         #A9664F;
-  --brass:        #B8873B;        /* the saxophone in the monogram */
   --olive:        #59604A;
   /* deep blue for the supporting lines, as in the reference layout */
   --ink:          #2C3652;
@@ -186,7 +185,7 @@ a { color: inherit; }
   font-size: clamp(3.6rem, 15vw, 8.4rem);
   line-height: 1.02;
   letter-spacing: 0.004em;
-  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-variation-settings: "opsz" 14, "SOFT" 100, "WONK" 1;
   margin: 0;
 }
 
@@ -254,30 +253,6 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-/* ---- the monogram: G, a saxophone for the ampersand, R ---- */
-
-.sax-defs { position: absolute; }
-
-.monogram {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.03em;
-  line-height: 1;
-}
-.monogram__l { display: block; }
-.sax {
-  display: block;
-  height: 1.06em;
-  /* an inline <svg> carrying only a <use> has no intrinsic size, so without
-     this it falls back to 300px wide and shoves the R off the screen */
-  aspect-ratio: 54 / 108;
-  width: auto;
-  margin: 0 0.05em;
-  color: var(--brass);
-  /* the drawing sits a shade low against the caps beside it */
-  transform: translateY(-0.02em);
-}
-
 /* ======================================================== 2. TOP NAV == */
 
 .topbar {
@@ -297,8 +272,12 @@ a { color: inherit; }
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* Fraunces swaps in a big swashed ampersand above optical size ~24, so every
+   heading carrying an "&" pins opsz low enough to keep the plain one. The
+   hero title has no ampersand, so it keeps the display cut. */
 .topbar__mark {
   font-family: var(--display);
+  font-variation-settings: "opsz" 14, "SOFT" 60, "WONK" 0;
   font-size: clamp(1.15rem, 2.6vw, 1.5rem);
   text-decoration: none;
   letter-spacing: 0.02em;
@@ -529,7 +508,7 @@ a { color: inherit; }
   font-size: clamp(1.55rem, 3.8vw, 2.25rem);
   margin-top: clamp(32px, 5vw, 52px);
   line-height: 1.16;
-  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-variation-settings: "opsz" 14, "SOFT" 100, "WONK" 1;
 }
 
 .invitation__figure img {
@@ -601,6 +580,7 @@ a { color: inherit; }
 }
 .agenda__what {
   font-family: var(--display);
+  font-variation-settings: "opsz" 14, "SOFT" 60, "WONK" 0;
   font-size: clamp(1.25rem, 3.1vw, 1.85rem);
   line-height: 1.2;
 }
@@ -949,7 +929,11 @@ textarea {
 input:focus, textarea:focus { border-bottom-color: var(--rust); }
 textarea { resize: vertical; min-height: 84px; line-height: 1.6; }
 
-fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; gap: 1.05em; }
+fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
+
+/* A <legend> is not a flex item, so the fieldset's gap never lands between
+   the question and its answers. Space it explicitly instead. */
+.field__legend { margin-bottom: 1.1rem; }
 
 .choices { display: flex; flex-wrap: wrap; gap: 0.6em; }
 
@@ -1011,7 +995,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; gap: 1.05em; }
   font-size: clamp(2.2rem, 7.2vw, 3.8rem);
   line-height: 1.1;
   margin-top: clamp(22px, 3vw, 38px);
-  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-variation-settings: "opsz" 14, "SOFT" 100, "WONK" 1;
 }
 .closing__date {
   margin-top: 1.2em;

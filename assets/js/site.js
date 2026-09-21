@@ -10,8 +10,6 @@
 const CONFIG = {
   coupleName:       'Gohar & Roman',
   coupleInitials:   'G & R',
-  initialLeft:      'G',            // the monogram sets these either side
-  initialRight:     'R',            // of the saxophone ampersand
 
   weddingDate:      'October 24, 2026',
   weddingDateUpper: 'OCTOBER 24, 2026',

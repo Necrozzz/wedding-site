@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=9">
+<link rel="stylesheet" href="assets/css/style.css?v=13">
 </head>
 <body>
 
@@ -34,32 +34,12 @@
 </form>
 
 
-<!-- The monogram's ampersand is a saxophone, echoing the J in the DiliJazz
-     wordmark. Defined once here, used wherever .monogram appears. -->
-<svg class="sax-defs" width="0" height="0" aria-hidden="true" focusable="false">
-  <symbol id="sax-glyph" viewBox="26 0 54 108">
-    <path d="M56 3 L69 9 L64 21 L51 15 Z" fill="currentColor"/>
-    <path d="M60 17 C56 31 42 31 38 45 C35 59 33 71 34 83"
-          fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
-    <path d="M34 83 C36 98 48 105 58 99 C70 91 78 71 78 53
-             L56 43 C55 62 51 77 42 83 Z" fill="currentColor"/>
-    <ellipse cx="67" cy="48" rx="12" ry="6.5" transform="rotate(24 67 48)"
-             fill="var(--ivory)" stroke="currentColor" stroke-width="4"/>
-    <circle cx="45" cy="44" r="3.6" fill="var(--ivory)"/>
-    <circle cx="41" cy="58" r="3.6" fill="var(--ivory)"/>
-    <circle cx="38" cy="71" r="3.6" fill="var(--ivory)"/>
-  </symbol>
-</svg>
-
 <!-- ============================================ LANGUAGE COVER ============ -->
 <div class="cover" id="cover">
   <div class="cover__forest" aria-hidden="true"></div>
 
   <div class="cover__inner">
-    <h1 class="cover__initials monogram">
-      <span class="sr-only" data-var="coupleName">Gohar &amp; Roman</span>
-      <span class="monogram__l" data-var="initialLeft" aria-hidden="true">G</span><svg class="sax" aria-hidden="true" focusable="false"><use href="#sax-glyph"/></svg><span class="monogram__l" data-var="initialRight" aria-hidden="true">R</span>
-    </h1>
+    <h1 class="cover__initials" data-var="coupleInitials">G &amp; R</h1>
     <p class="cover__date" data-var="weddingDateShort">24 · 10 · 2026</p>
     <span class="rule-accent" aria-hidden="true"></span>
 
@@ -76,9 +56,7 @@
 
 <!-- ================================================== PERSISTENT NAV ====== -->
 <header class="topbar" id="topbar">
-  <a class="topbar__mark monogram" href="#top" aria-label="Gohar &amp; Roman — back to top">
-    <span class="monogram__l" data-var="initialLeft">G</span><svg class="sax" aria-hidden="true" focusable="false"><use href="#sax-glyph"/></svg><span class="monogram__l" data-var="initialRight">R</span>
-  </a>
+  <a class="topbar__mark" href="#top" data-var="coupleInitials">G &amp; R</a>
   <div class="topbar__right">
     <nav class="langswitch" aria-label="Language">
       <button class="langswitch__btn" type="button" data-lang="am">AM</button>
@@ -452,6 +430,6 @@
   Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
 </p>
 
-<script src="assets/js/site.js?v=8"></script>
+<script src="assets/js/site.js?v=9"></script>
 </body>
 </html>

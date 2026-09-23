@@ -998,7 +998,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
 #invitation::before {
   background:
     linear-gradient(180deg, var(--ivory) 0 32%, rgba(252,250,245,.86) 51%, rgba(252,250,245,.18) 78%, rgba(252,250,245,.05)),
-    url("../img/invitation-garden-tables.jpg") center bottom / cover no-repeat;
+    url("../img/invitation-garden-tables.webp") center bottom / cover no-repeat;
 }
 #invitation .invitation__grid { width: 100%; }
 #invitation .invitation__body {
@@ -1014,7 +1014,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   background:
     linear-gradient(90deg, rgba(252,250,245,.97) 0 38%, rgba(252,250,245,.86) 62%, rgba(252,250,245,.64)),
     linear-gradient(0deg, rgba(252,250,245,.78), rgba(252,250,245,.2)),
-    url("../img/dilijan-forest-soft.jpg") center / cover no-repeat;
+    url("../img/dilijan-forest-soft.webp") center / cover no-repeat;
 }
 #details .venue {
   padding: clamp(12px, 2vw, 22px) 0;
@@ -1037,7 +1037,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   background:
     linear-gradient(90deg, var(--ivory) 0 35%, rgba(252,250,245,.92) 48%, rgba(252,250,245,.18) 76%),
     linear-gradient(0deg, var(--ivory) 0 7%, transparent 35%),
-    url("../img/dilijazz-hotel-clean.png") right top / min(68vw, 980px) auto no-repeat;
+    url("../img/dilijazz-hotel-clean.webp") right top / min(68vw, 980px) auto no-repeat;
 }
 #hotel .hotel__figure { visibility: hidden; }
 #hotel .hotel__body {
@@ -1060,7 +1060,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   background:
     linear-gradient(90deg, rgba(252,250,245,.97) 0 35%, rgba(252,250,245,.78) 57%, rgba(252,250,245,.22)),
     linear-gradient(180deg, transparent 0 24%, var(--ivory) 58%),
-    url("../img/dilijazz-grounds.jpg") center top / 100% auto no-repeat;
+    url("../img/dilijazz-grounds.webp") center top / 100% auto no-repeat;
 }
 #stay .stay__figure { visibility: hidden; }
 #stay .stay__body {
@@ -1121,7 +1121,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
 #rsvp::before {
   background:
     linear-gradient(90deg, rgba(252,250,245,.95), rgba(252,250,245,.72) 50%, rgba(252,250,245,.28)),
-    url("../img/dilijazz-terrace.jpg") center / cover no-repeat;
+    url("../img/dilijazz-terrace.webp") center / cover no-repeat;
 }
 #rsvp .formcard {
   background: rgba(252,250,245,.92);
@@ -1137,7 +1137,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
 }
 #closing { background: var(--ivory); }
 #closing::before {
-  background: url("../img/closing-stone-background.png") center / cover no-repeat;
+  background: url("../img/closing-stone-background.webp") center / cover no-repeat;
   filter: blur(8px);
 }
 #closing .closing__body {
@@ -1172,21 +1172,21 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   #invitation::before {
     background:
       linear-gradient(180deg, var(--ivory) 0 38%, rgba(252,250,245,.9) 54%, rgba(252,250,245,.12) 79%),
-      url("../img/invitation-garden-tables.jpg") right bottom / 100% auto no-repeat;
+      url("../img/invitation-garden-tables.webp") right bottom / 100% auto no-repeat;
   }
   #invitation .invitation__body { margin-inline: 0; }
 
   #details::before {
     background:
       linear-gradient(180deg, rgba(252,250,245,.95), rgba(252,250,245,.82) 66%, rgba(252,250,245,.58)),
-      url("../img/dilijan-forest-soft.jpg") center / cover no-repeat;
+      url("../img/dilijan-forest-soft.webp") center / cover no-repeat;
   }
 
   #hotel { padding-top: clamp(280px, 76vw, 440px); }
   #hotel::before {
     background:
       linear-gradient(180deg, transparent 0 20%, var(--ivory) 42%),
-      url("../img/dilijazz-hotel-clean.png") center top / 100% auto no-repeat;
+      url("../img/dilijazz-hotel-clean.webp") center top / 100% auto no-repeat;
   }
   #hotel .hotel__figure { display: none; }
   #hotel .hotel__body { margin-inline: calc(var(--gutter) * -0.35); }
@@ -1195,7 +1195,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   #stay::before {
     background:
       linear-gradient(180deg, transparent 0 18%, var(--ivory) 36%),
-      url("../img/dilijazz-grounds.jpg") center top / auto min(460px, 88vw) no-repeat;
+      url("../img/dilijazz-grounds.webp") center top / auto min(460px, 88vw) no-repeat;
   }
   #stay .stay__figure { display: none; }
   #stay .stay__body { margin-inline: calc(var(--gutter) * -0.35); }
@@ -1214,7 +1214,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   #rsvp::before {
     background:
       linear-gradient(180deg, rgba(252,250,245,.94), rgba(252,250,245,.72)),
-      url("../img/dilijazz-terrace.jpg") center / cover no-repeat;
+      url("../img/dilijazz-terrace.webp") center / cover no-repeat;
   }
 
   #closing { padding-block: clamp(72px, 14vw, 108px); }
@@ -1227,7 +1227,7 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
     background:
       linear-gradient(180deg, var(--ivory) 0, transparent 20%, transparent 80%, var(--ivory) 100%),
       linear-gradient(90deg, var(--ivory) 0 34%, rgba(252,250,245,.92) 43%, rgba(252,250,245,.22) 56%, transparent 69%),
-      url("../img/invitation-garden-tables.jpg") calc(100% + 24px) center / 64% auto no-repeat;
+      url("../img/invitation-garden-tables.webp") calc(100% + 24px) center / 64% auto no-repeat;
   }
   #invitation .invitation__grid { display: block; }
   #invitation .invitation__body { width: 39%; }

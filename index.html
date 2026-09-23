@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://gohar-and-roman.netlify.app/">
 <!-- Open Graph needs an absolute URL; a relative path leaves the preview
      card with no photo on WhatsApp, Telegram and the rest. -->
-<meta property="og:image" content="https://gohar-and-roman.netlify.app/assets/img/dilijan-autumn.jpg">
+<meta property="og:image" content="https://gohar-and-roman.netlify.app/assets/img/dilijan-autumn.webp">
 <meta property="og:image:width" content="2000">
 <meta property="og:image:height" content="1498">
 <meta property="og:image:alt" content="Autumn forest above Dilijan, Armenia">
@@ -22,10 +22,8 @@
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F6F1E8'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23302B27' text-anchor='middle'%3EG%26amp;R%3C/text%3E%3C/svg%3E">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,0..100,0..1;1,9..144,300..700,0..100,0..1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=18">
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css?v=68">
 </head>
 <body>
 
@@ -98,7 +96,7 @@
 <main id="top">
 
   <!-- ================================================== HERO ============== -->
-  <section class="hero wrap" id="hero">
+  <section class="hero" id="hero">
     <div class="hero__grid">
       <div class="hero__text">
         <h1 class="hero__title">
@@ -124,13 +122,9 @@
         </div>
       </div>
 
-      <figure class="hero__figure reveal">
-        <!-- asset: hero-couple-image — the wide frame stacks on small screens,
-             the portrait crop fills the bleed panel on large ones -->
-        <picture>
-          <source media="(min-width: 1100px)" srcset="assets/img/hero-couple-tall.jpg" width="1000" height="1250">
-          <img src="assets/img/hero-couple.jpg" alt="Gohar and Roman together on an evening out" width="1600" height="958">
-        </picture>
+      <figure class="hero__figure">
+        <img class="hero__source-shoulder" src="assets/img/hero-couple.jpg" alt="" aria-hidden="true" width="1600" height="960">
+        <img class="hero__original" src="assets/img/hero-regenerated-v2.webp" alt="Gohar and Roman together on an evening out" width="1086" height="1448" fetchpriority="high">
       </figure>
     </div>
   </section>
@@ -147,8 +141,8 @@
       </div>
 
       <figure class="invitation__figure reveal">
-        <!-- asset: couple-candid-01 -->
-        <img src="assets/img/couple-candid.jpg" alt="Gohar and Roman" width="1280" height="720" loading="lazy">
+        <!-- Photo: Jonathan Borba / Pexels, https://www.pexels.com/photo/tables-for-celebration-in-garden-19986477/ -->
+        <img src="assets/img/invitation-garden-tables.webp" alt="An outdoor celebration table beneath string lights" width="1800" height="2696" loading="lazy">
       </figure>
     </div>
   </section>
@@ -187,12 +181,12 @@
       <p class="label" data-i18n="det.day">The day</p>
       <ol class="agenda__list">
         <li class="agenda__item">
-          <span class="agenda__time" data-var="welcomeTime">16:30</span>
+          <span class="agenda__time" data-var="welcomeTime">16:00</span>
           <span class="agenda__what" data-i18n="det.a1">Welcome Reception</span>
         </li>
         <li class="agenda__item">
-          <span class="agenda__time" data-var="ceremonyTime">17:30</span>
-          <span class="agenda__what"><span data-i18n="det.a2">Ceremony</span><span class="agenda__tbc">TBC</span></span>
+          <span class="agenda__time" data-var="ceremonyTime">17:00</span>
+          <span class="agenda__what" data-i18n="det.a2">Ceremony</span>
         </li>
         <li class="agenda__item">
           <span class="agenda__time" data-var="dinnerTime">18:00</span>
@@ -210,7 +204,7 @@
   <!-- ================================================ DILIJAN BREAK ======= -->
   <section class="break" aria-label="Dilijan in October">
     <!-- asset: dilijan-autumn-landscape -->
-    <img src="assets/img/dilijan-autumn.jpg" alt="Autumn forest hills around Dilijan, Armenia" width="2000" height="1498" loading="lazy">
+    <img src="assets/img/dilijan-autumn.webp" alt="Autumn forest hills around Dilijan, Armenia" width="2000" height="1498" loading="lazy">
     <p class="break__caption" data-i18n="break.dilijan">Dilijan · October</p>
   </section>
 
@@ -227,18 +221,18 @@
 
       <figure class="hotel__figure reveal">
         <!-- asset: dilijazz-hotel -->
-        <img src="assets/img/dilijazz-hotel.jpg" alt="The main DiliJazz building, with a blossoming tree in the forecourt" width="940" height="788" loading="lazy">
+        <img src="assets/img/dilijazz-hotel-clean.webp" alt="The main DiliJazz building, with a blossoming tree in the forecourt" width="1376" height="1152" loading="lazy">
       </figure>
     </div>
 
     <div class="hotel__pair reveal">
       <figure>
         <!-- asset: dilijazz-terrace -->
-        <img src="assets/img/dilijazz-terrace.jpg" alt="A wooden terrace looking out over the forest" width="1500" height="1000" loading="lazy">
+        <img src="assets/img/dilijazz-terrace.webp" alt="A wooden terrace looking out over the forest" width="1500" height="1000" loading="lazy">
       </figure>
       <figure>
         <!-- asset: dilijazz-table -->
-        <img src="assets/img/dilijazz-table.jpg" alt="A table laid for a meal outdoors, surrounded by greenery" width="1500" height="1000" loading="lazy">
+        <img src="assets/img/dilijazz-table.webp" alt="A table laid for a meal outdoors, surrounded by greenery" width="1500" height="1000" loading="lazy">
       </figure>
     </div>
   </section>
@@ -255,7 +249,7 @@
 
     <figure class="stay__figure reveal">
       <!-- asset: dilijazz-grounds -->
-      <img src="assets/img/dilijazz-grounds.jpg" alt="A chalet among the trees in the DiliJazz grounds, lit in the evening" width="1024" height="683" loading="lazy">
+      <img src="assets/img/dilijazz-grounds.webp" alt="A chalet among the trees in the DiliJazz grounds, lit in the evening" width="1024" height="683" loading="lazy">
     </figure>
 
     <!-- rate block -->
@@ -266,7 +260,7 @@
       </div>
       <div class="rate__side">
         <p class="rate__value"><span data-var="hotelDiscount">30%</span> <span class="rate__off" data-i18n="stay.off">off</span></p>
-        <p class="rate__copy" data-i18n="stay.ratep">DiliJazz is offering our guests a special rate, and <strong>we’re topping it up ourselves</strong> — a little thank-you for being there to celebrate with us.</p>
+        <p class="rate__copy" data-i18n="stay.ratep">DiliJazz is offering our guests a special rate, and we’re covering part of the cost ourselves — a little thank-you for being there to celebrate with us.</p>
       </div>
     </div>
 
@@ -302,7 +296,7 @@
         <span class="arr" aria-hidden="true">→</span>
       </a>
 
-      <p class="pet" data-i18n="stay.pet"><strong>Traveling with a pet?</strong> Pet-friendly rooms are available in selected room categories. Please mention your pet when calling the hotel.</p>
+      <p class="pet" data-i18n="stay.pet"><strong>Bringing a pet?</strong> Pet-friendly rooms are available in selected room categories. Please mention your pet when calling the hotel.</p>
     </div>
   </section>
 
@@ -319,16 +313,12 @@
         <p data-i18n="wear.p1">No color restrictions — wear whatever makes you feel your best.</p>
         <p data-i18n="wear.p2">We may spend a little time outdoors in the hotel’s garden and natural surroundings, so keep that in mind when choosing your shoes and layers.</p>
       </div>
+
+      <figure class="wear__figure reveal">
+        <!-- Photo: cole peters / Pexels, https://www.pexels.com/photo/joyful-outdoor-night-party-with-string-lights-30505259/ -->
+        <img src="assets/img/dress-outdoor-party-c.webp" alt="Friends dancing outdoors beneath string lights" width="1800" height="1200" loading="lazy">
+      </figure>
     </div>
-  </section>
-
-
-  <!-- ============================================== COUPLE PHOTO BREAK ==== -->
-  <section class="plate">
-    <!-- asset: couple-pre-rsvp -->
-    <figure class="reveal">
-      <img src="assets/img/couple-pre-rsvp.jpg" alt="Gohar and Roman out in the city" width="720" height="1280" loading="lazy">
-    </figure>
   </section>
 
 
@@ -392,7 +382,7 @@
           </div>
 
           <div class="field">
-            <label for="message" data-i18n="f.note">Leave us a note — if you’d like</label>
+            <label for="message" data-i18n="f.note">Leave us a note</label>
             <textarea id="message" name="message"></textarea>
           </div>
 
@@ -418,12 +408,10 @@
       <p class="closing__names" data-var="coupleName">Gohar &amp; Roman</p>
       <p class="closing__date" data-var="weddingDateShort">24 · 10 · 2026</p>
     </div>
-  </section>
 
-  <section class="plate">
-    <!-- asset: couple-closing -->
-    <figure class="reveal">
-      <img src="assets/img/couple-closing.jpg" alt="Gohar and Roman being silly on holiday" width="960" height="1280" loading="lazy">
+    <figure class="closing__figure reveal">
+      <!-- asset: couple-pre-rsvp -->
+      <img src="assets/img/couple-pre-rsvp.jpg" alt="Gohar and Roman out in the city" width="1500" height="1000" loading="lazy">
     </figure>
   </section>
 
@@ -434,6 +422,6 @@
   Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
 </p>
 
-<script src="assets/js/site.js?v=10"></script>
+<script src="assets/js/site.js?v=442d4ddfa485"></script>
 </body>
 </html>

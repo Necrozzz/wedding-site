@@ -19,9 +19,9 @@ const CONFIG = {
   locationUpper:    'DILIJAN, ARMENIA',
   venue:            'DiliJazz Hotel',
 
-  // --- agenda: the ceremony time is still to be confirmed --------
-  welcomeTime:      '16:30',
-  ceremonyTime:     '17:30',
+  // --- agenda -----------------------------------------------------
+  welcomeTime:      '16:00',
+  ceremonyTime:     '17:00',
   dinnerTime:       '18:00',
   afterpartyTime:   '23:00',
 

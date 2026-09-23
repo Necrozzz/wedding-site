@@ -7,11 +7,9 @@ nav.stay,topbar,Stay With Us,,,,index.html
 nav.wear,topbar,What to Wear,,,,index.html
 nav.register,topbar,Register,,,,index.html
 nav.rsvp,topbar,Register,,,,index.html
-hero.l1,hero,We’re,,,,index.html
-hero.l2,hero,getting,,,,index.html
-hero.l3,hero,married,,,,index.html
 hero.sub,hero,And we would love to celebrate with you.,,,,index.html
 hero.cta,hero,To the invitation,,,,index.html
+hero.title,hero,"We’re<br>getting<br>married</span><span class=""heart"" aria-hidden=""true"">♥</span> </h1> <span class=""rule-accent"" aria-hidden=""true""></span> <p class=""hero__sub"" data-i18n=""hero.sub"">And we would love to celebrate with you.</p> <div class=""hero__meta""> <span data-var=""weddingDateUpper"">OCTOBER 24, 2026</span> <span data-var=""locationUpper"">DILIJAN, ARMENIA</span> </div> <div class=""hero__cta""> <a class=""btn btn--fill"" href=""#invitation""> <span data-i18n=""hero.cta"">To the invitation</span> <span class=""arr"" aria-hidden=""true"">→</span> </a> </div>",,,YES - keep the tags,index.html
 inv.p1,invitation,Some of you have been by our side from the very start — and each of you is part of our lives in a special way.,,,,index.html
 inv.p2,invitation,"Now, as we take this next step together, we would love to have our favorite people around us.",,,,index.html
 inv.p3,invitation,"Come celebrate, laugh, dance and make some new memories with us.",,,,index.html
@@ -36,7 +34,7 @@ stay.p2,stay,"For our wedding, DiliJazz will be exclusively hosting our group �
 stay.p3,stay,"Stay late, celebrate with us, and join us for breakfast the next day.",,,,index.html
 stay.forguests,stay,For our guests,,,,index.html
 stay.rateh,stay,Your special wedding night rate at DiliJazz,,,,index.html
-stay.off,stay,off,,,,index.html
+stay.rateoff,stay,"<span data-var=""hotelDiscount"">30%</span> <span class=""rate__off"">off</span>",,,YES - keep the tags,index.html
 stay.ratep,stay,"DiliJazz is offering our guests a special rate, and we’re covering part of the cost ourselves — a little thank-you for being there to celebrate with us.",,,,index.html
 stay.extralabel,stay,More time together,,,,index.html
 stay.extrap,stay,"Staying longer? DiliJazz is giving <strong>our guests <span data-var=""extraNightsDiscount"">15%</span> off</strong> the nights before and after the wedding — so nobody has to rush off. More time together, longer nights, and the kind of conversations a wedding day never quite leaves room for.",,,YES - keep the tags,index.html

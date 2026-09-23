@@ -100,9 +100,9 @@
     <div class="hero__grid">
       <div class="hero__text">
         <h1 class="hero__title">
-          <span data-i18n="hero.l1">We’re</span><br>
-          <span data-i18n="hero.l2">getting</span><br>
-          <span data-i18n="hero.l3">married</span><span class="heart" aria-hidden="true">♥</span>
+          <!-- one phrase, not three words: the <br> line breaks live inside the
+               translated string so each language can break where it needs to -->
+          <span data-i18n="hero.title">We’re<br>getting<br>married</span><span class="heart" aria-hidden="true">♥</span>
         </h1>
 
         <span class="rule-accent" aria-hidden="true"></span>
@@ -259,7 +259,9 @@
         <h3 data-i18n="stay.rateh">Your special wedding night rate at DiliJazz</h3>
       </div>
       <div class="rate__side">
-        <p class="rate__value"><span data-var="hotelDiscount">30%</span> <span class="rate__off" data-i18n="stay.off">off</span></p>
+        <!-- one phrase: languages that put the word before the number need to
+             reorder these two spans, so the whole line is translatable -->
+        <p class="rate__value" data-i18n="stay.rateoff"><span data-var="hotelDiscount">30%</span> <span class="rate__off">off</span></p>
         <p class="rate__copy" data-i18n="stay.ratep">DiliJazz is offering our guests a special rate, and we’re covering part of the cost ourselves — a little thank-you for being there to celebrate with us.</p>
       </div>
     </div>

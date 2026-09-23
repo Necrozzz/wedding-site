@@ -1,0 +1,222 @@
+# -*- coding: utf-8 -*-
+"""Prefill the Armenian and Russian columns of translations/translations.csv.
+
+These are Claude's drafts, not native-speaker copy. They are meant to be
+corrected in the spreadsheet, not shipped unreviewed. Names and the DiliJazz
+brand are left in Latin script; personal names are transliterated only inside
+running sentences where mixing scripts would read badly.
+"""
+import csv
+import io
+import os
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CSV = os.path.join(ROOT, 'translations', 'translations.csv')
+
+HY = {
+ 'cover.tagline': 'Նոր գլուխ՝ միասին',
+ 'nav.invitation': 'Հրավերը',
+ 'nav.details': 'Մանրամասներ',
+ 'nav.hotel': 'DiliJazz',
+ 'nav.stay': 'Մնացեք մեզ հետ',
+ 'nav.wear': 'Ինչ հագնել',
+ 'nav.register': 'Գրանցվել',
+ 'nav.rsvp': 'Գրանցվել',
+ 'hero.title': 'Մենք<br>ամուսնանում<br>ենք',
+ 'hero.sub': 'Եվ շատ կուրախանանք այն տոնել ձեզ հետ։',
+ 'hero.cta': 'Դեպի հրավերը',
+ 'inv.p1': 'Ձեզանից ոմանք մեր կողքին են եղել հենց սկզբից, և ձեզանից յուրաքանչյուրը մեր կյանքում առանձնահատուկ տեղ ունի։',
+ 'inv.p2': 'Իսկ հիմա, երբ միասին անում ենք այս հաջորդ քայլը, ուզում ենք, որ մեր ամենասիրելի մարդիկ մեր կողքին լինեն։',
+ 'inv.p3': 'Եկեք տոնենք, ծիծաղենք, պարենք և նոր հիշողություններ ստեղծենք միասին։',
+ 'det.label': 'Մանրամասներ',
+ 'det.dow': 'Շաբաթ',
+ 'det.md': 'Հոկտեմբերի 24',
+ 'det.yr': '2026',
+ 'det.map': 'Տեսնել քարտեզի վրա',
+ 'det.day': 'Օրվա ծրագիրը',
+ 'det.a1': 'Դիմավորում',
+ 'det.a2': 'Արարողություն',
+ 'det.a3': 'Ընթրիք և երեկույթ',
+ 'det.a4': 'Աֆթերփարթի',
+ 'det.a4b': 'մինչև լուսաբաց',
+ 'break.dilijan': 'Դիլիջան · հոկտեմբեր',
+ 'hotel.p1': 'Դիլիջանի անտառներում, գետի մոտ, DiliJazz-ը հարմարավետ վայր է՝ շրջապատված բնությամբ։',
+ 'hotel.p2': 'Հյուրանոցում կան <strong>սպա, փակ լողավազան, սաունա, ջակուզի և գեղեցիկ սեփական այգիներ</strong>՝ բոլորը հյուրանոցի տարածքում։',
+ 'hotel.p3': 'Մեր հարսանիքի օրը հյուրանոցը <strong>կընդունի միայն մեր հյուրերին. այդ օրը այլ հյուրեր չեն լինի։</strong>',
+ 'stay.h': 'Մնացեք մեզ հետ',
+ 'stay.p1': 'Կուզենայինք, որ տոնը չավարտվի վերջին պարով։',
+ 'stay.p2': 'Մեր հարսանիքի օրը DiliJazz-ը կընդունի միայն մեր հյուրերին՝ ամբողջ տարածքը մերը կլինի, որ միասին տոնենք ամբողջ գիշեր և մինչև հաջորդ առավոտ։',
+ 'stay.p3': 'Մնացեք ուշ, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։',
+ 'stay.forguests': 'Մեր հյուրերի համար',
+ 'stay.rateh': 'Ձեր հատուկ գինը հարսանիքի գիշերվա համար DiliJazz-ում',
+ 'stay.rateoff': '<span class="rate__off">զեղչ</span> <span data-var="hotelDiscount">30%</span>',
+ 'stay.ratep': 'DiliJazz-ը մեր հյուրերին առաջարկում է հատուկ գին, իսկ ծախսի մի մասը մենք ենք հոգում՝ փոքրիկ շնորհակալություն, որ կլինեք մեր կողքին։',
+ 'stay.extralabel': 'Ավելի շատ ժամանակ միասին',
+ 'stay.extrap': 'Մնո՞ւմ եք ավելի երկար։ DiliJazz-ը <strong>մեր հյուրերին տալիս է <span data-var="extraNightsDiscount">15%</span> զեղչ</strong> հարսանիքից առաջ և հետո գիշերների համար՝ որ ոչ ոք շտապելու կարիք չունենա։ Ավելի շատ ժամանակ միասին, ավելի երկար երեկոներ և այն զրույցները, որոնց համար հարսանիքի օրը երբեք ժամանակ չի հերիքում։',
+ 'stay.bookh': 'Ինչպես ամրագրել',
+ 'stay.s1': 'Ընտրեք ձեր նախընտրած համարը DiliJazz-ի կայքում։',
+ 'stay.s2': 'Զանգահարեք DiliJazz՝',
+ 'stay.s2b': 'Արտերկրից կարող եք զանգահարել կամ գրել WhatsApp-ով՝',
+ 'stay.s3': 'Նշեք <strong>Գոհարի և Ռոմանի հարսանիքը</strong>՝ հատուկ գինը ստանալու համար. և՛ հարսանիքի գիշերվա, և՛ դրանից առաջ ու հետո ցանկացած գիշերվա համար։',
+ 'stay.rooms': 'Դիտել համարները',
+ 'stay.pet': '<strong>Գալի՞ս եք ընտանի կենդանու հետ։</strong> Որոշ կարգի համարներում կենդանիների հետ կարելի է։ Խնդրում ենք նշել այդ մասին հյուրանոց զանգահարելիս։',
+ 'wear.label': 'Ինչ հագնել',
+ 'wear.h': 'Հագնվեք այնպես, որ անտառը տպավորվի',
+ 'wear.sub': 'Գույնի սահմանափակումներ չկան',
+ 'wear.p1': 'Գույնի սահմանափակումներ չկան՝ հագեք այն, ինչում ձեզ լավագույնս եք զգում։',
+ 'wear.p2': 'Մի փոքր ժամանակ կանցկացնենք դրսում՝ հյուրանոցի այգում և բնության մեջ, հաշվի առեք դա կոշիկներն ու տաք հագուստն ընտրելիս։',
+ 'rsvp.h': 'Կմիանա՞ք մեզ',
+ 'rsvp.hope': 'Հուսով ենք՝ այո։',
+ 'f.name': 'Ձեր անունը <span class="req">*</span>',
+ 'f.email': 'Էլ. փոստ <span class="req">*</span>',
+ 'f.attending': 'Կմիանա՞ք մեզ <span class="req">*</span>',
+ 'f.att.yes': 'Այո, ուրախությամբ։',
+ 'f.att.no': 'Ցավոք, չեմ կարողանա։',
+ 'f.guests': 'Հյուրերի ընդհանուր թիվը <span class="req">*</span> <span class="hint">(ներառյալ ձեզ)</span>',
+ 'f.side': 'Ո՞ր կողմից եք՝ հարսի, թե փեսայի',
+ 'f.side.bride': 'Հարս',
+ 'f.side.groom': 'Փեսա',
+ 'f.hotel': 'Կմնա՞ք մեզ հետ DiliJazz-ում',
+ 'f.hotel.yes': 'Այո',
+ 'f.hotel.no': 'Ոչ',
+ 'f.hotel.maybe': 'Դեռ որոշված չէ',
+ 'f.note': 'Թողեք մեզ հաղորդագրություն',
+ 'f.required': 'Պարտադիր դաշտ',
+ 'f.send': 'Գրանցվել',
+ 'close.p1': 'Եկեք պատրաստ՝ տոնելու, պարելու, ծիծաղելու և մնալու մի փոքր ավելի երկար, քան ծրագրել էիք։',
+ 'close.p2': 'Անհամբեր սպասում ենք ձեզ։ <span class="heart" aria-hidden="true">♥</span>',
+ 'js.sending': 'Ուղարկվում է…',
+ 'js.error': 'Կներեք, ինչ-որ բան սխալ գնաց։ Խնդրում ենք նորից փորձել։',
+ 'js.thanks.yes.h': 'Ստացանք։ <span class="heart">♥</span>',
+ 'js.thanks.yes.p': 'Շնորհակալություն։ Անհամբեր սպասում ենք միասին տոնելուն։',
+ 'js.thanks.no.h': 'Կկարոտենք ձեզ։',
+ 'js.thanks.no.p': 'Շնորհակալություն, որ տեղեկացրիք։',
+ 'cfg.weddingDateUpper': '2026 ՀՈԿՏԵՄԲԵՐԻ 24',
+ 'cfg.locationUpper': 'ԴԻԼԻՋԱՆ, ՀԱՅԱՍՏԱՆ',
+ 'cfg.location': 'Դիլիջան, Հայաստան',
+ 'cfg.weddingDate': '2026 թ. հոկտեմբերի 24',
+}
+
+RU = {
+ 'cover.tagline': 'Новая глава вместе',
+ 'nav.invitation': 'Приглашение',
+ 'nav.details': 'Детали',
+ 'nav.hotel': 'DiliJazz',
+ 'nav.stay': 'Останьтесь с нами',
+ 'nav.wear': 'Дресс-код',
+ 'nav.register': 'Регистрация',
+ 'nav.rsvp': 'Регистрация',
+ 'hero.title': 'Мы<br>женимся',
+ 'hero.sub': 'И будем рады отпраздновать это вместе с вами.',
+ 'hero.cta': 'К приглашению',
+ 'inv.p1': 'Кто-то из вас был рядом с самого начала — и каждый из вас занимает особое место в нашей жизни.',
+ 'inv.p2': 'И теперь, делая этот следующий шаг вместе, мы хотим, чтобы рядом были наши самые близкие люди.',
+ 'inv.p3': 'Приезжайте праздновать, смеяться, танцевать и создавать с нами новые воспоминания.',
+ 'det.label': 'Детали',
+ 'det.dow': 'Суббота',
+ 'det.md': '24 октября',
+ 'det.yr': '2026',
+ 'det.map': 'Посмотреть на карте',
+ 'det.day': 'Программа дня',
+ 'det.a1': 'Приветственный приём',
+ 'det.a2': 'Церемония',
+ 'det.a3': 'Ужин и вечеринка',
+ 'det.a4': 'Афтепати',
+ 'det.a4b': 'до рассвета',
+ 'break.dilijan': 'Дилижан · октябрь',
+ 'hotel.p1': 'В лесах Дилижана, у реки, DiliJazz — уютное место, окружённое природой.',
+ 'hotel.p2': 'К услугам гостей <strong>спа, крытый бассейн, сауна, джакузи и красивые собственные сады</strong> — всё на территории отеля.',
+ 'hotel.p3': 'В день нашей свадьбы отель будет <strong>принимать только нашу компанию: других гостей в это время не будет.</strong>',
+ 'stay.h': 'Останьтесь с нами',
+ 'stay.p1': 'Нам бы хотелось, чтобы праздник не заканчивался последним танцем.',
+ 'stay.p2': 'В день нашей свадьбы DiliJazz будет принимать только нашу компанию — всё место будет в нашем распоряжении, чтобы праздновать вместе всю ночь и до самого утра.',
+ 'stay.p3': 'Оставайтесь допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.',
+ 'stay.forguests': 'Для наших гостей',
+ 'stay.rateh': 'Ваша специальная цена за ночь свадьбы в DiliJazz',
+ 'stay.rateoff': '<span class="rate__off">скидка</span> <span data-var="hotelDiscount">30%</span>',
+ 'stay.ratep': 'DiliJazz предлагает нашим гостям специальную цену, а часть стоимости мы берём на себя — маленькое спасибо за то, что будете праздновать вместе с нами.',
+ 'stay.extralabel': 'Больше времени вместе',
+ 'stay.extrap': 'Останетесь подольше? DiliJazz даёт <strong>нашим гостям скидку <span data-var="extraNightsDiscount">15%</span></strong> на ночи до и после свадьбы — чтобы никому не пришлось спешить. Больше времени вместе, долгие вечера и те разговоры, для которых в день свадьбы никогда не хватает времени.',
+ 'stay.bookh': 'Как забронировать',
+ 'stay.s1': 'Выберите номер на сайте DiliJazz.',
+ 'stay.s2': 'Позвоните в DiliJazz по номеру',
+ 'stay.s2b': 'Из-за границы можно позвонить или написать в WhatsApp на номер',
+ 'stay.s3': 'Упомяните <strong>свадьбу Гоар и Романа</strong>, чтобы получить специальную цену — и за ночь свадьбы, и за любые ночи до или после.',
+ 'stay.rooms': 'Посмотреть номера',
+ 'stay.pet': '<strong>Приедете с питомцем?</strong> В некоторых категориях номеров можно с животными. Пожалуйста, скажите об этом при звонке в отель.',
+ 'wear.label': 'Дресс-код',
+ 'wear.h': 'Оденьтесь так, чтобы впечатлить лес',
+ 'wear.sub': 'Без ограничений по цвету',
+ 'wear.p1': 'Без ограничений по цвету — наденьте то, в чём вам лучше всего.',
+ 'wear.p2': 'Мы проведём немного времени на улице, в саду отеля и на природе, — учтите это, выбирая обувь и что-нибудь потеплее.',
+ 'rsvp.h': 'Вы будете с нами?',
+ 'rsvp.hope': 'Надеемся, что да!',
+ 'f.name': 'Ваше имя <span class="req">*</span>',
+ 'f.email': 'Электронная почта <span class="req">*</span>',
+ 'f.attending': 'Вы будете с нами? <span class="req">*</span>',
+ 'f.att.yes': 'Да, с радостью!',
+ 'f.att.no': 'К сожалению, не смогу.',
+ 'f.guests': 'Общее количество гостей <span class="req">*</span> <span class="hint">(включая вас)</span>',
+ 'f.side': 'Вы со стороны невесты или жениха?',
+ 'f.side.bride': 'Невеста',
+ 'f.side.groom': 'Жених',
+ 'f.hotel': 'Останетесь с нами в DiliJazz?',
+ 'f.hotel.yes': 'Да',
+ 'f.hotel.no': 'Нет',
+ 'f.hotel.maybe': 'Пока не знаю',
+ 'f.note': 'Оставьте нам сообщение',
+ 'f.required': 'Обязательное поле',
+ 'f.send': 'Зарегистрироваться',
+ 'close.p1': 'Приезжайте праздновать, танцевать, смеяться — и остаться чуть дольше, чем планировали.',
+ 'close.p2': 'Не можем дождаться встречи с вами! <span class="heart" aria-hidden="true">♥</span>',
+ 'js.sending': 'Отправляем…',
+ 'js.error': 'Извините, что-то пошло не так. Пожалуйста, попробуйте ещё раз.',
+ 'js.thanks.yes.h': 'Получили! <span class="heart">♥</span>',
+ 'js.thanks.yes.p': 'Спасибо. Не можем дождаться, когда отпразднуем вместе.',
+ 'js.thanks.no.h': 'Будем скучать!',
+ 'js.thanks.no.p': 'Спасибо, что дали знать.',
+ 'cfg.weddingDateUpper': '24 ОКТЯБРЯ 2026',
+ 'cfg.locationUpper': 'ДИЛИЖАН, АРМЕНИЯ',
+ 'cfg.location': 'Дилижан, Армения',
+ 'cfg.weddingDate': '24 октября 2026',
+}
+
+rows = list(csv.reader(io.open(CSV, encoding='utf-8-sig')))
+header, body = rows[0], rows[1:]
+
+missing_hy, missing_ru, tag_problems = [], [], []
+
+
+def tags(s):
+    """Tag signature for comparing a translation with its source.
+
+    <br> is excluded on purpose: where a line breaks is a property of the
+    language, not of the markup, so English breaking in three places and
+    Russian in two is correct rather than a defect.
+    """
+    import re
+    found = re.findall(r'<[^>]+>', s)
+    return sorted(t for t in found if not t.lower().startswith('<br'))
+
+
+for r in body:
+    key, en = r[0], r[2]
+    hy, ru = HY.get(key, ''), RU.get(key, '')
+    if not hy:
+        missing_hy.append(key)
+    if not ru:
+        missing_ru.append(key)
+    for lang, val in (('hy', hy), ('ru', ru)):
+        if val and tags(val) != tags(en):
+            tag_problems.append('%s [%s]' % (key, lang))
+    r[3], r[4] = hy, ru
+
+with io.open(CSV, 'w', encoding='utf-8-sig', newline='') as fh:
+    w = csv.writer(fh)
+    w.writerow(header)
+    w.writerows(body)
+
+print('  %d rows filled' % len(body))
+print('  missing Armenian: %s' % (missing_hy or 'none'))
+print('  missing Russian:  %s' % (missing_ru or 'none'))
+print('  tag mismatches:   %s' % (tag_problems or 'none'))

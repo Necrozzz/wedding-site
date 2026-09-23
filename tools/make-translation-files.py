@@ -20,6 +20,11 @@ OUT = os.path.join(ROOT, 'translations')
 os.makedirs(OUT, exist_ok=True)
 
 
+# void elements never close, so they must not go on the open-element stack
+VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
+        'link', 'meta', 'param', 'source', 'track', 'wbr'}
+
+
 class Collector(HTMLParser):
     """Pull the inner HTML of every element carrying data-i18n, including nesting."""
 
@@ -41,6 +46,9 @@ class Collector(HTMLParser):
         for c in self.capture:
             c[2].append(raw)
 
+        if tag in VOID:
+            return
+
         key = a.get('data-i18n')
         if key is not None:
             self.capture.append([key, len(self.stack), []])
@@ -52,6 +60,8 @@ class Collector(HTMLParser):
             c[2].append(raw)
 
     def handle_endtag(self, tag):
+        if tag in VOID:
+            return
         if self.stack:
             _, key = self.stack.pop()
         else:

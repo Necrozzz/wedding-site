@@ -1,0 +1,84 @@
+﻿Key,Section,English (do not edit),Armenian (հայերեն),Russian (русский),Has formatting?,Where it comes from
+cover.tagline,cover,A new chapter together,,,,index.html
+nav.invitation,topbar,The Invitation,,,,index.html
+nav.details,topbar,The Details,,,,index.html
+nav.hotel,topbar,DiliJazz,,,,index.html
+nav.stay,topbar,Stay With Us,,,,index.html
+nav.wear,topbar,What to Wear,,,,index.html
+nav.register,topbar,Register,,,,index.html
+nav.rsvp,topbar,Register,,,,index.html
+hero.l1,hero,We’re,,,,index.html
+hero.l2,hero,getting,,,,index.html
+hero.l3,hero,married,,,,index.html
+hero.sub,hero,And we would love to celebrate with you.,,,,index.html
+hero.cta,hero,To the invitation,,,,index.html
+inv.p1,invitation,Some of you have been by our side from the very start — and each of you is part of our lives in a special way.,,,,index.html
+inv.p2,invitation,"Now, as we take this next step together, we would love to have our favorite people around us.",,,,index.html
+inv.p3,invitation,"Come celebrate, laugh, dance and make some new memories with us.",,,,index.html
+det.label,details,The details,,,,index.html
+det.dow,details,Saturday,,,,index.html
+det.md,details,October 24,,,,index.html
+det.yr,details,2026,,,,index.html
+det.map,details,View on map,,,,index.html
+det.day,details,The day,,,,index.html
+det.a1,details,Welcome Reception,,,,index.html
+det.a2,details,Ceremony,,,,index.html
+det.a3,details,Dinner &amp; Party,,,,index.html
+det.a4,details,Afterparty,,,,index.html
+det.a4b,details,until dawn,,,,index.html
+break.dilijan,break,Dilijan · October,,,,index.html
+hotel.p1,hotel,"Set in the forests of Dilijan, by the river, DiliJazz is a cozy retreat surrounded by nature.",,,,index.html
+hotel.p2,hotel,"The hotel offers a <strong>spa, indoor pool, sauna, jacuzzi and beautiful private gardens</strong> — all within the hotel grounds.",,,YES - keep the tags,index.html
+hotel.p3,hotel,"For our wedding, the hotel will be <strong>exclusively hosting our wedding party, with no other hotel guests during our celebration.</strong>",,,YES - keep the tags,index.html
+stay.h,stay,Stay With Us,,,,index.html
+stay.p1,stay,We’d love for the celebration not to end with the last dance.,,,,index.html
+stay.p2,stay,"For our wedding, DiliJazz will be exclusively hosting our group — giving us the whole setting to celebrate together through the night and into the next morning.",,,,index.html
+stay.p3,stay,"Stay late, celebrate with us, and join us for breakfast the next day.",,,,index.html
+stay.forguests,stay,For our guests,,,,index.html
+stay.rateh,stay,Your special wedding night rate at DiliJazz,,,,index.html
+stay.off,stay,off,,,,index.html
+stay.ratep,stay,"DiliJazz is offering our guests a special rate, and we’re covering part of the cost ourselves — a little thank-you for being there to celebrate with us.",,,,index.html
+stay.extralabel,stay,More time together,,,,index.html
+stay.extrap,stay,"Staying longer? DiliJazz is giving <strong>our guests <span data-var=""extraNightsDiscount"">15%</span> off</strong> the nights before and after the wedding — so nobody has to rush off. More time together, longer nights, and the kind of conversations a wedding day never quite leaves room for.",,,YES - keep the tags,index.html
+stay.bookh,stay,How to Book,,,,index.html
+stay.s1,stay,Choose your preferred room on the DiliJazz website.,,,,index.html
+stay.s2,stay,Call DiliJazz at,,,,index.html
+stay.s2b,stay,"From abroad, you can call or message them on WhatsApp at",,,,index.html
+stay.s3,stay,Mention <strong>Gohar &amp; Roman’s wedding</strong> to receive the special rate — on the wedding night and on any nights before or after.,,,YES - keep the tags,index.html
+stay.rooms,stay,Explore rooms,,,,index.html
+stay.pet,stay,<strong>Bringing a pet?</strong> Pet-friendly rooms are available in selected room categories. Please mention your pet when calling the hotel.,,,YES - keep the tags,index.html
+wear.label,wear,What to wear,,,,index.html
+wear.h,wear,Dress to Impress the Forest,,,,index.html
+wear.sub,wear,No color restrictions,,,,index.html
+wear.p1,wear,No color restrictions — wear whatever makes you feel your best.,,,,index.html
+wear.p2,wear,"We may spend a little time outdoors in the hotel’s garden and natural surroundings, so keep that in mind when choosing your shoes and layers.",,,,index.html
+rsvp.h,rsvp,Will You Join Us?,,,,index.html
+rsvp.hope,rsvp,We hope you’ll be there!,,,,index.html
+f.name,rsvp,"Your Name <span class=""req"">*</span>",,,YES - keep the tags,index.html
+f.email,rsvp,"Email <span class=""req"">*</span>",,,YES - keep the tags,index.html
+f.attending,rsvp,"Will you join us? <span class=""req"">*</span>",,,YES - keep the tags,index.html
+f.att.yes,rsvp,"Yes, happily!",,,,index.html
+f.att.no,rsvp,"Sadly, I can’t make it.",,,,index.html
+f.guests,rsvp,"Total Number of Guests <span class=""req"">*</span> <span class=""hint"">(including yourself)</span>",,,YES - keep the tags,index.html
+f.side,rsvp,Which team do you represent?,,,,index.html
+f.side.bride,rsvp,Bride,,,,index.html
+f.side.groom,rsvp,Groom,,,,index.html
+f.hotel,rsvp,Will you be staying with us at DiliJazz?,,,,index.html
+f.hotel.yes,rsvp,Yes,,,,index.html
+f.hotel.no,rsvp,No,,,,index.html
+f.hotel.maybe,rsvp,Not sure yet,,,,index.html
+f.note,rsvp,Leave us a note,,,,index.html
+f.required,rsvp,Required field,,,,index.html
+f.send,rsvp,Register,,,,index.html
+close.p1,closing,"Come ready to celebrate, dance, laugh and stay a little longer than planned.",,,,index.html
+close.p2,closing,"We can’t wait to have you there with us! <span class=""heart"" aria-hidden=""true"">♥</span>",,,YES - keep the tags,index.html
+js.sending,form,Sending…,,,,site.js (not yet wired)
+js.error,form,"Sorry, something went wrong. Please try again.",,,,site.js (not yet wired)
+js.thanks.yes.h,form,"We got it! <span class=""heart"">♥</span>",,,YES - keep the tags,site.js (not yet wired)
+js.thanks.yes.p,form,Thank you. We can’t wait to celebrate with you.,,,,site.js (not yet wired)
+js.thanks.no.h,form,We’ll miss you!,,,,site.js (not yet wired)
+js.thanks.no.p,form,Thank you for letting us know.,,,,site.js (not yet wired)
+cfg.weddingDateUpper,hero,"OCTOBER 24, 2026",,,,site.js CONFIG (not yet wired)
+cfg.locationUpper,hero,"DILIJAN, ARMENIA",,,,site.js CONFIG (not yet wired)
+cfg.location,details,"Dilijan, Armenia",,,,site.js CONFIG (not yet wired)
+cfg.weddingDate,general,"October 24, 2026",,,,site.js CONFIG (not yet wired)

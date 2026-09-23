@@ -1111,7 +1111,8 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
 #wear .wear__figure img {
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 2;
+  /* the runway composite is 16:9; matching it avoids letterbox bars */
+  aspect-ratio: 16 / 9;
   object-fit: contain;
   object-position: center;
   border-radius: 0;
@@ -1513,4 +1514,35 @@ html, body { overflow-x: clip; }
     right: -10vw;
     width: 67%;
   }
+}
+
+/* ===================================== LANGUAGE-SPECIFIC ADJUSTMENTS == */
+/* Armenian and Russian words run longer than the English they replace, and
+   a few fixed sizes were cut to fit the English exactly. These rules are
+   scoped by document language, so English rendering is untouched. */
+
+/* "Կմիանա՞ք" is a single unbreakable word wider than the panel allows at
+   the display size English uses. */
+html[lang="hy"] .rsvp h2 { font-size: clamp(2rem, 5.1vw, 3.3rem); }
+html[lang="hy"] .wear h2 { font-size: clamp(2.1rem, 6.9vw, 4.1rem); }
+
+/* Backstop: if a future edit introduces a word longer than its container,
+   break it rather than let it be clipped invisibly. */
+html[lang="hy"] h1,
+html[lang="hy"] h2,
+html[lang="hy"] h3,
+html[lang="ru"] h1,
+html[lang="ru"] h2,
+html[lang="ru"] h3 { overflow-wrap: break-word; }
+
+/* "Հոկտեմբերի" is far longer than "October" at the big date size; 0.78 of
+   the English size clears the 104px it was overflowing by at 1440. */
+html[lang="hy"] .details__date { font-size: clamp(2.1rem, 6.7vw, 4.6rem); }
+
+/* "Зарегистрироваться" is more than twice the length of "Register", and the
+   tracking and padding were set for the short English label. */
+html[lang="ru"] #submit-btn,
+html[lang="hy"] #submit-btn {
+  letter-spacing: 0.1em;
+  padding-inline: 16px;
 }

@@ -5,20 +5,20 @@
 
 :root {
   /* Palette */
-  --ivory:        #F6F1E8;
+  --ivory:        #FCFAF5;
   --ivory-2:      #EDE6DA;
   --espresso:     #302B27;
   --espresso-70:  rgba(48, 43, 39, 0.70);
   --espresso-45:  rgba(48, 43, 39, 0.45);
   --espresso-15:  rgba(48, 43, 39, 0.15);
-  --rust:         #A9664F;
+  --rust:         #A64F32;
   --olive:        #59604A;
   /* deep blue for the supporting lines, as in the reference layout */
   --ink:          #2C3652;
   --ink-70:       rgba(44, 54, 82, 0.72);
 
   /* Type */
-  --display: "Fraunces", "Cormorant Garamond", Georgia, serif;
+  --display: "Cormorant Garamond", Georgia, serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   /* Rhythm — one vertical step drives the whole page so the gaps stay even */
@@ -29,17 +29,17 @@
 
   color-scheme: light;
 
-  /* Fraunces is a variable face. SOFT rounds off the sharp corners and WONK
-     swaps in the curvier alternate letterforms. Both properties inherit, so
-     this one declaration reaches every heading; Inter ignores the axes. */
-  font-variation-settings: "SOFT" 60, "WONK" 0;
 }
 
 /* --------------------------------------------------------------- reset -- */
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
 
 body {
   margin: 0;
@@ -155,103 +155,34 @@ a { color: inherit; }
   border-radius: 2px;
 }
 
-/* ================================================== 1. LANGUAGE COVER == */
-
+/* Full-screen language cover, using the original dismissal behavior. */
 .cover {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: var(--ivory);
-  display: grid;
-  grid-template-rows: 1fr auto 1fr;
-  align-content: center;
-  justify-items: center;
-  text-align: center;
-  padding: calc(var(--gutter) + 12px) var(--gutter);
+  position: fixed; inset: 0; z-index: 100; overflow-y: auto;
+  background: var(--ivory); isolation: isolate;
+  display: grid; grid-template-rows: minmax(16px, 1fr) auto minmax(48px, 1fr);
+  justify-items: center; text-align: center;
+  padding: max(24px, env(safe-area-inset-top)) 24px max(28px, env(safe-area-inset-bottom));
   transition: opacity .8s ease, visibility .8s ease;
 }
 .cover[hidden] { display: none; }
 .cover.is-leaving { opacity: 0; visibility: hidden; }
-
-.cover__inner {
-  position: relative;
-  z-index: 2;
-  grid-row: 2;
-  margin: 0;
-}
-
-.cover__initials {
-  font-family: var(--display);
-  font-size: clamp(3.6rem, 15vw, 8.4rem);
-  line-height: 1.02;
-  letter-spacing: 0.004em;
-  font-variation-settings: "opsz" 14, "SOFT" 100, "WONK" 1;
-  margin: 0;
-}
-
-.cover__inner .rule-accent { margin: clamp(20px, 3vw, 28px) auto 0; }
-
-.cover__tagline {
-  position: relative;
-  z-index: 2;
-  grid-row: 3;
-  align-self: end;
-  margin: 0;
-  font-size: 0.68rem;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--espresso-45);
-  padding-left: 0.34em;
-}
-
-.cover__date {
-  font-size: clamp(0.8rem, 2.4vw, 1rem);
-  letter-spacing: 0.4em;
-  margin-top: 1.4em;
-  color: var(--ink-70);
-  padding-left: 0.4em; /* optical: compensate trailing letter-space */
-}
-
-.cover__langs {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 1.05em;
-  align-items: center;
-  margin-top: clamp(32px, 6vh, 56px);
-}
-
-.cover__lang {
-  font-size: 0.82rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  text-decoration: none;
-  background: none;
-  border: 0;
-  padding: 0.35em 0.6em;
-  font-family: var(--sans);
-  color: var(--espresso-70);
-  cursor: pointer;
-  transition: color .3s ease;
-}
-.cover__lang:hover { color: var(--rust); }
-
-/* soft forest blending into the cream */
 .cover__forest {
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 38vh;
-  /* asset: cover forest — paths here are relative to this stylesheet */
-  background-image: url("../img/dilijan-forest-soft.jpg");
-  background-size: cover;
-  background-position: center 72%;
-  opacity: 0.36;
-  filter: saturate(0.7);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.32) 40%, rgba(0,0,0,.85) 100%);
-          mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.32) 40%, rgba(0,0,0,.85) 100%);
-  pointer-events: none;
+  position: absolute; inset: 0; z-index: -1;
+  background-image:
+    linear-gradient(to bottom, rgba(252, 250, 245, .88), rgba(252, 250, 245, .3) 48%, transparent 78%),
+    url("../img/forest-reference.webp");
+  background-position: center, center bottom;
+  background-size: 100% 100%, cover;
+  background-repeat: no-repeat;
 }
+.cover__inner { grid-row: 2; align-self: center; }
+.cover__initials { font: 400 clamp(80px, 20vw, 144px)/1 var(--display); letter-spacing: -.035em; }
+.cover__date { color: var(--ink); font-size: clamp(13px, 2vw, 18px); letter-spacing: .28em; margin-top: 22px; }
+.cover__inner .rule-accent { width: 40px; height: 1px; margin: 26px auto 0; }
+.cover__langs { display: flex; flex-direction: column; align-items: center; gap: 1.05em; margin-top: clamp(32px, 6vh, 56px); }
+.cover__lang { background: transparent; border: 0; color: var(--espresso); font: 400 .82rem var(--sans); letter-spacing: .24em; text-transform: uppercase; padding: .35em .6em; min-height: 44px; cursor: pointer; }
+.cover__lang:hover { color: var(--rust); text-decoration: underline; text-underline-offset: 6px; }
+.cover__tagline { grid-row: 3; align-self: end; max-width: 250px; color: #30271f; font-size: 12px; letter-spacing: .32em; text-transform: uppercase; line-height: 1.7; margin: 0; }
 
 /* ======================================================== 2. TOP NAV == */
 
@@ -272,12 +203,8 @@ a { color: inherit; }
   -webkit-backdrop-filter: blur(10px);
 }
 
-/* Fraunces swaps in a big swashed ampersand above optical size ~24, so every
-   heading carrying an "&" pins opsz low enough to keep the plain one. The
-   hero title has no ampersand, so it keeps the display cut. */
 .topbar__mark {
   font-family: var(--display);
-  font-variation-settings: "opsz" 14, "SOFT" 60, "WONK" 0;
   font-size: clamp(1.15rem, 2.6vw, 1.5rem);
   text-decoration: none;
   letter-spacing: 0.02em;
@@ -348,8 +275,15 @@ a { color: inherit; }
   text-align: center;
   display: grid;
   gap: clamp(14px, 2.6vh, 24px);
+  width: min(82vw, 520px);
 }
+.menu__list li {
+  border-top: 1px solid var(--espresso-15);
+}
+.menu__list li:last-child { border-bottom: 1px solid var(--espresso-15); }
 .menu__list a {
+  display: block;
+  padding: .3em .4em;
   font-family: var(--display);
   font-size: clamp(1.7rem, 6vw, 2.6rem);
   text-decoration: none;
@@ -381,111 +315,97 @@ a { color: inherit; }
 .rsvp-jump:hover { background: var(--rust); }
 
 /* ========================================================== 3. HERO == */
-
 .hero {
-  min-height: 100svh;
-  display: grid;
-  align-items: center;
-  position: relative;
-  padding-block: clamp(78px, 11vh, 108px) var(--section-y);
+  position: relative; isolation: isolate; container-type: inline-size;
+  min-height: max(740px, 100svh);
+  background-color: var(--ivory);
+  background-image: radial-gradient(ellipse at 80% 68%, rgba(31, 39, 48, .13), transparent 48%), url("../img/evening-background.webp");
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
-
-.hero__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(40px, 7vw, 72px);
-  align-items: center;
-}
-
-.hero__title {
-  font-family: var(--display);
-  font-size: clamp(2.8rem, 10.5vw, 6.8rem);
-  line-height: 1.02;
-  letter-spacing: -0.006em;
-  font-variation-settings: "SOFT" 100, "WONK" 1;
-  margin: 0;
-}
-.hero__title .heart {
-  font-family: var(--sans);
-  font-size: 0.28em;
-  vertical-align: 0.72em;
-  margin-left: 0.18em;
-  line-height: 1;
-}
-
-.hero__sub {
-  margin-top: clamp(18px, 2.6vw, 26px);
-  font-family: var(--display);
-  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
-  line-height: 1.4;
-  color: var(--ink);
-  max-width: 22ch;
-}
-
-.hero__text > .rule-accent { margin-top: clamp(22px, 3.2vw, 32px); }
-
-.hero__meta {
-  margin-top: clamp(24px, 3.6vw, 38px);
-  display: flex;
-  flex-direction: column;
-  gap: 0.45em;
-}
-.hero__meta span {
-  font-size: 0.75rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-.hero__meta { color: var(--ink); }
-.hero__meta span + span { color: var(--ink-70); }
-
-.hero__cta { margin-top: clamp(26px, 3.8vw, 40px); }
-
-.hero__figure { position: relative; }
+.hero__grid { display: block; }
+.hero__figure { position: absolute; inset: 0; z-index: -1; margin: 0; overflow: hidden; pointer-events: none; }
+/* Separate regenerated composition; the source photographs are retained unchanged. */
 .hero__figure img {
-  /* show the photograph whole - no crop */
-  width: 100%;
-  height: auto;
-  border-radius: 2px;
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; height: auto;
+  mask-image: linear-gradient(to bottom, transparent, #000 22%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
+}
+.hero__source-shoulder { display: none; }
+.hero__text { position: relative; padding: 124px 6% 220px; }
+.hero__title { font: italic 500 clamp(54px, 14cqw, 110px)/.86 var(--display); letter-spacing: -.055em; margin: 0; }
+.hero__title .heart { display: inline-block; font: normal .42em/1 var(--sans); vertical-align: .08em; margin-left: .12em; }
+.hero__text > .rule-accent { width: 34px; height: 1px; margin-top: 24px; }
+.hero__sub { font: 500 clamp(21px, 4.7cqw, 34px)/1.08 var(--display); color: var(--ink); max-width: 20ch; margin: 22px 0 0; letter-spacing: -.035em; }
+.hero__meta { display: flex; flex-direction: column; gap: 5px; color: var(--ink); margin-top: 26px; }
+.hero__meta span { font: 500 clamp(11px, 2.5cqw, 19px)/1.4 var(--display); letter-spacing: .23em; }
+.hero__cta { margin-top: 24px; }
+.hero__cta .btn { font-size: clamp(10px, 2.05cqw, 14px); padding: 16px 20px; gap: 14px; min-height: 48px; }
+.hero__cta .arr { font-size: 24px; line-height: .6; font-weight: 300; }
+.topbar { position: fixed; inset: 0 0 auto; padding: 20px 6%; background: transparent; backdrop-filter: none; }
+.topbar__mark { font-size: 34px; line-height: 1; white-space: nowrap; }
+.topbar__mark span { font-size: .48em; vertical-align: .16em; margin-inline: .13em; }
+.topbar__right { gap: 12px; }
+.langswitch { gap: 2px; }
+.langswitch__sep { display: none; }
+.langswitch__btn { color: white; min-width: 34px; min-height: 44px; font-size: 10px; text-shadow: 0 1px 5px #182439; }
+.langswitch__btn[aria-current="true"], .langswitch__btn:hover { color: white; }
+.menubtn { min-width: 44px; min-height: 44px; display: grid; place-items: center; }
+.menubtn__bars { width: 26px; }
+.menubtn__bars i { background: white; }
+body:has(.menu.is-open) .topbar { position: fixed; background: var(--ivory); }
+body:has(.menu.is-open) .langswitch__btn { color: var(--espresso); text-shadow: none; }
+body:has(.menu.is-open) .menubtn__bars i { background: var(--espresso); }
+:focus-visible { outline: 2px solid var(--rust); outline-offset: 5px; }
+section[id] { scroll-margin-top: clamp(76px, 7vw, 100px); }
+#hero { scroll-margin-top: 0; }
+
+main > section[id] { position: relative; }
+
+#hero,
+#invitation,
+#details,
+#hotel,
+#stay,
+#wear,
+#rsvp {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
 }
 
-@media (min-width: 1100px) {
-  .hero__grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-  }
-  .hero__text { max-width: min(28rem, 34vw); }
-  .hero__title { font-size: clamp(2.6rem, 5.6vw, 5.4rem); }
-
-  /* the photograph runs off the right edge of the viewport. The panel also
-     grows with the viewport height so a tall window cannot crop the faces. */
-  .hero__figure {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: calc(50% - 50vw);
-    width: max(min(46vw, 680px), 62vh);
-    margin: 0;
-    pointer-events: none;
-  }
-  .hero__figure picture { display: block; height: 100%; }
-  .hero__figure img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 0;
-  }
-  /* a narrow feather so the edge melts into the cream without washing a face */
-  .hero__figure::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right,
-      var(--ivory) 0%,
-      rgba(246, 241, 232, 0.45) 4%,
-      rgba(246, 241, 232, 0) 11%);
-  }
+@media (min-width: 600px) {
+  .hero { min-height: max(900px, 133cqw); }
+  .hero__figure img { height: 100%; object-fit: cover; object-position: right bottom; mask-image: none; -webkit-mask-image: none; }
+  .hero__text { padding-top: 26cqw; }
+  .hero__text > .rule-accent { margin-top: 5cqw; width: 8cqw; }
+  .hero__sub { margin-top: 4.5cqw; }
+  .hero__meta { margin-top: 5.2cqw; }
+  .hero__cta { margin-top: 4.8cqw; }
+  .hero__cta .btn { padding: 20px 25px; gap: 20px; }
+  .topbar { padding-top: 32px; }
+  .topbar__mark { font-size: 48px; }
+  .topbar__right { gap: 34px; }
+  .langswitch { gap: 18px; }
+  .langswitch__btn { font-size: 15px; }
+  .menubtn__bars { width: 40px; }
 }
+@media (min-width: 1000px) {
+  .hero { min-height: max(740px, 100svh); background: var(--ivory); }
+  .hero__figure { left: auto; right: 0; width: min(74%, max(700px, 85svh)); }
+  .hero__figure::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--ivory), transparent 16%); }
+  .hero__text { padding: clamp(145px, 18vh, 205px) 6% 80px; }
+  .hero__title { font-size: clamp(90px, 7.8vw, 120px); }
+  .hero__text > .rule-accent { margin-top: 32px; width: 54px; }
+  .hero__sub { font-size: 32px; margin-top: 28px; }
+  .hero__meta { margin-top: 32px; }
+  .hero__meta span { font-size: 17px; }
+  .hero__cta { margin-top: 30px; }
+}
+.topbar.is-stuck { background: rgba(252, 250, 245, .94); backdrop-filter: blur(10px); }
+.topbar.is-stuck .langswitch__btn { color: var(--espresso); text-shadow: none; }
+.topbar.is-stuck .menubtn__bars i { background: var(--espresso); }
 
 /* ============================================ 4. PERSONAL INVITATION == */
 
@@ -508,7 +428,6 @@ a { color: inherit; }
   font-size: clamp(1.55rem, 3.8vw, 2.25rem);
   margin-top: clamp(32px, 5vw, 52px);
   line-height: 1.16;
-  font-variation-settings: "opsz" 14, "SOFT" 100, "WONK" 1;
 }
 
 .invitation__figure img {
@@ -520,9 +439,9 @@ a { color: inherit; }
 }
 
 @media (min-width: 900px) {
-  .invitation__grid { grid-template-columns: 1.25fr 0.75fr; align-items: center; }
-  .invitation__figure { padding-top: clamp(20px, 4vw, 60px); }
-  .invitation__figure img { aspect-ratio: 1 / 1; }
+  .invitation__grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; }
+  .invitation__figure { padding-top: 0; }
+  .invitation__figure img { aspect-ratio: 4 / 3; }
 }
 
 /* =============================================== 5. DETAILS + AGENDA == */
@@ -552,7 +471,7 @@ a { color: inherit; }
 .venue__sign img { width: 100%; border-radius: 2px; }
 
 @media (min-width: 820px) {
-  .details__head { grid-template-columns: 1.4fr 1fr; }
+  .details__head { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; }
 }
 
 .agenda { margin-top: clamp(30px, 4vw, 54px); }
@@ -580,18 +499,8 @@ a { color: inherit; }
 }
 .agenda__what {
   font-family: var(--display);
-  font-variation-settings: "opsz" 14, "SOFT" 60, "WONK" 0;
   font-size: clamp(1.25rem, 3.1vw, 1.85rem);
   line-height: 1.2;
-}
-.agenda__tbc {
-  font-family: var(--sans);
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--espresso-45);
-  margin-left: 0.7em;
-  vertical-align: 0.35em;
 }
 .agenda__until {
   display: block;
@@ -639,30 +548,13 @@ a { color: inherit; }
   text-shadow: 0 1px 14px rgba(0,0,0,.45);
 }
 
-/* Couple photographs shown whole, centered as an editorial plate rather than
-   cover-cropped into a full-bleed band. No vertical padding of its own: the
-   surrounding sections already supply the page's vertical rhythm, so adding
-   more here would double the gap. */
-.plate {
-  display: flex;
-  justify-content: center;
-  padding: 0 var(--gutter);
-}
-.plate img {
-  width: auto;
-  max-width: min(100%, 880px);
-  max-height: 72vh;
-  object-fit: contain;
-  border-radius: 2px;
-}
-
 /* ================================================= 7. DILIJAZZ HOTEL == */
 
 .hotel__grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(36px, 6vw, 72px);
-  align-items: center;
+  align-items: start;
 }
 .hotel__body { max-width: var(--measure); }
 .hotel__body h2 {
@@ -685,7 +577,7 @@ a { color: inherit; }
 }
 
 @media (min-width: 900px) {
-  .hotel__grid { grid-template-columns: 0.95fr 1.05fr; }
+  .hotel__grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; }
   .hotel__figure { order: 2; }
 }
 
@@ -852,9 +744,23 @@ a { color: inherit; }
   color: var(--rust);
 }
 .wear__body { max-width: var(--measure); }
+.wear__figure img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 38%;
+  border-radius: 2px;
+}
 
 @media (min-width: 900px) {
-  .wear__grid { grid-template-columns: 1.1fr 0.9fr; align-items: end; }
+  .wear__grid {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    grid-template-rows: auto 1fr;
+    align-items: start;
+  }
+  .wear__grid > div:first-child { grid-column: 1; grid-row: 1; }
+  .wear__body { grid-column: 1; grid-row: 2; }
+  .wear__figure { grid-column: 2; grid-row: 1 / span 2; }
 }
 
 /* =========================================================== 10. RSVP == */
@@ -876,6 +782,34 @@ a { color: inherit; }
   border: 1px solid var(--espresso-15);
   border-radius: 3px;
   padding: clamp(24px, 5vw, 48px);
+}
+
+/* Desktop chapters repeat the hero's editorial structure: the main statement
+   starts on the left and its supporting visual or action starts on the same
+   horizontal line on the right. */
+@media (min-width: 900px) {
+  main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp) {
+    padding-block: clamp(40px, 5vh, 56px) clamp(88px, 10vh, 120px);
+  }
+
+  #stay {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    column-gap: clamp(48px, 7vw, 96px);
+    align-content: start;
+  }
+  .stay__body { grid-column: 1; }
+  .stay__figure { grid-column: 2; margin-top: 0; }
+  .stay > :is(.rate, .extranights, .book) { grid-column: 1 / -1; }
+
+  #rsvp > .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: clamp(48px, 7vw, 96px);
+    align-items: start;
+  }
+  .rsvp__head { text-align: left; margin: 0; }
+  .formcard { width: 100%; max-width: none; margin: 0; }
 }
 
 #rsvp-form { display: flex; flex-direction: column; gap: clamp(22px, 3.2vw, 28px); }
@@ -993,7 +927,6 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   font-size: clamp(2.2rem, 7.2vw, 3.8rem);
   line-height: 1.1;
   margin-top: clamp(22px, 3vw, 38px);
-  font-variation-settings: "opsz" 14, "SOFT" 100, "WONK" 1;
 }
 .closing__date {
   margin-top: 1.2em;
@@ -1001,6 +934,26 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   letter-spacing: 0.4em;
   color: var(--espresso-45);
   padding-left: 0.4em;
+}
+.closing__figure { margin-top: var(--block-y); }
+.closing__figure img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: 2px;
+}
+
+@media (min-width: 900px) {
+  .closing {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: clamp(48px, 7vw, 96px);
+    align-items: start;
+    text-align: left;
+  }
+  .closing__body { margin: 0; }
+  .closing__figure { margin: 0; }
 }
 
 .credits {
@@ -1011,6 +964,408 @@ fieldset.field { border: 0; margin: 0; padding: 0; min-width: 0; }
   color: rgba(48, 43, 39, 0.3);
 }
 .credits a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+/* ================================================== EDITORIAL SCENES == */
+/* Every chapter uses the hero's visual grammar: a photograph belongs to the
+   section itself, the ivory surface dissolves into it, and the copy sits in
+   the same composition instead of above or below an isolated picture. */
+
+main { --scene-pad: max(var(--gutter), calc((100vw - 1180px) / 2 + var(--gutter))); }
+
+main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing) {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: var(--scene-pad);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Invitation — the venue terrace becomes the atmosphere of the chapter. */
+#invitation {
+  min-height: clamp(700px, 96svh, 900px);
+  display: flex;
+  align-items: center;
+}
+#invitation::before {
+  background:
+    linear-gradient(180deg, var(--ivory) 0 32%, rgba(252,250,245,.86) 51%, rgba(252,250,245,.18) 78%, rgba(252,250,245,.05)),
+    url("../img/invitation-garden-tables.jpg") center bottom / cover no-repeat;
+}
+#invitation .invitation__grid { width: 100%; }
+#invitation .invitation__body {
+  position: relative;
+  z-index: 1;
+  padding: 0;
+  background: transparent;
+}
+#invitation .invitation__figure { display: none; }
+
+/* Details — the Dilijan landscape runs behind the date and programme. */
+#details::before {
+  background:
+    linear-gradient(90deg, rgba(252,250,245,.97) 0 38%, rgba(252,250,245,.86) 62%, rgba(252,250,245,.64)),
+    linear-gradient(0deg, rgba(252,250,245,.78), rgba(252,250,245,.2)),
+    url("../img/dilijan-forest-soft.jpg") center / cover no-repeat;
+}
+#details .venue {
+  padding: clamp(12px, 2vw, 22px) 0;
+  background: transparent;
+}
+#details .venue__sign {
+  max-width: 460px;
+  margin-left: clamp(-24px, -2vw, -10px);
+  mask-image: radial-gradient(ellipse at center, #000 50%, rgba(0,0,0,.86) 68%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, rgba(0,0,0,.86) 68%, transparent 100%);
+}
+#details .agenda {
+  padding: clamp(24px, 4vw, 42px);
+  background: rgba(252,250,245,.88);
+}
+
+/* Hotel — one large property view anchors the section while the terrace and
+   table remain part of the same layered story. */
+#hotel::before {
+  background:
+    linear-gradient(90deg, var(--ivory) 0 35%, rgba(252,250,245,.92) 48%, rgba(252,250,245,.18) 76%),
+    linear-gradient(0deg, var(--ivory) 0 7%, transparent 35%),
+    url("../img/dilijazz-hotel-clean.png") right top / min(68vw, 980px) auto no-repeat;
+}
+#hotel .hotel__figure { visibility: hidden; }
+#hotel .hotel__body {
+  padding: 0;
+  background: transparent;
+}
+#hotel .hotel__pair {
+  padding: clamp(12px, 2vw, 22px);
+  background: rgba(252,250,245,.82);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+#hotel .hotel__pair figure { overflow: hidden; }
+#hotel .hotel__pair img { transition: transform .8s ease; }
+#hotel .hotel__pair figure:hover img { transform: scale(1.025); }
+
+/* Stay — the chalet is the section background; practical information sits in
+   quiet paper-like panels over the forest. */
+#stay::before {
+  background:
+    linear-gradient(90deg, rgba(252,250,245,.97) 0 35%, rgba(252,250,245,.78) 57%, rgba(252,250,245,.22)),
+    linear-gradient(180deg, transparent 0 24%, var(--ivory) 58%),
+    url("../img/dilijazz-grounds.jpg") center top / 100% auto no-repeat;
+}
+#stay .stay__figure { visibility: hidden; }
+#stay .stay__body {
+  padding: clamp(24px, 4vw, 44px);
+  background: rgba(252,250,245,.82);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+#stay :is(.rate, .extranights, .book) {
+  background: rgba(252,250,245,.9);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+#stay .book { padding: clamp(24px, 4vw, 46px); }
+
+/* Dress — preserve the source photograph's full 3:2 landscape frame. */
+#wear {
+  min-height: clamp(620px, 78svh, 780px);
+  display: flex;
+  align-items: center;
+}
+#wear::before {
+  background:
+    linear-gradient(90deg, rgba(237,230,218,.72), rgba(237,230,218,.92) 38%, rgba(237,230,218,.42) 68%),
+    url("../img/forest-reference.webp") left center / 48% cover no-repeat,
+    var(--ivory-2);
+}
+#wear .wear__grid { width: 100%; }
+#wear .wear__grid > div {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  background: transparent;
+}
+#wear .wear__figure {
+  position: absolute;
+  z-index: -1;
+  inset: auto 0 0;
+  width: 100%;
+}
+#wear .wear__figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--ivory-2), transparent 34%);
+  pointer-events: none;
+}
+#wear .wear__figure img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+}
+
+/* RSVP — the forest terrace remains visible around a light, legible form. */
+#rsvp::before {
+  background:
+    linear-gradient(90deg, rgba(252,250,245,.95), rgba(252,250,245,.72) 50%, rgba(252,250,245,.28)),
+    url("../img/dilijazz-terrace.jpg") center / cover no-repeat;
+}
+#rsvp .formcard {
+  background: rgba(252,250,245,.92);
+  box-shadow: 0 24px 70px rgba(35,31,27,.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Closing — the final photograph and note resolve as a single composition. */
+#closing {
+  min-height: clamp(620px, 78svh, 780px);
+  align-items: center;
+}
+#closing { background: var(--ivory); }
+#closing::before {
+  background: url("../img/closing-stone-background.png") center / cover no-repeat;
+  filter: blur(8px);
+}
+#closing .closing__body {
+  position: relative;
+  z-index: 2;
+  padding: 0;
+  background: transparent;
+}
+#closing .closing__figure { align-self: center; }
+#closing .closing__figure img {
+  border-radius: 0;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 20%, #000 84%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 4% 90%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 20%, #000 84%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 4% 90%, transparent 100%);
+  -webkit-mask-composite: source-in;
+}
+
+@media (max-width: 899px) {
+  main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing) {
+    padding-inline: var(--gutter);
+  }
+
+  #invitation {
+    align-items: flex-start;
+    padding-top: clamp(86px, 17vw, 124px);
+    padding-bottom: clamp(250px, 68vw, 330px);
+  }
+  #invitation::before {
+    background:
+      linear-gradient(180deg, var(--ivory) 0 38%, rgba(252,250,245,.9) 54%, rgba(252,250,245,.12) 79%),
+      url("../img/invitation-garden-tables.jpg") right bottom / 100% auto no-repeat;
+  }
+  #invitation .invitation__body { margin-inline: 0; }
+
+  #details::before {
+    background:
+      linear-gradient(180deg, rgba(252,250,245,.95), rgba(252,250,245,.82) 66%, rgba(252,250,245,.58)),
+      url("../img/dilijan-forest-soft.jpg") center / cover no-repeat;
+  }
+
+  #hotel { padding-top: clamp(280px, 76vw, 440px); }
+  #hotel::before {
+    background:
+      linear-gradient(180deg, transparent 0 20%, var(--ivory) 42%),
+      url("../img/dilijazz-hotel-clean.png") center top / 100% auto no-repeat;
+  }
+  #hotel .hotel__figure { display: none; }
+  #hotel .hotel__body { margin-inline: calc(var(--gutter) * -0.35); }
+
+  #stay { padding-top: clamp(300px, 80vw, 460px); }
+  #stay::before {
+    background:
+      linear-gradient(180deg, transparent 0 18%, var(--ivory) 36%),
+      url("../img/dilijazz-grounds.jpg") center top / auto min(460px, 88vw) no-repeat;
+  }
+  #stay .stay__figure { display: none; }
+  #stay .stay__body { margin-inline: calc(var(--gutter) * -0.35); }
+
+  #wear {
+    align-items: flex-start;
+    min-height: 760px;
+    padding-top: clamp(72px, 14vw, 108px);
+    padding-bottom: min(62vw, 460px);
+  }
+  #wear .wear__grid { display: block; }
+  #wear .wear__grid > div { margin-inline: 0; }
+  #wear .wear__body { margin-top: 12px; }
+  #wear .wear__figure::after { background: linear-gradient(180deg, var(--ivory-2), transparent 22%); }
+
+  #rsvp::before {
+    background:
+      linear-gradient(180deg, rgba(252,250,245,.94), rgba(252,250,245,.72)),
+      url("../img/dilijazz-terrace.jpg") center / cover no-repeat;
+  }
+
+  #closing { padding-block: clamp(72px, 14vw, 108px); }
+  #closing .closing__figure { margin: clamp(34px, 8vw, 60px) 0 0; }
+  #closing .closing__figure img { width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; }
+}
+
+@media (min-width: 900px) {
+  #invitation::before {
+    background:
+      linear-gradient(180deg, var(--ivory) 0, transparent 20%, transparent 80%, var(--ivory) 100%),
+      linear-gradient(90deg, var(--ivory) 0 34%, rgba(252,250,245,.92) 43%, rgba(252,250,245,.22) 56%, transparent 69%),
+      url("../img/invitation-garden-tables.jpg") calc(100% + 24px) center / 64% auto no-repeat;
+  }
+  #invitation .invitation__grid { display: block; }
+  #invitation .invitation__body { width: 39%; }
+
+  #hotel .hotel__grid { display: block; min-height: clamp(500px, 48vw, 650px); }
+  #hotel .hotel__body { width: min(46%, 520px); }
+  #hotel .hotel__figure { display: none; }
+
+  #stay { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  #stay .stay__body { align-self: start; }
+  #stay .stay__figure { min-height: 440px; }
+
+  #wear::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(90deg, rgba(237,230,218,.78) 0 33%, rgba(237,230,218,.72) 43%, transparent 60%);
+    pointer-events: none;
+  }
+  #wear .wear__grid {
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  #wear .wear__grid > div { width: 39%; }
+  #wear .wear__body { margin-top: 14px; }
+  #wear .wear__figure {
+    top: 50%;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    width: 56%;
+    transform: translateY(-50%);
+  }
+  #wear .wear__figure::after { background: linear-gradient(90deg, rgba(237,230,218,.82), transparent 22%); }
+
+  #rsvp .rsvp__head {
+    padding: clamp(28px, 4vw, 48px);
+    background: rgba(252,250,245,.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  #closing::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(90deg, var(--ivory) 0 27%, rgba(252,250,245,.93) 37%, rgba(252,250,245,.65) 47%, transparent 61%);
+    pointer-events: none;
+  }
+  #closing { display: flex; align-items: center; }
+  #closing .closing__body { width: 39%; }
+  #closing .closing__figure {
+    position: absolute;
+    top: 72px;
+    right: 7vw;
+    bottom: auto;
+    left: auto;
+    width: min(40vw, 550px);
+    height: calc(100% - 144px);
+    z-index: -1;
+    mask-image: linear-gradient(90deg, transparent 0 16%, #000 35%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0 16%, #000 35%);
+  }
+  #closing .closing__figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: right center;
+    mask-image:
+      radial-gradient(ellipse 36% 38% at 28% 28%, #000 0 55%, transparent 100%),
+      radial-gradient(ellipse 35% 28% at 47% 48%, #000 0 55%, transparent 100%),
+      radial-gradient(ellipse 50% 30% at 57% 72%, #000 0 55%, transparent 100%);
+    mask-composite: add, add;
+    -webkit-mask-image:
+      radial-gradient(ellipse 36% 38% at 28% 28%, #000 0 55%, transparent 100%),
+      radial-gradient(ellipse 35% 28% at 47% 48%, #000 0 55%, transparent 100%),
+      radial-gradient(ellipse 50% 30% at 57% 72%, #000 0 55%, transparent 100%);
+    -webkit-mask-composite: source-over, source-over;
+  }
+}
+
+@media (min-width: 900px) and (max-height: 780px) {
+  #closing .closing__figure {
+    top: 112px;
+    height: calc(100% - 180px);
+    width: min(40vw, 350px);
+    mask-image: linear-gradient(90deg, transparent 0 8%, #000 28%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0 8%, #000 28%);
+  }
+}
+
+/* The opening scene scales with desktop viewport height so its title, couple,
+   date and invitation button remain together in the first visible screen. */
+@media (min-width: 1000px) {
+  .hero {
+    height: 100svh;
+    min-height: 0;
+    background:
+      linear-gradient(90deg, var(--ivory) 0 30%, rgba(252,250,245,.92) 42%, transparent 68%),
+      url("../img/evening-background.webp") center / 100% 100% no-repeat;
+  }
+  .hero__text {
+    padding: clamp(102px, 12svh, 145px) 6% 30px;
+  }
+  .hero__title {
+    font-size: clamp(65px, min(7.5vw, 11svh), 112px);
+  }
+  .hero__text > .rule-accent { margin-top: 20px; }
+  .hero__sub { margin-top: 20px; font-size: clamp(23px, 3svh, 31px); }
+  .hero__meta { margin-top: 22px; }
+  .hero__cta { margin-top: 22px; }
+  .hero__figure {
+    right: clamp(28px, 3vw, 65px);
+    width: min(68vw, 1080px);
+  }
+  .hero__figure img {
+    transform: translateY(clamp(-120px, -10svh, -70px));
+    object-position: right 75%;
+    mask-image:
+      linear-gradient(90deg, transparent 0, #000 11% 93%, transparent 100%),
+      linear-gradient(180deg, #000 0 78%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0, #000 11% 93%, transparent 100%),
+      linear-gradient(180deg, #000 0 78%, transparent 100%);
+    -webkit-mask-composite: source-in;
+  }
+  .hero__figure::after {
+    background: linear-gradient(90deg, var(--ivory), transparent 17%);
+  }
+}
+
+@media (min-width: 1000px) and (max-height: 780px) {
+  .hero__figure img { transform: translateY(-25px); }
+}
 
 /* ========================================================== MOTION == */
 
@@ -1041,4 +1396,121 @@ html, body { overflow-x: clip; }
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Photo placement for the opening and final chapters. */
+#closing::before {
+  background:
+    linear-gradient(90deg, var(--ivory) 0 38%, rgba(252,250,245,.84) 60%, rgba(252,250,245,.3)),
+    url("../img/evening-background.webp") center / cover no-repeat;
+  filter: none;
+}
+#closing .closing__figure img {
+  aspect-ratio: auto;
+  object-fit: contain;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 12% 88%, transparent),
+    linear-gradient(180deg, transparent, #000 9% 91%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 12% 88%, transparent),
+    linear-gradient(180deg, transparent, #000 9% 91%, transparent);
+  -webkit-mask-composite: source-in;
+}
+#wear .wear__figure img {
+  mask-image:
+    linear-gradient(90deg, transparent, #000 7% 93%, transparent),
+    linear-gradient(180deg, transparent, #000 8% 92%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 7% 93%, transparent),
+    linear-gradient(180deg, transparent, #000 8% 92%, transparent);
+  -webkit-mask-composite: source-in;
+}
+@media (min-width: 900px) {
+  #closing .closing__figure {
+    top: 50%;
+    right: -3vw;
+    width: min(55vw, 900px);
+    height: auto;
+    transform: translateY(-50%);
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  #closing .closing__figure img {
+    width: 100%;
+    height: auto;
+    mask-image:
+      linear-gradient(90deg, transparent, #000 12% 88%, transparent),
+      linear-gradient(180deg, transparent, #000 12% 88%, transparent);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent, #000 12% 88%, transparent),
+      linear-gradient(180deg, transparent, #000 12% 88%, transparent);
+    -webkit-mask-composite: source-in;
+  }
+}
+@media (min-width: 1000px) {
+  .hero { background: var(--ivory); }
+  .hero__figure {
+    --hero-photo-shift: clamp(70px, 6.5vw, 120px);
+    right: 0;
+    width: min(90vw, 1320px);
+  }
+  .hero__figure img {
+    left: auto;
+    right: 0;
+    width: auto;
+    height: 130%;
+    object-fit: contain;
+    transform: none;
+    mask-image: linear-gradient(90deg, transparent, #000 11% 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 11% 100%);
+  }
+  .hero__figure .hero__original {
+    right: calc(var(--hero-photo-shift) + clamp(16px, 1.5vw, 30px));
+    max-width: none;
+    z-index: 1;
+    mask-image: linear-gradient(90deg, transparent 0, #000 11% 98%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 11% 98%, transparent 100%);
+  }
+  .hero__figure .hero__source-shoulder {
+    display: block;
+    left: auto;
+    right: calc(-23vw + var(--hero-photo-shift));
+    width: auto;
+    height: 110%;
+    max-width: none;
+    object-fit: fill;
+    z-index: 3;
+    mask-image: radial-gradient(ellipse 12% 18% at 78% 90%, #000 0 45%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 12% 18% at 78% 90%, #000 0 45%, transparent 100%);
+  }
+  .hero__figure::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(180deg, transparent 0 65%, #211b1d 100%),
+      url("../img/evening-background.webp") right center / cover no-repeat;
+    mask-image: linear-gradient(90deg, transparent 0 35%, #000 72% 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0 35%, #000 72% 100%);
+  }
+  .hero__figure::after {
+    z-index: 2;
+    background: linear-gradient(90deg, var(--ivory) 0 28%, transparent 45%);
+    mask-image: linear-gradient(180deg, #000 0 60%, transparent 82%);
+    -webkit-mask-image: linear-gradient(180deg, #000 0 60%, transparent 82%);
+  }
+}
+
+@media (min-width: 900px) {
+  #closing::after {
+    background: linear-gradient(90deg, var(--ivory) 0 28%, rgba(252,250,245,.8) 37%, transparent 48%);
+  }
+  #wear .wear__figure {
+    right: -10vw;
+    width: 67%;
+  }
 }

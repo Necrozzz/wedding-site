@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 958">
+  <!-- Only this alpha outline is softened; the original photograph is never filtered.
+       Face interiors stay opaque. The path continues below the image to avoid a faded bottom seam. -->
+  <defs>
+    <filter id="edge" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="1.6"/>
+    </filter>
+  </defs>
+  <path fill="white" filter="url(#edge)" d="M-20 886
+    C70 852 138 793 202 753 C223 704 267 661 324 634
+    C350 598 392 579 435 567 C456 556 477 551 501 541
+    C516 531 522 511 535 504 C548 498 570 499 585 492
+    C589 477 590 455 590 438 C587 433 582 429 581 419
+    C573 410 570 397 565 385 C557 372 553 352 558 344
+    C561 338 566 339 571 345
+    C570 326 570 306 574 286 C574 260 579 235 589 215
+    C597 195 609 180 625 169 C643 157 659 152 677 148
+    C688 139 705 135 721 137 C738 133 752 142 767 149
+    C786 158 802 173 816 186 C834 199 847 216 855 236
+    C865 253 870 275 871 295 L869 325
+    C873 331 874 338 867 351
+    C909 334 944 332 972 342 C1008 351 1039 379 1061 411
+    C1084 441 1103 476 1115 513 C1134 540 1147 569 1152 600
+    C1163 636 1176 676 1182 710 C1188 738 1194 763 1188 782
+    C1218 793 1251 809 1275 831 C1288 843 1296 853 1304 864
+    C1342 885 1385 923 1410 978 L-20 978Z"/>
+</svg>

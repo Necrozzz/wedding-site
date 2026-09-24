@@ -41,3 +41,7 @@ Browser checks at 320, 390, 768, and 1440px: no horizontal overflow or JavaScrip
 After restoring the original flow, rechecked the 390px and 1440px language cover and homepage transition, including a reload with an existing language preference. Verified both monograms, no horizontal overflow, exact original text equality, and byte-for-byte JavaScript equality. The approved hero is `assets/img/hero-regenerated-v2.webp`; its generation prompt is saved beside it in `hero-regenerated-v2-prompt.txt`.
 
 This is a static website. Publish the folder contents using the existing deployment workflow; no build step is required. Branch creation and publishing have not been performed.
+
+## Link preview image
+
+`assets/img/og-couple.jpg` (1200x630) is the og:image used when the link is shared. It is built from `hero-regenerated-v2.webp` at Roman's request, for its evening background. The blown-out ivory plume the hero keeps down its left side as a bed for type is cropped away (source x>=470, y 500-1260). The photograph itself is only cropped and scaled - no retouching, no filters, no further regeneration. Because a 1.91:1 crop of a 3:4 portrait would be a 570px band and the two faces alone span about 550px of it, the photograph is centred at full height and the sides are filled with a blurred, darkened copy of the same crop. Centring also keeps both faces inside whatever square crop a messenger applies.

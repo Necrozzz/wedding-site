@@ -114,10 +114,12 @@ const I18N = {
     "stat.days.many": "օր",
     "stat.days.one": "օր",
     "stat.days.other": "օր",
+    "stat.daysPrefix": "Մնացել է՝",
     "stat.guests.few": "հյուր",
     "stat.guests.many": "հյուր",
     "stat.guests.one": "հյուր",
     "stat.guests.other": "հյուր",
+    "stat.guestsPrefix": "Գրանցվել է՝",
     "stat.today": "Այսօր է",
     "stay.bookh": "Ինչպես ամրագրել",
     "stay.extralabel": "Ավելի շատ ժամանակ միասին",
@@ -208,10 +210,12 @@ const I18N = {
     "stat.days.many": "дней",
     "stat.days.one": "день",
     "stat.days.other": "дней",
+    "stat.daysPrefix": "Осталось:",
     "stat.guests.few": "гостя",
     "stat.guests.many": "гостей",
     "stat.guests.one": "гость",
     "stat.guests.other": "гостей",
+    "stat.guestsPrefix": "Зарегистрировано:",
     "stat.today": "Сегодня",
     "stay.bookh": "Как забронировать",
     "stay.extralabel": "Больше времени вместе",
@@ -278,6 +282,7 @@ function applyLanguage(lang) {
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;
+  currentLang = lang;
 
   const dict = I18N[lang] || {};
   document.documentElement.lang = HTML_LANG[lang] || 'en';
@@ -307,6 +312,8 @@ function applyLanguage(lang) {
   // the countdown and the guest count are built in JS, so they need
   // repainting when the language changes
   if (typeof renderCountdown === 'function') { renderCountdown(); paintGuestCount(); }
+  // a longer language makes a taller bar; re-measure before the hero paints
+  if (typeof syncBannerHeight === 'function') requestAnimationFrame(syncBannerHeight);
 
   try { localStorage.setItem('gr-lang', lang); } catch (e) { /* private mode */ }
 }
@@ -391,11 +398,17 @@ function renderCountdown() {
   const msPerDay = 86400000;
   const days = Math.ceil((target - new Date()) / msPerDay);
 
+  const prefix = document.getElementById('days-prefix');
+
   if (days < 0) { box.hidden = true; return; }
   if (days === 0) {
+    if (prefix) prefix.textContent = '';
     num.textContent = '';
     word.textContent = t('stat.today', 'Today!');
   } else {
+    // languages that need a lead-in supply one; English does not
+    const lead = t('stat.daysPrefix', '');
+    if (prefix) prefix.textContent = lead ? lead + ' ' : '';
     num.textContent = days;
     word.textContent = plural(days, 'stat.days', 'day to go', 'days to go');
   }
@@ -413,19 +426,24 @@ async function renderGuestCount() {
   try {
     const res = await fetch(CONFIG.endpoint, { method: 'GET' });
     const data = await res.json();
-    if (data.status !== 'ok' || !data.guests) return;
+    if (data.status !== 'ok' || typeof data.guests !== 'number') return;
     lastGuestCount = data.guests;
+    guestCountKnown = true;
     paintGuestCount();
   } catch (e) { /* offline, or the script is asleep: show nothing */ }
 }
 
 let lastGuestCount = 0;
+let guestCountKnown = false;   // zero is a real answer, so track it separately
 
 function paintGuestCount() {
   const box = document.getElementById('stat-guests');
   const num = document.getElementById('guests-num');
   const word = document.getElementById('guests-word');
-  if (!box || !num || !lastGuestCount) return;
+  const prefix = document.getElementById('guests-prefix');
+  if (!box || !num || !guestCountKnown) return;
+  const lead = t('stat.guestsPrefix', '');
+  if (prefix) prefix.textContent = lead ? lead + ' ' : '';
   num.textContent = lastGuestCount;
   word.textContent = plural(lastGuestCount, 'stat.guests',
                             'guest registered', 'guests registered');
@@ -433,6 +451,18 @@ function paintGuestCount() {
   const sep = document.getElementById('stat-sep');
   const days = document.getElementById('stat-days');
   if (sep) sep.hidden = !(days && !days.hidden);
+  // the count arrives after first paint and can add a line to the bar
+  if (typeof syncBannerHeight === 'function') syncBannerHeight();
+}
+
+/* The bar is fixed, so the hero has to be padded past it. Its height depends
+   on the language - Russian wraps the stat onto a second line - so publish the
+   measured height and let the CSS clear it. */
+function syncBannerHeight() {
+  const bar = document.getElementById('topbar');
+  if (!bar) return;
+  const h = Math.round(bar.getBoundingClientRect().height);
+  if (h) document.documentElement.style.setProperty('--banner-h', h + 'px');
 }
 
 function initBanner() {
@@ -440,6 +470,13 @@ function initBanner() {
   // the day can roll over on a page left open overnight
   setInterval(renderCountdown, 60 * 60 * 1000);
   renderGuestCount();
+
+  syncBannerHeight();
+  addEventListener('resize', syncBannerHeight);
+  // the webfont landing can reflow the bar by a pixel or two
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(syncBannerHeight);
+  }
 }
 
 function initReveal() {

@@ -1203,15 +1203,27 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
 
   #wear {
     align-items: flex-start;
-    min-height: 760px;
+    /* let the content set the height: a fixed 760px made the section taller
+       than a phone viewport, and the snap point moved on before the photo
+       at the bottom ever came into view */
+    min-height: 0;
     padding-top: clamp(72px, 14vw, 108px);
-    padding-bottom: min(62vw, 460px);
+    padding-bottom: clamp(56px, 12vw, 88px);
   }
   #wear .wear__grid { display: block; }
   #wear .wear__grid > div { margin-inline: 0; }
   #wear .wear__body { margin-top: 12px; }
-  /* 8%, not 22%: on a full-length runway shot the top fifth is the heads */
-  #wear .wear__figure::after { background: linear-gradient(180deg, var(--ivory-2), transparent 8%); }
+  /* in flow, straight under the paragraph, instead of pinned to the section
+     floor where it fell outside the first screenful */
+  #wear .wear__figure {
+    position: static;
+    inset: auto;
+    width: 100%;
+    margin-top: clamp(22px, 6vw, 36px);
+  }
+  /* the ivory wash existed to blend the photo into the backdrop it sat
+     behind; in flow it only greys out the models' heads */
+  #wear .wear__figure::after { content: none; }
 
   #rsvp::before {
     background:
@@ -1571,6 +1583,15 @@ html[lang="hy"] #submit-btn {
 
 /* once the bar has a solid background the white text would vanish */
 .topbar.is-stuck .topbar__stat { color: var(--espresso); text-shadow: none; }
+
+/* The hero title starts below the bar whatever height the language makes it. */
+.hero__text { padding-top: max(124px, calc(var(--banner-h, 96px) + 26px)); }
+@media (min-width: 600px) {
+  .hero__text { padding-top: max(26cqw, calc(var(--banner-h, 96px) + 26px)); }
+}
+@media (min-width: 1000px) {
+  .hero__text { padding-top: max(clamp(145px, 18vh, 205px), calc(var(--banner-h, 96px) + 30px)); }
+}
 
 @media (min-width: 900px) {
   .topbar { flex-wrap: nowrap; }

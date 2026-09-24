@@ -82,4 +82,13 @@ js.thanks.no.h,form,We’ll miss you!,Կկարոտենք ձեզ։,Будем с�
 js.thanks.no.p,form,Thank you for letting us know.,"Շնորհակալություն, որ տեղեկացրիք։","Спасибо, что дали знать.",,site.js (not yet wired)
 cfg.weddingDate,general,"October 24, 2026",2026 թ. հոկտեմբերի 24,24 октября 2026,,site.js CONFIG (not yet wired)
 cfg.coupleName,"invitation, closing",Gohar &amp; Roman,Գոհար և Ռոման,Гоар и Роман,,index.html
+stat.days.one,banner,day to go,օր,день,,site.js (plural form)
+stat.days.few,banner,days to go,օր,дня,,site.js (Russian only)
+stat.days.many,banner,days to go,օր,дней,,site.js (Russian only)
+stat.days.other,banner,days to go,օր,дней,,site.js (plural form)
+stat.guests.one,banner,guest registered,հյուր,гость,,site.js (plural form)
+stat.guests.few,banner,guests registered,հյուր,гостя,,site.js (Russian only)
+stat.guests.many,banner,guests registered,հյուր,гостей,,site.js (Russian only)
+stat.guests.other,banner,guests registered,հյուր,гостей,,site.js (plural form)
+stat.today,banner,Today!,Այսօր է,Сегодня,,site.js
 cfg.pageTitle,browser tab,Gohar &amp; Roman — 24 · 10 · 2026,Գոհար և Ռոման — 24 · 10 · 2026,Гоар и Роман — 24 · 10 · 2026,,index.html <title>

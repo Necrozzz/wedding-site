@@ -40,8 +40,42 @@ function doPost(e) {
   }
 }
 
+/**
+ * Public read: the guest total, taken from the sheet's own Grand Total column
+ * so the site and the spreadsheet can never disagree.
+ *
+ * Only that one number leaves this function - no names, no emails, no notes.
+ * Cached for a minute so the site can call it on every page load.
+ */
 function doGet(e) {
-  return jsonOut({ status: 'Gohar & Roman RSVP endpoint is live' });
+  try {
+    const cache = CacheService.getScriptCache();
+    const hit = cache.get('counts');
+    if (hit) return jsonOut(JSON.parse(hit));
+
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    const values = sheet.getDataRange().getValues();
+
+    // find the column by its header rather than a fixed letter, so the
+    // total survives someone rearranging the sheet
+    var guests = 0;
+    if (values.length > 1) {
+      const headers = values[0].map(function (h) {
+        return String(h).trim().toLowerCase();
+      });
+      const col = headers.indexOf('grand total');
+      if (col !== -1) {
+        const n = parseInt(values[1][col], 10);
+        if (!isNaN(n) && n > 0) guests = n;
+      }
+    }
+
+    const payload = { status: 'ok', guests: guests };
+    cache.put('counts', JSON.stringify(payload), 60);
+    return jsonOut(payload);
+  } catch (err) {
+    return jsonOut({ status: 'error', error: err.message });
+  }
 }
 
 function jsonOut(obj) {

@@ -12,6 +12,8 @@ const CONFIG = {
   coupleInitials:   'G & R',
 
   weddingDate:      'October 24, 2026',
+  // Armenia is UTC+4; the welcome reception opens at 16:00
+  weddingISO:       '2026-10-24T16:00:00+04:00',
   weddingDateUpper: 'OCTOBER 24, 2026',
   weddingDateShort: '24 · 10 · 2026',
 
@@ -108,6 +110,15 @@ const I18N = {
     "nav.wear": "Ինչ հագնել",
     "rsvp.h": "Կմիանա՞ք մեզ",
     "rsvp.hope": "Հուսով ենք՝ այո։",
+    "stat.days.few": "օր",
+    "stat.days.many": "օր",
+    "stat.days.one": "օր",
+    "stat.days.other": "օր",
+    "stat.guests.few": "հյուր",
+    "stat.guests.many": "հյուր",
+    "stat.guests.one": "հյուր",
+    "stat.guests.other": "հյուր",
+    "stat.today": "Այսօր է",
     "stay.bookh": "Ինչպես ամրագրել",
     "stay.extralabel": "Ավելի շատ ժամանակ միասին",
     "stay.extrap": "Մնո՞ւմ եք ավելի երկար։ DiliJazz-ը <strong>մեր հյուրերին տալիս է <span data-var=\"extraNightsDiscount\">15%</span> զեղչ</strong> հարսանիքից առաջ և հետո գիշերների համար՝ որ ոչ ոք շտապելու կարիք չունենա։ Ավելի շատ ժամանակ միասին, ավելի երկար երեկոներ և այն զրույցները, որոնց համար հարսանիքի օրը երբեք ժամանակ չի հերիքում։",
@@ -193,6 +204,15 @@ const I18N = {
     "nav.wear": "Дресс-код",
     "rsvp.h": "Вы будете с нами?",
     "rsvp.hope": "Надеемся, что да!",
+    "stat.days.few": "дня",
+    "stat.days.many": "дней",
+    "stat.days.one": "день",
+    "stat.days.other": "дней",
+    "stat.guests.few": "гостя",
+    "stat.guests.many": "гостей",
+    "stat.guests.one": "гость",
+    "stat.guests.other": "гостей",
+    "stat.today": "Сегодня",
     "stay.bookh": "Как забронировать",
     "stay.extralabel": "Больше времени вместе",
     "stay.extrap": "Останетесь подольше? DiliJazz даёт <strong>нашим гостям скидку <span data-var=\"extraNightsDiscount\">15%</span></strong> на ночи до и после свадьбы — чтобы никому не пришлось спешить. Больше времени вместе, долгие вечера и те разговоры, для которых в день свадьбы никогда не хватает времени.",
@@ -257,6 +277,7 @@ function applyLanguage(lang) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
   currentLang = lang;
   currentLang = lang;
+  currentLang = lang;
 
   const dict = I18N[lang] || {};
   document.documentElement.lang = HTML_LANG[lang] || 'en';
@@ -282,6 +303,10 @@ function applyLanguage(lang) {
     tmp.innerHTML = title;
     document.title = tmp.value;
   }
+
+  // the countdown and the guest count are built in JS, so they need
+  // repainting when the language changes
+  if (typeof renderCountdown === 'function') { renderCountdown(); paintGuestCount(); }
 
   try { localStorage.setItem('gr-lang', lang); } catch (e) { /* private mode */ }
 }
@@ -338,6 +363,83 @@ function initMenu() {
       btn.focus();
     }
   });
+}
+
+/* ------------------------------------------------------- banner stats -- */
+
+/* Plural form for a count, per language. Russian needs one/few/many, English
+   one/other, Armenian a single form - Intl knows the rules, the dictionary
+   supplies the words. */
+function plural(n, stem, fallbackOne, fallbackOther) {
+  let form = 'other';
+  try {
+    form = new Intl.PluralRules(HTML_LANG[currentLang] || 'en').select(n);
+  } catch (e) { /* very old browser: fall through to other */ }
+  return t(stem + '.' + form, n === 1 ? fallbackOne : fallbackOther);
+}
+
+function renderCountdown() {
+  const box = document.getElementById('stat-days');
+  const num = document.getElementById('days-num');
+  const word = document.getElementById('days-word');
+  if (!box || !num) return;
+
+  const target = new Date(CONFIG.weddingISO);
+  if (isNaN(target)) return;
+
+  // whole days between today and the wedding, in the guest's own timezone
+  const msPerDay = 86400000;
+  const days = Math.ceil((target - new Date()) / msPerDay);
+
+  if (days < 0) { box.hidden = true; return; }
+  if (days === 0) {
+    num.textContent = '';
+    word.textContent = t('stat.today', 'Today!');
+  } else {
+    num.textContent = days;
+    word.textContent = plural(days, 'stat.days', 'day to go', 'days to go');
+  }
+  box.hidden = false;
+}
+
+/* How many guests have said yes. Read-only, and the banner simply stays
+   quiet if the request fails - it must never block the page. */
+async function renderGuestCount() {
+  const box = document.getElementById('stat-guests');
+  const num = document.getElementById('guests-num');
+  const word = document.getElementById('guests-word');
+  if (!box || !num) return;
+
+  try {
+    const res = await fetch(CONFIG.endpoint, { method: 'GET' });
+    const data = await res.json();
+    if (data.status !== 'ok' || !data.guests) return;
+    lastGuestCount = data.guests;
+    paintGuestCount();
+  } catch (e) { /* offline, or the script is asleep: show nothing */ }
+}
+
+let lastGuestCount = 0;
+
+function paintGuestCount() {
+  const box = document.getElementById('stat-guests');
+  const num = document.getElementById('guests-num');
+  const word = document.getElementById('guests-word');
+  if (!box || !num || !lastGuestCount) return;
+  num.textContent = lastGuestCount;
+  word.textContent = plural(lastGuestCount, 'stat.guests',
+                            'guest registered', 'guests registered');
+  box.hidden = false;
+  const sep = document.getElementById('stat-sep');
+  const days = document.getElementById('stat-days');
+  if (sep) sep.hidden = !(days && !days.hidden);
+}
+
+function initBanner() {
+  renderCountdown();
+  // the day can roll over on a page left open overnight
+  setInterval(renderCountdown, 60 * 60 * 1000);
+  renderGuestCount();
 }
 
 function initReveal() {
@@ -509,6 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   initCover();
   initChrome();
+  initBanner();
   initMenu();
   initReveal();
   initRSVP();

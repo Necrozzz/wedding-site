@@ -1544,3 +1544,40 @@ html[lang="hy"] #submit-btn {
   letter-spacing: 0.1em;
   padding-inline: 16px;
 }
+
+/* ============================================= BANNER COUNTDOWN + COUNT == */
+/* Sits between the monogram and the controls. On narrow screens the banner
+   wraps and this takes a line of its own, centred. */
+
+.topbar { flex-wrap: wrap; row-gap: 6px; }
+
+.topbar__stat {
+  order: 3;
+  flex: 1 0 100%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 5px rgba(24, 36, 57, 0.55);
+  transition: color .3s ease;
+}
+.topbar__stat-item[hidden] { display: none; }
+.topbar__num { font-weight: 600; letter-spacing: 0.1em; }
+.topbar__stat-sep { margin: 0 0.7em; opacity: .55; }
+.topbar__stat-sep[hidden] { display: none; }
+
+/* once the bar has a solid background the white text would vanish */
+.topbar.is-stuck .topbar__stat { color: var(--espresso); text-shadow: none; }
+
+@media (min-width: 900px) {
+  .topbar { flex-wrap: nowrap; }
+  .topbar__stat {
+    order: 0;
+    flex: 1 1 auto;
+    font-size: 0.72rem;
+    padding-inline: clamp(12px, 3vw, 40px);
+  }
+}

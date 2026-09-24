@@ -1558,31 +1558,59 @@ html[lang="hy"] #submit-btn {
 }
 
 /* ============================================= BANNER COUNTDOWN + COUNT == */
-/* Sits between the monogram and the controls. On narrow screens the banner
-   wraps and this takes a line of its own, centred. */
+/* Two small tiles, stacked and right-aligned, just left of the language
+   switcher. On a phone the row has no width for them beside the monogram -
+   the Russian label alone is ~200px - so they wrap onto a line of their own,
+   still stacked and still right-aligned. */
 
-.topbar { flex-wrap: wrap; row-gap: 6px; }
+.topbar { flex-wrap: wrap; row-gap: 8px; }
 
 .topbar__stat {
   order: 3;
   flex: 1 0 100%;
   margin: 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
   font-family: var(--sans);
-  font-size: 0.66rem;
-  letter-spacing: 0.16em;
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  line-height: 1.15;
+}
+
+.topbar__stat-item {
+  padding: 3px 7px;
+  border-radius: 3px;
+  background: rgba(24, 36, 57, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 2px 8px rgba(24, 36, 57, 0.30);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
   color: #fff;
-  text-shadow: 0 1px 5px rgba(24, 36, 57, 0.55);
-  transition: color .3s ease;
+  white-space: nowrap;
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease;
 }
 .topbar__stat-item[hidden] { display: none; }
-.topbar__num { font-weight: 600; letter-spacing: 0.1em; }
-.topbar__stat-sep { margin: 0 0.7em; opacity: .55; }
-.topbar__stat-sep[hidden] { display: none; }
+.topbar__num { font-weight: 600; }
+/* the tiles separate themselves now */
+.topbar__stat-sep { display: none; }
 
-/* once the bar has a solid background the white text would vanish */
-.topbar.is-stuck .topbar__stat { color: var(--espresso); text-shadow: none; }
+/* On a phone the tiles take a row of their own, so the bar was carrying its
+   full 20px of padding on top of an extra 40px of tiles. Trimming the padding
+   keeps the taller layout from costing height overall. */
+@media (max-width: 899px) {
+  .topbar { padding-block: 11px; row-gap: 6px; }
+}
+
+/* against the ivory bar a translucent dark tile turns to mud, so flip it */
+.topbar.is-stuck .topbar__stat-item {
+  background: rgba(255, 255, 255, 0.74);
+  border-color: rgba(58, 46, 38, 0.18);
+  box-shadow: 0 1px 4px rgba(58, 46, 38, 0.14);
+  color: var(--espresso);
+}
 
 /* The hero title starts below the bar whatever height the language makes it. */
 .hero__text { padding-top: max(124px, calc(var(--banner-h, 96px) + 26px)); }
@@ -1597,8 +1625,11 @@ html[lang="hy"] #submit-btn {
   .topbar { flex-wrap: nowrap; }
   .topbar__stat {
     order: 0;
-    flex: 1 1 auto;
-    font-size: 0.72rem;
-    padding-inline: clamp(12px, 3vw, 40px);
+    /* no growing: the block is only as wide as the longer tile, and the auto
+       margin carries it over to the controls */
+    flex: 0 0 auto;
+    margin-left: auto;
+    margin-right: clamp(14px, 2vw, 30px);
+    font-size: 0.58rem;
   }
 }

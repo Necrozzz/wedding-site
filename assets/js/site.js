@@ -448,10 +448,7 @@ function paintGuestCount() {
   word.textContent = plural(lastGuestCount, 'stat.guests',
                             'guest registered', 'guests registered');
   box.hidden = false;
-  const sep = document.getElementById('stat-sep');
-  const days = document.getElementById('stat-days');
-  if (sep) sep.hidden = !(days && !days.hidden);
-  // the count arrives after first paint and can add a line to the bar
+  // the count arrives after first paint and can add a tile to the bar
   if (typeof syncBannerHeight === 'function') syncBannerHeight();
 }
 

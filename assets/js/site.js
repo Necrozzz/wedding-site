@@ -48,8 +48,10 @@ const I18N = {
   en: {},   // master copy lives in the HTML
   am: {
     "break.dilijan": "Դիլիջան · հոկտեմբեր",
+    "cfg.coupleName": "Գոհար և Ռոման",
     "cfg.location": "Դիլիջան, Հայաստան",
     "cfg.locationUpper": "ԴԻԼԻՋԱՆ, ՀԱՅԱՍՏԱՆ",
+    "cfg.pageTitle": "Գոհար և Ռոման — 24 · 10 · 2026",
     "cfg.weddingDate": "2026 թ. հոկտեմբերի 24",
     "cfg.weddingDateUpper": "2026 ՀՈԿՏԵՄԲԵՐԻ 24",
     "close.p1": "Եկեք պատրաստ՝ տոնելու, պարելու, ծիծաղելու և մնալու մի փոքր ավելի երկար, քան ծրագրել էիք։",
@@ -123,7 +125,7 @@ const I18N = {
     "stay.s2": "Զանգահարեք DiliJazz՝",
     "stay.s2b": "Արտերկրից կարող եք զանգահարել կամ գրել WhatsApp-ով՝",
     "stay.s3": "Նշեք <strong>Գոհարի և Ռոմանի հարսանիքը</strong>՝ հատուկ գինը ստանալու համար. և՛ հարսանիքի գիշերվա, և՛ դրանից առաջ ու հետո ցանկացած գիշերվա համար։",
-    "wear.h": "Հագնվեք այնպես, որ անտառը տպավորվի",
+    "wear.h": "Գեղեցիկ և հարմարավետ",
     "wear.label": "Ինչ հագնել",
     "wear.p1": "Գույնի սահմանափակումներ չկան՝ հագեք այն, ինչում ձեզ լավագույնս եք զգում։",
     "wear.p2": "Մի փոքր ժամանակ կանցկացնենք դրսում՝ հյուրանոցի այգում և բնության մեջ, հաշվի առեք դա կոշիկներն ու տաք հագուստն ընտրելիս։",
@@ -131,8 +133,10 @@ const I18N = {
   },
   ru: {
     "break.dilijan": "Дилижан · октябрь",
+    "cfg.coupleName": "Гоар и Роман",
     "cfg.location": "Дилижан, Армения",
     "cfg.locationUpper": "ДИЛИЖАН, АРМЕНИЯ",
+    "cfg.pageTitle": "Гоар и Роман — 24 · 10 · 2026",
     "cfg.weddingDate": "24 октября 2026",
     "cfg.weddingDateUpper": "24 ОКТЯБРЯ 2026",
     "close.p1": "Приезжайте праздновать, танцевать, смеяться — и остаться чуть дольше, чем планировали.",
@@ -206,7 +210,7 @@ const I18N = {
     "stay.s2": "Позвоните в DiliJazz по номеру",
     "stay.s2b": "Из-за границы можно позвонить или написать в WhatsApp на номер",
     "stay.s3": "Упомяните <strong>свадьбу Гоар и Романа</strong>, чтобы получить специальную цену — и за ночь свадьбы, и за любые ночи до или после.",
-    "wear.h": "Оденьтесь так, чтобы впечатлить лес",
+    "wear.h": "Нарядно и удобно",
     "wear.label": "Дресс-код",
     "wear.p1": "Без ограничений по цвету — наденьте то, в чём вам лучше всего.",
     "wear.p2": "Мы проведём немного времени на улице, в саду отеля и на природе, — учтите это, выбирая обувь и что-нибудь потеплее.",
@@ -252,6 +256,7 @@ function t(key, fallback) {
 function applyLanguage(lang) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
   currentLang = lang;
+  currentLang = lang;
 
   const dict = I18N[lang] || {};
   document.documentElement.lang = HTML_LANG[lang] || 'en';
@@ -266,6 +271,17 @@ function applyLanguage(lang) {
   document.querySelectorAll('.langswitch__btn').forEach(btn => {
     btn.setAttribute('aria-current', btn.dataset.lang === lang ? 'true' : 'false');
   });
+
+  // remember the English title so switching back restores it
+  if (!document.documentElement.dataset.titleEn) {
+    document.documentElement.dataset.titleEn = document.title;
+  }
+  const title = t('cfg.pageTitle', document.documentElement.dataset.titleEn);
+  if (title) {
+    const tmp = document.createElement('textarea');
+    tmp.innerHTML = title;
+    document.title = tmp.value;
+  }
 
   try { localStorage.setItem('gr-lang', lang); } catch (e) { /* private mode */ }
 }

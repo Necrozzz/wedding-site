@@ -126,7 +126,20 @@ rows += [
      'en': 'Dilijan, Armenia'},
     {'key': 'cfg.weddingDate', 'where': 'general', 'source': 'site.js CONFIG (not yet wired)',
      'en': 'October 24, 2026'},
+    {'key': 'cfg.coupleName', 'where': 'invitation, closing', 'source': 'index.html',
+     'en': 'Gohar &amp; Roman'},
+    {'key': 'cfg.pageTitle', 'where': 'browser tab', 'source': 'index.html <title>',
+     'en': 'Gohar &amp; Roman \u2014 24 \u00b7 10 \u00b7 2026'},
 ]
+
+# Once a key is tagged in the markup the extractor finds it, so drop any
+# manual entry that duplicates it - the extracted row is the accurate one.
+deduped = []
+for r in rows:
+    if r['key'] in seen and r['source'] != 'index.html':
+        continue
+    deduped.append(r)
+rows = deduped
 
 csv_path = os.path.join(OUT, 'translations.csv')
 # utf-8-sig: Excel needs the BOM or it mangles Armenian and Cyrillic

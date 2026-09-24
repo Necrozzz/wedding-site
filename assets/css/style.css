@@ -1210,7 +1210,8 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
   #wear .wear__grid { display: block; }
   #wear .wear__grid > div { margin-inline: 0; }
   #wear .wear__body { margin-top: 12px; }
-  #wear .wear__figure::after { background: linear-gradient(180deg, var(--ivory-2), transparent 22%); }
+  /* 8%, not 22%: on a full-length runway shot the top fifth is the heads */
+  #wear .wear__figure::after { background: linear-gradient(180deg, var(--ivory-2), transparent 8%); }
 
   #rsvp::before {
     background:
@@ -1264,7 +1265,8 @@ main > :is(#invitation, #details, #hotel, #stay, #wear, #rsvp, #closing)::before
     width: 56%;
     transform: translateY(-50%);
   }
-  #wear .wear__figure::after { background: linear-gradient(90deg, rgba(237,230,218,.82), transparent 22%); }
+  /* the left fade used to eat into the first model */
+  #wear .wear__figure::after { background: linear-gradient(90deg, rgba(237,230,218,.82), transparent 10%); }
 
   #rsvp .rsvp__head {
     padding: clamp(28px, 4vw, 48px);
@@ -1419,14 +1421,10 @@ html, body { overflow-x: clip; }
   -webkit-mask-composite: source-in;
 }
 #wear .wear__figure img {
-  mask-image:
-    linear-gradient(90deg, transparent, #000 7% 93%, transparent),
-    linear-gradient(180deg, transparent, #000 8% 92%, transparent);
-  mask-composite: intersect;
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent, #000 7% 93%, transparent),
-    linear-gradient(180deg, transparent, #000 8% 92%, transparent);
-  -webkit-mask-composite: source-in;
+  /* Only the sides are feathered. The vertical fade used to eat the top 8%,
+     which on this full-length runway shot is the models' heads. */
+  mask-image: linear-gradient(90deg, transparent, #000 5% 95%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5% 95%, transparent);
 }
 @media (min-width: 900px) {
   #closing .closing__figure {

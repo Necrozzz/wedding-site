@@ -70,6 +70,25 @@ js = js.replace(
     "  if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';\n  currentLang = lang;",
     1)
 
+# the browser tab carries the names too, and it is not a DOM node the
+# data-i18n sweep can reach
+if "t('cfg.pageTitle'" not in js:   # guard on what is actually inserted
+    anchor = "  try { localStorage.setItem('gr-lang', lang); }"
+    assert js.count(anchor) == 1
+    js = js.replace(
+        anchor,
+        "  // remember the English title so switching back restores it\n"
+        "  if (!document.documentElement.dataset.titleEn) {\n"
+        "    document.documentElement.dataset.titleEn = document.title;\n"
+        "  }\n"
+        "  const title = t('cfg.pageTitle', document.documentElement.dataset.titleEn);\n"
+        "  if (title) {\n"
+        "    const tmp = document.createElement('textarea');\n"
+        "    tmp.innerHTML = title;\n"
+        "    document.title = tmp.value;\n"
+        "  }\n\n" + anchor,
+        1)
+
 # ---- 3. the six strings that were hardcoded ------------------------------
 swaps = [
     ("submitBtn.textContent = 'Sending…';",
@@ -87,7 +106,10 @@ swaps = [
     ? t('js.thanks.yes.p', 'Thank you. We can’t wait to celebrate with you.')
     : t('js.thanks.no.p', 'Thank you for letting us know.');"""),
 ]
+# idempotent: a swap already applied on an earlier run is simply skipped
 for old, new in swaps:
+    if new in js:
+        continue
     assert js.count(old) == 1, ('js swap not found', old[:50])
     js = js.replace(old, new)
 

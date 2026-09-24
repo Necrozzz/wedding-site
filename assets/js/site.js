@@ -12,8 +12,8 @@ const CONFIG = {
   coupleInitials:   'G & R',
 
   weddingDate:      'October 24, 2026',
-  // Armenia is UTC+4; the welcome reception opens at 16:00
-  weddingISO:       '2026-10-24T16:00:00+04:00',
+  // Armenia is UTC+4; the welcome reception opens at 16:30
+  weddingISO:       '2026-10-24T16:30:00+04:00',
   weddingDateUpper: 'OCTOBER 24, 2026',
   weddingDateShort: '24 · 10 · 2026',
 
@@ -22,7 +22,7 @@ const CONFIG = {
   venue:            'DiliJazz Hotel',
 
   // --- agenda -----------------------------------------------------
-  welcomeTime:      '16:00',
+  welcomeTime:      '16:30',
   ceremonyTime:     '17:00',
   dinnerTime:       '18:00',
   afterpartyTime:   '23:00',
@@ -128,7 +128,7 @@ const I18N = {
     "stay.h": "Մնացեք մեզ հետ",
     "stay.p1": "Կուզենայինք, որ տոնը չավարտվի վերջին պարով։",
     "stay.p2": "Մեր հարսանիքի օրը DiliJazz-ը կընդունի միայն մեր հյուրերին՝ ամբողջ տարածքը մերը կլինի, որ միասին տոնենք ամբողջ գիշեր և մինչև հաջորդ առավոտ։",
-    "stay.p3": "Մնացեք ուշ, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։",
+    "stay.p3": "Գիշերեք DiliJazz-ում, մնացեք երեկույթին մինչև ուշ, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։",
     "stay.pet": "<strong>Գալի՞ս եք ընտանի կենդանու հետ։</strong> Որոշ կարգի համարներում կենդանիների հետ կարելի է։ Խնդրում ենք նշել այդ մասին հյուրանոց զանգահարելիս։",
     "stay.rateh": "Ձեր հատուկ գինը հարսանիքի գիշերվա համար DiliJazz-ում",
     "stay.rateoff": "<span class=\"rate__off\">զեղչ</span> <span data-var=\"hotelDiscount\">30%</span>",
@@ -158,7 +158,7 @@ const I18N = {
     "det.a1": "Приветственный приём",
     "det.a2": "Церемония",
     "det.a3": "Ужин и вечеринка",
-    "det.a4": "Афтепати",
+    "det.a4": "Афтерпати",
     "det.a4b": "до рассвета",
     "det.day": "Программа дня",
     "det.dow": "Суббота",
@@ -224,7 +224,7 @@ const I18N = {
     "stay.h": "Останьтесь с нами",
     "stay.p1": "Нам бы хотелось, чтобы праздник не заканчивался последним танцем.",
     "stay.p2": "В день нашей свадьбы DiliJazz будет принимать только нашу компанию — всё место будет в нашем распоряжении, чтобы праздновать вместе всю ночь и до самого утра.",
-    "stay.p3": "Оставайтесь допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.",
+    "stay.p3": "Останьтесь на ночь в DiliJazz, гуляйте на вечеринке допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.",
     "stay.pet": "<strong>Приедете с питомцем?</strong> В некоторых категориях номеров можно с животными. Пожалуйста, скажите об этом при звонке в отель.",
     "stay.rateh": "Ваша специальная цена за ночь свадьбы в DiliJazz",
     "stay.rateoff": "<span class=\"rate__off\">скидка</span> <span data-var=\"hotelDiscount\">30%</span>",
@@ -279,6 +279,8 @@ function t(key, fallback) {
 
 function applyLanguage(lang) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
+  currentLang = lang;
+  currentLang = lang;
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;

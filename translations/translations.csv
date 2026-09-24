@@ -26,7 +26,7 @@ det.day,details,The day,Օրվա ծրագիրը,Программа дня,,index
 det.a1,details,Welcome Reception,Դիմավորում,Приветственный приём,,index.html
 det.a2,details,Ceremony,Արարողություն,Церемония,,index.html
 det.a3,details,Dinner &amp; Party,Ընթրիք և երեկույթ,Ужин и вечеринка,,index.html
-det.a4,details,Afterparty,Աֆթերփարթի,Афтепати,,index.html
+det.a4,details,Afterparty,Աֆթերփարթի,Афтерпати,,index.html
 det.a4b,details,until dawn,մինչև լուսաբաց,до рассвета,,index.html
 break.dilijan,break,Dilijan · October,Դիլիջան · հոկտեմբեր,Дилижан · октябрь,,index.html
 hotel.p1,hotel,"Set in the forests of Dilijan, by the river, DiliJazz is a cozy retreat surrounded by nature.","Դիլիջանի անտառներում, գետի մոտ, DiliJazz-ը հարմարավետ վայր է՝ շրջապատված բնությամբ։","В лесах Дилижана, у реки, DiliJazz — уютное место, окружённое природой.",,index.html
@@ -35,7 +35,7 @@ hotel.p3,hotel,"For our wedding, the hotel will be <strong>exclusively hosting o
 stay.h,stay,Stay With Us,Մնացեք մեզ հետ,Останьтесь с нами,,index.html
 stay.p1,stay,We’d love for the celebration not to end with the last dance.,"Կուզենայինք, որ տոնը չավարտվի վերջին պարով։","Нам бы хотелось, чтобы праздник не заканчивался последним танцем.",,index.html
 stay.p2,stay,"For our wedding, DiliJazz will be exclusively hosting our group — giving us the whole setting to celebrate together through the night and into the next morning.","Մեր հարսանիքի օրը DiliJazz-ը կընդունի միայն մեր հյուրերին՝ ամբողջ տարածքը մերը կլինի, որ միասին տոնենք ամբողջ գիշեր և մինչև հաջորդ առավոտ։","В день нашей свадьбы DiliJazz будет принимать только нашу компанию — всё место будет в нашем распоряжении, чтобы праздновать вместе всю ночь и до самого утра.",,index.html
-stay.p3,stay,"Stay late, celebrate with us, and join us for breakfast the next day.","Մնացեք ուշ, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։","Оставайтесь допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.",,index.html
+stay.p3,stay,"Spend the night at DiliJazz, stay late at the party, celebrate with us, and join us for breakfast the next day.","Գիշերեք DiliJazz-ում, մնացեք երեկույթին մինչև ուշ, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։","Останьтесь на ночь в DiliJazz, гуляйте на вечеринке допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.",,index.html
 stay.forguests,stay,For our guests,Մեր հյուրերի համար,Для наших гостей,,index.html
 stay.rateh,stay,Your special wedding night rate at DiliJazz,Ձեր հատուկ գինը հարսանիքի գիշերվա համար DiliJazz-ում,Ваша специальная цена за ночь свадьбы в DiliJazz,,index.html
 stay.rateoff,stay,"<span data-var=""hotelDiscount"">30%</span> <span class=""rate__off"">off</span>","<span class=""rate__off"">զեղչ</span> <span data-var=""hotelDiscount"">30%</span>","<span class=""rate__off"">скидка</span> <span data-var=""hotelDiscount"">30%</span>",YES - keep the tags,index.html

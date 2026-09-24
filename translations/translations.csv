@@ -14,7 +14,7 @@ cfg.locationUpper,hero,"DILIJAN, ARMENIA","ԴԻԼԻՋԱՆ, ՀԱՅԱՍՏԱՆ","Д
 hero.cta,hero,To the invitation,Բացել հրավերը,К приглашению,,index.html
 inv.p1,invitation,Some of you have been by our side from the very start — and each of you is part of our lives in a special way.,"Ձեզանից ոմանք մեր կողքին են եղել հենց սկզբից, և ձեզանից յուրաքանչյուրը մեր կյանքում առանձնահատուկ տեղ ունի։",Кто-то из вас был рядом с самого начала — и каждый из вас занимает особое место в нашей жизни.,,index.html
 inv.p2,invitation,"Now, as we take this next step together, we would love to have our favorite people around us.","Իսկ հիմա, երբ միասին անում ենք այս հաջորդ քայլը, ուզում ենք, որ մեր ամենասիրելի մարդիկ մեր կողքին լինեն։","И теперь, делая этот следующий шаг вместе, мы хотим, чтобы рядом были наши самые близкие люди.",,index.html
-inv.p3,invitation,"Come celebrate, laugh, dance and make some new memories with us.","Եկեք տոնենք, ուրախանանք, պարենք և նոր հիշողություններ ստեղծենք միասին։","Приезжайте праздновать, смеяться, танцевать и создавать с нами новые воспоминания.",,index.html
+inv.p3,invitation,"Come celebrate, laugh, dance and make some new memories with us.","Եկեք տոնենք, ուրախանանք, պարենք և նոր հիշողություններ ստեղծենք միասին։","Приезжайте праздновать, веселиться, танцевать и создавать с нами новые воспоминания.",,index.html
 cfg.coupleName,invitation,Gohar &amp; Roman,Գոհար և Ռոման,Гоар и Роман,,index.html
 det.label,details,The details,Մանրամասներ,Детали,,index.html
 det.dow,details,Saturday,Շաբաթ,Суббота,,index.html
@@ -24,7 +24,7 @@ cfg.location,details,"Dilijan, Armenia","Դիլիջան, Հայաստան","Ди
 det.map,details,View on map,Տեսնել քարտեզի վրա,Посмотреть на карте,,index.html
 det.day,details,The day,Օրվա ծրագիրը,Программа дня,,index.html
 det.a1,details,Welcome Reception,Հյուրերի ընդունելություն և հյուրասիրություն,Приветственный приём,,index.html
-det.a2,details,Ceremony,Հանդիսավոր արարողություն,Церемония,,index.html
+det.a2,details,Ceremony,Հանդիսավոր արարողություն,Торжественная церемония,,index.html
 det.a3,details,Dinner &amp; Party,Ընթրիք և երեկույթ,Ужин и вечеринка,,index.html
 det.a4,details,Afterparty,Աֆթերփարթի,Афтерпати,,index.html
 det.a4b,details,until dawn,մինչև լուսաբաց,до рассвета,,index.html
@@ -72,7 +72,7 @@ f.hotel.maybe,rsvp,Not sure yet,Դեռ որոշված չէ,Пока не зна�
 f.note,rsvp,Leave us a note,Թողեք մեզ հաղորդագրություն,Оставьте нам сообщение,,index.html
 f.required,rsvp,Required field,Պարտադիր դաշտ,Обязательное поле,,index.html
 f.send,rsvp,Register,Գրանցվել,Зарегистрироваться,,index.html
-close.p1,closing,"Come ready to celebrate, dance, laugh and stay a little longer than planned.","Եկեք պատրաստ՝ տոնելու, պարելու, ուրախանալու և մնալու մի փոքր ավելի երկար, քան ծրագրել էիք։","Приезжайте праздновать, танцевать, смеяться — и остаться чуть дольше, чем планировали.",,index.html
+close.p1,closing,"Come ready to celebrate, dance, laugh and stay a little longer than planned.","Եկեք պատրաստ՝ տոնելու, պարելու, ուրախանալու և մնալու մի փոքր ավելի երկար, քան ծրագրել էիք։","Приезжайте праздновать, веселиться и танцевать — и остаться чуть дольше, чем планировали.",,index.html
 close.p2,closing,"We can’t wait to have you there with us! <span class=""heart"" aria-hidden=""true"">♥</span>","Անհամբեր սպասում ենք ձեզ։ <span class=""heart"" aria-hidden=""true"">♥</span>","Не можем дождаться встречи с вами! <span class=""heart"" aria-hidden=""true"">♥</span>",YES - keep the tags,index.html
 js.sending,form,Sending…,Ուղարկվում է…,Отправляем…,,site.js (not yet wired)
 js.error,form,"Sorry, something went wrong. Please try again.","Կներեք, ինչ-որ բան սխալ գնաց։ Խնդրում ենք նորից փորձել։","Извините, что-то пошло не так. Пожалуйста, попробуйте ещё раз.",,site.js (not yet wired)

@@ -1,5 +1,5 @@
 ﻿Key,Section,English (do not edit),Armenian (հայերեն),Russian (русский),Has formatting?,Where it comes from
-cover.tagline,cover,A new chapter together,Նոր գլուխ՝ միասին,Новая глава вместе,,index.html
+cover.tagline,cover,A new chapter together,Նոր էջ՝ միասին,Новая глава вместе,,index.html
 nav.invitation,topbar,The Invitation,Հրավերը,Приглашение,,index.html
 nav.details,topbar,The Details,Մանրամասներ,Детали,,index.html
 nav.hotel,topbar,DiliJazz,DiliJazz,DiliJazz,,index.html
@@ -8,13 +8,13 @@ nav.wear,topbar,What to Wear,Ինչ հագնել,Дресс-код,,index.html
 nav.register,topbar,Register,Գրանցվել,Регистрация,,index.html
 nav.rsvp,topbar,Register,Գրանցվել,Регистрация,,index.html
 hero.title,hero,We’re<br>getting<br>married,Մենք<br>ամուսնանում<br>ենք,Мы<br>женимся,YES - keep the tags,index.html
-hero.sub,hero,And we would love to celebrate with you.,Եվ շատ կուրախանանք այն տոնել ձեզ հետ։,И будем рады отпраздновать это вместе с вами.,,index.html
+hero.sub,hero,And we would love to celebrate with you.,Եվ շատ ուրախ կլինենք այդ գեղեցիկ օրը տոնել ձեզ հետ։,И будем рады отпраздновать это вместе с вами.,,index.html
 cfg.weddingDateUpper,hero,"OCTOBER 24, 2026",2026 ՀՈԿՏԵՄԲԵՐԻ 24,24 ОКТЯБРЯ 2026,,index.html
 cfg.locationUpper,hero,"DILIJAN, ARMENIA","ԴԻԼԻՋԱՆ, ՀԱՅԱՍՏԱՆ","ДИЛИЖАН, АРМЕНИЯ",,index.html
-hero.cta,hero,To the invitation,Դեպի հրավերը,К приглашению,,index.html
+hero.cta,hero,To the invitation,Բացել հրավերը,К приглашению,,index.html
 inv.p1,invitation,Some of you have been by our side from the very start — and each of you is part of our lives in a special way.,"Ձեզանից ոմանք մեր կողքին են եղել հենց սկզբից, և ձեզանից յուրաքանչյուրը մեր կյանքում առանձնահատուկ տեղ ունի։",Кто-то из вас был рядом с самого начала — и каждый из вас занимает особое место в нашей жизни.,,index.html
 inv.p2,invitation,"Now, as we take this next step together, we would love to have our favorite people around us.","Իսկ հիմա, երբ միասին անում ենք այս հաջորդ քայլը, ուզում ենք, որ մեր ամենասիրելի մարդիկ մեր կողքին լինեն։","И теперь, делая этот следующий шаг вместе, мы хотим, чтобы рядом были наши самые близкие люди.",,index.html
-inv.p3,invitation,"Come celebrate, laugh, dance and make some new memories with us.","Եկեք տոնենք, ծիծաղենք, պարենք և նոր հիշողություններ ստեղծենք միասին։","Приезжайте праздновать, смеяться, танцевать и создавать с нами новые воспоминания.",,index.html
+inv.p3,invitation,"Come celebrate, laugh, dance and make some new memories with us.","Եկեք տոնենք, ուրախանանք, պարենք և նոր հիշողություններ ստեղծենք միասին։","Приезжайте праздновать, смеяться, танцевать и создавать с нами новые воспоминания.",,index.html
 cfg.coupleName,invitation,Gohar &amp; Roman,Գոհար և Ռոման,Гоар и Роман,,index.html
 det.label,details,The details,Մանրամասներ,Детали,,index.html
 det.dow,details,Saturday,Շաբաթ,Суббота,,index.html
@@ -23,8 +23,8 @@ det.yr,details,2026,2026,2026,,index.html
 cfg.location,details,"Dilijan, Armenia","Դիլիջան, Հայաստան","Дилижан, Армения",,index.html
 det.map,details,View on map,Տեսնել քարտեզի վրա,Посмотреть на карте,,index.html
 det.day,details,The day,Օրվա ծրագիրը,Программа дня,,index.html
-det.a1,details,Welcome Reception,Դիմավորում,Приветственный приём,,index.html
-det.a2,details,Ceremony,Արարողություն,Церемония,,index.html
+det.a1,details,Welcome Reception,Հյուրերի ընդունելություն և հյուրասիրություն,Приветственный приём,,index.html
+det.a2,details,Ceremony,Հանդիսավոր արարողություն,Церемония,,index.html
 det.a3,details,Dinner &amp; Party,Ընթրիք և երեկույթ,Ужин и вечеринка,,index.html
 det.a4,details,Afterparty,Աֆթերփարթի,Афтерпати,,index.html
 det.a4b,details,until dawn,մինչև լուսաբաց,до рассвета,,index.html
@@ -33,22 +33,22 @@ hotel.p1,hotel,"Set in the forests of Dilijan, by the river, DiliJazz is a cozy 
 hotel.p2,hotel,"The hotel offers a <strong>spa, indoor pool, sauna, jacuzzi and beautiful private gardens</strong> — all within the hotel grounds.","Հյուրանոցում կան <strong>սպա, փակ լողավազան, սաունա, ջակուզի և գեղեցիկ սեփական այգիներ</strong>՝ բոլորը հյուրանոցի տարածքում։","К услугам гостей <strong>спа, крытый бассейн, сауна, джакузи и красивые собственные сады</strong> — всё на территории отеля.",YES - keep the tags,index.html
 hotel.p3,hotel,"For our wedding, the hotel will be <strong>exclusively hosting our wedding party, with no other hotel guests during our celebration.</strong>",Մեր հարսանիքի օրը հյուրանոցը <strong>կընդունի միայն մեր հյուրերին. այդ օրը այլ հյուրեր չեն լինի։</strong>,В день нашей свадьбы отель будет <strong>принимать только нашу компанию: других гостей в это время не будет.</strong>,YES - keep the tags,index.html
 stay.h,stay,Stay With Us,Մնացեք մեզ հետ,Останьтесь с нами,,index.html
-stay.p1,stay,We’d love for the celebration not to end with the last dance.,"Կուզենայինք, որ տոնը չավարտվի վերջին պարով։","Нам бы хотелось, чтобы праздник не заканчивался последним танцем.",,index.html
+stay.p1,stay,We’d love for the celebration not to end with the last dance.,"Մեր ցանկությունն է, որ տոնը չավարտվի վերջին պարով։","Нам бы хотелось, чтобы праздник не заканчивался последним танцем.",,index.html
 stay.p2,stay,"For our wedding, DiliJazz will be exclusively hosting our group — giving us the whole setting to celebrate together through the night and into the next morning.","Մեր հարսանիքի օրը DiliJazz-ը կընդունի միայն մեր հյուրերին՝ ամբողջ տարածքը մերը կլինի, որ միասին տոնենք ամբողջ գիշեր և մինչև հաջորդ առավոտ։","В день нашей свадьбы DiliJazz будет принимать только нашу компанию — всё место будет в нашем распоряжении, чтобы праздновать вместе всю ночь и до самого утра.",,index.html
-stay.p3,stay,"Spend the night at DiliJazz, stay late at the party, celebrate with us, and join us for breakfast the next day.","Գիշերեք DiliJazz-ում, մնացեք երեկույթին մինչև ուշ, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։","Останьтесь на ночь в DiliJazz, гуляйте на вечеринке допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.",,index.html
+stay.p3,stay,"Spend the night at DiliJazz, stay late at the party, celebrate with us, and join us for breakfast the next day.","Անցկացրեք գիշերակացը DiliJazz հյուրանոցում, մասնակցեք խնջույքին մինչև ուշ գիշեր, տոնեք մեզ հետ և միացեք մեզ հաջորդ օրվա նախաճաշին։","Останьтесь на ночь в DiliJazz, гуляйте на вечеринке допоздна, празднуйте с нами и присоединяйтесь к завтраку на следующий день.",,index.html
 stay.forguests,stay,For our guests,Մեր հյուրերի համար,Для наших гостей,,index.html
-stay.rateh,stay,Your special wedding night rate at DiliJazz,Ձեր հատուկ գինը հարսանիքի գիշերվա համար DiliJazz-ում,Ваша специальная цена за ночь свадьбы в DiliJazz,,index.html
-stay.rateoff,stay,"<span data-var=""hotelDiscount"">30%</span> <span class=""rate__off"">off</span>","<span class=""rate__off"">զեղչ</span> <span data-var=""hotelDiscount"">30%</span>","<span class=""rate__off"">скидка</span> <span data-var=""hotelDiscount"">30%</span>",YES - keep the tags,index.html
-stay.ratep,stay,"DiliJazz is offering our guests a special rate, and we’re covering part of the cost ourselves — a little thank-you for being there to celebrate with us.","DiliJazz-ը մեր հյուրերին առաջարկում է հատուկ գին, իսկ ծախսի մի մասը մենք ենք հոգում՝ փոքրիկ շնորհակալություն, որ կլինեք մեր կողքին։","DiliJazz предлагает нашим гостям специальную цену, а часть стоимости мы берём на себя — маленькое спасибо за то, что будете праздновать вместе с нами.",,index.html
+stay.rateh,stay,Your special wedding night rate at DiliJazz,Հատուկ գին՝ DiliJazz-ում գիշերակացի համար,Ваша специальная цена за ночь свадьбы в DiliJazz,,index.html
+stay.rateoff,stay,"<span data-var=""hotelDiscount"">30%</span> <span class=""rate__off"">off</span>","<span data-var=""hotelDiscount"">30%</span> <span class=""rate__off"">զեղչ</span>","<span class=""rate__off"">скидка</span> <span data-var=""hotelDiscount"">30%</span>",YES - keep the tags,index.html
+stay.ratep,stay,"DiliJazz is offering our guests a special rate, and we’re covering part of the cost ourselves — a little thank-you for being there to celebrate with us.","DiliJazz-ը մեր հյուրերին կառաջարկի հատուկ գին, բացի դրանից մենք կհոգանք ձեր ծախսի մի մասը՝ որպես փոքրիկ շնորհակալություն ձեր ներկայության համար։","DiliJazz предлагает нашим гостям специальную цену, а часть стоимости мы берём на себя — маленькое спасибо за то, что будете праздновать вместе с нами.",,index.html
 stay.extralabel,stay,More time together,Ավելի շատ ժամանակ միասին,Больше времени вместе,,index.html
-stay.extrap,stay,"Staying longer? DiliJazz is giving <strong>our guests <span data-var=""extraNightsDiscount"">15%</span> off</strong> the nights before and after the wedding — so nobody has to rush off. More time together, longer nights, and the kind of conversations a wedding day never quite leaves room for.","Մնո՞ւմ եք ավելի երկար։ DiliJazz-ը <strong>մեր հյուրերին տալիս է <span data-var=""extraNightsDiscount"">15%</span> զեղչ</strong> հարսանիքից առաջ և հետո գիշերների համար՝ որ ոչ ոք շտապելու կարիք չունենա։ Ավելի շատ ժամանակ միասին, ավելի երկար երեկոներ և այն զրույցները, որոնց համար հարսանիքի օրը երբեք ժամանակ չի հերիքում։","Останетесь подольше? DiliJazz даёт <strong>нашим гостям скидку <span data-var=""extraNightsDiscount"">15%</span></strong> на ночи до и после свадьбы — чтобы никому не пришлось спешить. Больше времени вместе, долгие вечера и те разговоры, для которых в день свадьбы никогда не хватает времени.",YES - keep the tags,index.html
+stay.extrap,stay,"Staying longer? DiliJazz is giving <strong>our guests <span data-var=""extraNightsDiscount"">15%</span> off</strong> the nights before and after the wedding — so nobody has to rush off. More time together, longer nights, and the kind of conversations a wedding day never quite leaves room for.","Եթե ցանկություն ունեք DiliJazz-ում ավելի երկար ժամանակ անցկացնել, ապա կարող եք օգտվել <strong><span data-var=""extraNightsDiscount"">15%</span> զեղչից</strong> հարսանիքին նախորդող և հաջորդող գիշերների ամրագրման համար։ Արդյունքում շտապելու կարիք չի լինի, ավելի շատ ժամանակ կանցկացնենք և երկար երեկոներ կունենանք միասին։","Останетесь подольше? DiliJazz даёт <strong>нашим гостям скидку <span data-var=""extraNightsDiscount"">15%</span></strong> на ночи до и после свадьбы — чтобы никому не пришлось спешить. Больше времени вместе, долгие вечера и те разговоры, для которых в день свадьбы никогда не хватает времени.",YES - keep the tags,index.html
 stay.bookh,stay,How to Book,Ինչպես ամրագրել,Как забронировать,,index.html
-stay.s1,stay,Choose your preferred room on the DiliJazz website.,Ընտրեք ձեր նախընտրած համարը DiliJazz-ի կայքում։,Выберите номер на сайте DiliJazz.,,index.html
+stay.s1,stay,Choose your preferred room on the DiliJazz website.,Ընտրեք ձեր նախընտրած սենյակը DiliJazz-ի կայքում։,Выберите номер на сайте DiliJazz.,,index.html
 stay.s2,stay,Call DiliJazz at,Զանգահարեք DiliJazz՝,Позвоните в DiliJazz по номеру,,index.html
 stay.s2b,stay,"From abroad, you can call or message them on WhatsApp at",Արտերկրից կարող եք զանգահարել կամ գրել WhatsApp-ով՝,Из-за границы можно позвонить или написать в WhatsApp на номер,,index.html
-stay.s3,stay,Mention <strong>Gohar &amp; Roman’s wedding</strong> to receive the special rate — on the wedding night and on any nights before or after.,"Նշեք <strong>Գոհարի և Ռոմանի հարսանիքը</strong>՝ հատուկ գինը ստանալու համար. և՛ հարսանիքի գիշերվա, և՛ դրանից առաջ ու հետո ցանկացած գիշերվա համար։","Упомяните <strong>свадьбу Гоар и Романа</strong>, чтобы получить специальную цену — и за ночь свадьбы, и за любые ночи до или после.",YES - keep the tags,index.html
-stay.rooms,stay,Explore rooms,Դիտել համարները,Посмотреть номера,,index.html
-stay.pet,stay,<strong>Bringing a pet?</strong> Pet-friendly rooms are available in selected room categories. Please mention your pet when calling the hotel.,<strong>Գալի՞ս եք ընտանի կենդանու հետ։</strong> Որոշ կարգի համարներում կենդանիների հետ կարելի է։ Խնդրում ենք նշել այդ մասին հյուրանոց զանգահարելիս։,"<strong>Приедете с питомцем?</strong> В некоторых категориях номеров можно с животными. Пожалуйста, скажите об этом при звонке в отель.",YES - keep the tags,index.html
+stay.s3,stay,"Mention <strong>Gohar &amp; Roman’s wedding</strong> to receive the special rate — on the wedding night (<span data-var=""hotelDiscount"">30%</span>) and on any nights before or after (<span data-var=""extraNightsDiscount"">15%</span>).","Նշեք <strong>Գոհարի և Ռոմանի հարսանիքը</strong>՝ հատուկ գինը ստանալու համար. և՛ հարսանիքի գիշերվա (<span data-var=""hotelDiscount"">30%</span>), և՛ դրանից առաջ ու հետո ցանկացած գիշերվա համար (<span data-var=""extraNightsDiscount"">15%</span>)։","Упомяните <strong>свадьбу Гоар и Романа</strong>, чтобы получить специальную цену — и за ночь свадьбы (<span data-var=""hotelDiscount"">30%</span>), и за любые ночи до или после (<span data-var=""extraNightsDiscount"">15%</span>).",YES - keep the tags,index.html
+stay.rooms,stay,Explore rooms,Ընտրել սենյակ,Посмотреть номера,,index.html
+stay.pet,stay,<strong>Bringing a pet?</strong> Pet-friendly rooms are available in selected room categories. Please mention your pet when calling the hotel.,"<strong>Գալի՞ս եք ընտանի կենդանու հետ։</strong> Հյուրանոցում առկա են սենյակներ, որտեղ կարելի է բնակվել ընտանի կենդանու հետ։ Խնդրում ենք նշել այդ մասին հյուրանոց զանգահարելիս։","<strong>Приедете с питомцем?</strong> В некоторых категориях номеров можно с животными. Пожалуйста, скажите об этом при звонке в отель.",YES - keep the tags,index.html
 wear.label,wear,What to wear,Ինչ հագնել,Дресс-код,,index.html
 wear.h,wear,Dress to Impress the Forest,Գեղեցիկ և հարմարավետ,Нарядно и удобно,,index.html
 wear.sub,wear,No color restrictions,Գույնի սահմանափակումներ չկան,Без ограничений по цвету,,index.html
@@ -72,7 +72,7 @@ f.hotel.maybe,rsvp,Not sure yet,Դեռ որոշված չէ,Пока не зна�
 f.note,rsvp,Leave us a note,Թողեք մեզ հաղորդագրություն,Оставьте нам сообщение,,index.html
 f.required,rsvp,Required field,Պարտադիր դաշտ,Обязательное поле,,index.html
 f.send,rsvp,Register,Գրանցվել,Зарегистрироваться,,index.html
-close.p1,closing,"Come ready to celebrate, dance, laugh and stay a little longer than planned.","Եկեք պատրաստ՝ տոնելու, պարելու, ծիծաղելու և մնալու մի փոքր ավելի երկար, քան ծրագրել էիք։","Приезжайте праздновать, танцевать, смеяться — и остаться чуть дольше, чем планировали.",,index.html
+close.p1,closing,"Come ready to celebrate, dance, laugh and stay a little longer than planned.","Եկեք պատրաստ՝ տոնելու, պարելու, ուրախանալու և մնալու մի փոքր ավելի երկար, քան ծրագրել էիք։","Приезжайте праздновать, танцевать, смеяться — и остаться чуть дольше, чем планировали.",,index.html
 close.p2,closing,"We can’t wait to have you there with us! <span class=""heart"" aria-hidden=""true"">♥</span>","Անհամբեր սպասում ենք ձեզ։ <span class=""heart"" aria-hidden=""true"">♥</span>","Не можем дождаться встречи с вами! <span class=""heart"" aria-hidden=""true"">♥</span>",YES - keep the tags,index.html
 js.sending,form,Sending…,Ուղարկվում է…,Отправляем…,,site.js (not yet wired)
 js.error,form,"Sorry, something went wrong. Please try again.","Կներեք, ինչ-որ բան սխալ գնաց։ Խնդրում ենք նորից փորձել։","Извините, что-то пошло не так. Пожалуйста, попробуйте ещё раз.",,site.js (not yet wired)

@@ -394,18 +394,34 @@ function plural(n, stem, fallbackOne, fallbackOther) {
   return t(stem + '.' + form, n === 1 ? fallbackOne : fallbackOther);
 }
 
+/* Whole calendar days from today to the wedding day.
+
+   Measuring to the instant instead meant the figure turned over at 16:30
+   rather than at midnight, and Math.ceil rounded every part-day up: it read
+   one too high for most of the day, and showed the same number two days
+   running if you looked after 16:30 one day and before 16:30 the next.
+
+   The wedding's own calendar date is taken from the configured string rather
+   than by converting the instant into the guest's timezone, so a guest far
+   enough east cannot land on the 25th. */
+function daysUntilWedding(now) {
+  const parts = String(CONFIG.weddingISO).slice(0, 10).split('-');
+  if (parts.length !== 3) return NaN;
+  const target = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+  if (isNaN(target)) return NaN;
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  // round rather than floor: the clocks change by an hour twice a year
+  return Math.round((target - today) / 86400000);
+}
+
 function renderCountdown() {
   const box = document.getElementById('stat-days');
   const num = document.getElementById('days-num');
   const word = document.getElementById('days-word');
   if (!box || !num) return;
 
-  const target = new Date(CONFIG.weddingISO);
-  if (isNaN(target)) return;
-
-  // whole days between today and the wedding, in the guest's own timezone
-  const msPerDay = 86400000;
-  const days = Math.ceil((target - new Date()) / msPerDay);
+  const days = daysUntilWedding(new Date());
+  if (isNaN(days)) return;
 
   const prefix = document.getElementById('days-prefix');
 
@@ -520,9 +536,21 @@ function syncBannerHeight() {
   if (h) document.documentElement.style.setProperty('--banner-h', h + 'px');
 }
 
+/* A page left open overnight should tick over with the date, not an hour
+   later, so aim at the next local midnight and re-aim after each one. */
+function scheduleMidnightRefresh() {
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5);
+  setTimeout(function () {
+    renderCountdown();
+    scheduleMidnightRefresh();
+  }, midnight - now);
+}
+
 function initBanner() {
   renderCountdown();
-  // the day can roll over on a page left open overnight
+  scheduleMidnightRefresh();
+  // a safety net, in case a sleeping laptop swallows the midnight timer
   setInterval(renderCountdown, 60 * 60 * 1000);
   renderGuestCount();
 

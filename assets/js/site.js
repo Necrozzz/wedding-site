@@ -533,7 +533,9 @@ async function renderGuestCount() {
   if (data === null) { renderWishes(null); return; }   // offline: keep what was remembered
 
   renderWishes(data.notes);
-  lastGuestCount = data.guests;
+  lastGuestCount = (Date.now() < guestFloorUntil)
+    ? Math.max(data.guests, guestFloor)   // the caches may still be a minute behind
+    : data.guests;
   guestCountKnown = true;
   cacheGuestCount(n);
   paintGuestCount();
@@ -541,6 +543,8 @@ async function renderGuestCount() {
 
 let lastGuestCount = 0;
 let guestCountKnown = false;   // zero is a real answer, so track it separately
+let guestFloor = 0;            // set by a registration made on this page
+let guestFloorUntil = 0;
 
 function paintGuestCount() {
   const box = document.getElementById('stat-guests');
@@ -787,6 +791,42 @@ function initWishes() {
   });
 }
 
+/* Someone has just registered on this page. Count them immediately, then read
+   the real total back - once past the CDN, and again after the script's own
+   minute of caching has lapsed. */
+function countNewRegistration(guests) {
+  const n = parseInt(guests, 10);
+  if (isNaN(n) || n < 1) return;
+
+  lastGuestCount = (guestCountKnown ? lastGuestCount : 0) + n;
+  guestCountKnown = true;
+  guestFloor = lastGuestCount;
+  guestFloorUntil = Date.now() + 2 * 60 * 1000;
+  cacheGuestCount(lastGuestCount);
+  paintGuestCount();
+
+  // ?fresh= is what gets us past the CDN copy; the script's own cache needs
+  // the second read, after its minute is up
+  setTimeout(function () { refreshGuestCount(); }, 1500);
+  setTimeout(function () { refreshGuestCount(); }, 65 * 1000);
+}
+
+async function refreshGuestCount() {
+  const url = CONFIG.countEndpoint +
+    (CONFIG.countEndpoint.indexOf('?') === -1 ? '?' : '&') + 'fresh=' + Date.now();
+  let data = await fetchStats(url, 12000);
+  if (data === null) data = await fetchStats(CONFIG.endpoint, 12000);
+  if (data === null) return;
+
+  renderWishes(data.notes);
+  lastGuestCount = (Date.now() < guestFloorUntil)
+    ? Math.max(data.guests, guestFloor)
+    : data.guests;
+  guestCountKnown = true;
+  cacheGuestCount(lastGuestCount);
+  paintGuestCount();
+}
+
 function initBanner() {
   renderCountdown();
   scheduleMidnightRefresh();
@@ -931,6 +971,10 @@ function initRSVP() {
       const data = await res.json();
       if (data.result !== 'success') throw new Error(data.error || 'Something went wrong');
 
+      // a "No" does not add to the total the sheet reports
+      if (attending === 'Yes') {
+        countNewRegistration(params.get('totalGuests'));
+      }
       showThanks(card, attending === 'Yes');
     } catch (err) {
       statusEl.className = 'error';

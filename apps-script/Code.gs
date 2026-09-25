@@ -71,6 +71,9 @@ function doPost(e) {
       // Non-fatal: the RSVP is already saved even if email delivery fails.
     }
 
+    // the total has changed, so the cached copy is wrong now
+    try { CacheService.getScriptCache().remove('counts'); } catch (err) {}
+
     try {
       const coming = String(params.attending || '') === 'Yes';
       notifyTelegram(

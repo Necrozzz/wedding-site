@@ -32,7 +32,7 @@ function json(body, headers) {
 export default async function guests() {
   try {
     // Don't let a sleeping script hold the edge request open. 10s was too
-     // tight - a cold Apps Script call was measured at 10.5s and tripped it.
+    // tight - a cold Apps Script call was measured at 10.5s and tripped it.
     const abort = new AbortController();
     const timer = setTimeout(() => abort.abort(), 18000);
 

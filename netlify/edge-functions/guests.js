@@ -18,9 +18,16 @@
 const UPSTREAM =
   'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
 
-// how long the CDN may serve a stored answer, and how long it may keep serving
-// a stale one while it fetches a fresh one in the background
-const CDN_CACHE = 'public, s-maxage=60, stale-while-revalidate=600';
+/* How long the CDN may serve a stored answer, and how long it may keep serving
+   a stale one while it fetches a fresh one behind the request.
+
+   The stale window was ten minutes, which meant that after any quiet spell
+   there was nothing left to serve and the next visitor waited on Apps Script
+   waking up - measured at 6s, and the ticker stayed empty until it answered.
+   A day-long stale window means only the very first request ever blocks;
+   everyone after that is served instantly and the copy is refreshed behind
+   them, so it is never more than a minute behind in practice. */
+const CDN_CACHE = 'public, s-maxage=60, stale-while-revalidate=86400';
 
 function json(body, headers) {
   return new Response(JSON.stringify(body), {

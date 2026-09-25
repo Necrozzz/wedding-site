@@ -291,6 +291,7 @@ function applyLanguage(lang) {
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;
+  currentLang = lang;
 
   const dict = I18N[lang] || {};
   document.documentElement.lang = HTML_LANG[lang] || 'en';
@@ -425,20 +426,69 @@ function renderCountdown() {
 
 /* How many guests have said yes. Read-only, and the banner simply stays
    quiet if the request fails - it must never block the page. */
+const GUEST_CACHE_KEY = 'gr-guests';
+// beyond a fortnight a remembered figure is more misleading than useful
+const GUEST_CACHE_MAX_AGE = 14 * 24 * 60 * 60 * 1000;
+
+function readCachedGuestCount() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(GUEST_CACHE_KEY));
+    if (!saved || typeof saved.n !== 'number') return null;
+    if (Date.now() - saved.at > GUEST_CACHE_MAX_AGE) return null;
+    return saved.n;
+  } catch (e) { return null; }
+}
+
+function cacheGuestCount(n) {
+  try {
+    localStorage.setItem(GUEST_CACHE_KEY, JSON.stringify({ n: n, at: Date.now() }));
+  } catch (e) { /* private mode */ }
+}
+
+/* One call, with a ceiling on how long it may hang. Returns null rather than
+   throwing, so the caller can simply try again. */
+async function fetchGuestCount(timeoutMs) {
+  const ctrl = ('AbortController' in window) ? new AbortController() : null;
+  const timer = ctrl ? setTimeout(function () { ctrl.abort(); }, timeoutMs) : null;
+  try {
+    const res = await fetch(CONFIG.endpoint, ctrl ? { signal: ctrl.signal } : undefined);
+    const data = await res.json();
+    if (data.status !== 'ok' || typeof data.guests !== 'number') return null;
+    return data.guests;
+  } catch (e) {
+    return null;
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
+
+/* How many guests have said yes. Apps Script is slow to wake - measured at
+   1.3s to 10.5s - so the remembered figure goes up immediately and the request
+   only corrects it. Read-only, and the banner keeps whatever it has if the
+   request fails: it must never block the page. */
 async function renderGuestCount() {
   const box = document.getElementById('stat-guests');
-  const num = document.getElementById('guests-num');
-  const word = document.getElementById('guests-word');
-  if (!box || !num) return;
+  if (!box) return;
 
-  try {
-    const res = await fetch(CONFIG.endpoint, { method: 'GET' });
-    const data = await res.json();
-    if (data.status !== 'ok' || typeof data.guests !== 'number') return;
-    lastGuestCount = data.guests;
+  const cached = readCachedGuestCount();
+  if (cached !== null) {
+    lastGuestCount = cached;
     guestCountKnown = true;
     paintGuestCount();
-  } catch (e) { /* offline, or the script is asleep: show nothing */ }
+  }
+
+  let n = await fetchGuestCount(12000);
+  if (n === null) {
+    // the script sleeps; give it a moment and ask once more
+    await new Promise(function (r) { setTimeout(r, 2000); });
+    n = await fetchGuestCount(12000);
+  }
+  if (n === null) return;   // offline: keep whatever was remembered
+
+  lastGuestCount = n;
+  guestCountKnown = true;
+  cacheGuestCount(n);
+  paintGuestCount();
 }
 
 let lastGuestCount = 0;

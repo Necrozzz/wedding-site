@@ -31,9 +31,10 @@ function json(body, headers) {
 
 export default async function guests() {
   try {
-    // don't let a sleeping script hold the edge request open
+    // Don't let a sleeping script hold the edge request open. 10s was too
+     // tight - a cold Apps Script call was measured at 10.5s and tripped it.
     const abort = new AbortController();
-    const timer = setTimeout(() => abort.abort(), 10000);
+    const timer = setTimeout(() => abort.abort(), 18000);
 
     let data;
     try {
@@ -60,13 +61,15 @@ export default async function guests() {
     );
   } catch (err) {
     // Stay a 200 with an error body: the page keeps the figure it already has
-    // and simply tries again, rather than treating this as a broken request.
-    // Cached briefly so a wobble upstream cannot become a stampede.
+    // and falls back to Apps Script directly, rather than treating this as a
+    // broken request. Never cached - pinning a failure at the edge would hand
+    // it to everyone who arrives in the next few seconds, and this site does
+    // not have the traffic for a stampede to matter.
     return json(
       { status: 'error' },
       {
         'cache-control': 'no-store',
-        'netlify-cdn-cache-control': 'public, s-maxage=10',
+        'netlify-cdn-cache-control': 'no-store',
       }
     );
   }

@@ -38,7 +38,11 @@ const CONFIG = {
   mapUrl:           'https://www.google.com/maps/search/?api=1&query=DiliJazz+Hotel+%26+Restaurant+Dilijan+Armenia',
 
   // --- backend ---------------------------------------------------
-  endpoint:         'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec'
+  endpoint:         'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec',
+  // the guest count comes through Netlify's CDN, which asks Apps Script at
+  // most once a minute. Registrations still post straight to the endpoint
+  // above: a write should not be cached or proxied.
+  countEndpoint:    '/api/guests'
 };
 
 /* -----------------------------------------------------------------
@@ -463,11 +467,11 @@ function cacheGuestCount(n) {
 
 /* One call, with a ceiling on how long it may hang. Returns null rather than
    throwing, so the caller can simply try again. */
-async function fetchGuestCount(timeoutMs) {
+async function fetchGuestCount(url, timeoutMs) {
   const ctrl = ('AbortController' in window) ? new AbortController() : null;
   const timer = ctrl ? setTimeout(function () { ctrl.abort(); }, timeoutMs) : null;
   try {
-    const res = await fetch(CONFIG.endpoint, ctrl ? { signal: ctrl.signal } : undefined);
+    const res = await fetch(url, ctrl ? { signal: ctrl.signal } : undefined);
     const data = await res.json();
     if (data.status !== 'ok' || typeof data.guests !== 'number') return null;
     return data.guests;
@@ -493,11 +497,16 @@ async function renderGuestCount() {
     paintGuestCount();
   }
 
-  let n = await fetchGuestCount(12000);
+  // the edge copy answers in milliseconds; it only misses on a cold cache
+  let n = await fetchGuestCount(CONFIG.countEndpoint, 6000);
+  if (n === null) {
+    // no edge function (local preview) or it could not reach Google: ask direct
+    n = await fetchGuestCount(CONFIG.endpoint, 12000);
+  }
   if (n === null) {
     // the script sleeps; give it a moment and ask once more
     await new Promise(function (r) { setTimeout(r, 2000); });
-    n = await fetchGuestCount(12000);
+    n = await fetchGuestCount(CONFIG.endpoint, 12000);
   }
   if (n === null) return;   // offline: keep whatever was remembered
 

@@ -155,7 +155,7 @@ const I18N = {
     "close.p1": "Приезжайте праздновать, веселиться и танцевать — и остаться чуть дольше, чем планировали.",
     "close.p2": "Не можем дождаться встречи с вами! <span class=\"heart\" aria-hidden=\"true\">♥</span>",
     "cover.tagline": "Новая глава вместе",
-    "det.a1": "Приветственный приём",
+    "det.a1": "Встреча гостей и фуршет",
     "det.a2": "Торжественная церемония",
     "det.a3": "Ужин и вечеринка",
     "det.a4": "Афтерпати",
@@ -279,6 +279,7 @@ function t(key, fallback) {
 
 function applyLanguage(lang) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
+  currentLang = lang;
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;

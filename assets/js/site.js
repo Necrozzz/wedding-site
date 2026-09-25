@@ -233,11 +233,11 @@ const I18N = {
     "stay.s1": "Выберите номер на сайте DiliJazz.",
     "stay.s2": "Позвоните в DiliJazz по номеру",
     "stay.s2b": "Из-за границы можно позвонить или написать в WhatsApp на номер",
-    "stay.s3": "Упомяните <strong>свадьбу Гоар и Романа</strong>, чтобы получить специальную цену — и за ночь свадьбы (<span data-var=\"hotelDiscount\">30%</span>), и за любые ночи до или после (<span data-var=\"extraNightsDiscount\">15%</span>).",
+    "stay.s3": "Скажите, что вы на <strong>свадьбу Гоар и Романа</strong>, чтобы получить скидку в день события (<span data-var=\"hotelDiscount\">30%</span>), а также на дни до и после (<span data-var=\"extraNightsDiscount\">15%</span>).",
     "wear.h": "Нарядно и удобно",
     "wear.label": "Дресс-код",
     "wear.p1": "Без ограничений по цвету — наденьте то, в чём вам лучше всего.",
-    "wear.p2": "Мы проведём немного времени на улице, в саду отеля и на природе, — учтите это, выбирая обувь и что-нибудь потеплее.",
+    "wear.p2": "Мы немного побудем на свежем воздухе — на зелёной территории отеля, среди деревьев, у реки и мостиков. Имейте это в виду, выбирая обувь, и захватите что-нибудь потеплее.",
     "wear.sub": "Без ограничений по цвету",
   }
 };
@@ -279,6 +279,7 @@ function t(key, fallback) {
 
 function applyLanguage(lang) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
+  currentLang = lang;
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;

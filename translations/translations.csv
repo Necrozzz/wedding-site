@@ -7,7 +7,7 @@ nav.stay,topbar,Stay With Us,Մնացեք մեզ հետ,Останьтесь с 
 nav.wear,topbar,What to Wear,Ինչ հագնել,Дресс-код,,index.html
 nav.register,topbar,Register,Գրանցվել,Регистрация,,index.html
 nav.rsvp,topbar,Register,Գրանցվել,Регистрация,,index.html
-hero.title,hero,We’re<br>getting<br>married,Մենք<br>ամուսնանում<br>ենք,Мы<br>женимся,YES - keep the tags,index.html
+hero.title,hero,We’re<br>getting<br>married,Մենք<br>պսակվում<br>ենք,Мы<br>женимся,YES - keep the tags,index.html
 hero.sub,hero,And we would love to celebrate with you.,Եվ շատ ուրախ կլինենք այդ գեղեցիկ օրը տոնել ձեզ հետ։,И будем рады отпраздновать это вместе с вами.,,index.html
 cfg.weddingDateUpper,hero,"OCTOBER 24, 2026",2026 ՀՈԿՏԵՄԲԵՐԻ 24,24 ОКТЯБРЯ 2026,,index.html
 cfg.locationUpper,hero,"DILIJAN, ARMENIA","ԴԻԼԻՋԱՆ, ՀԱՅԱՍՏԱՆ","ДИЛИЖАН, АРМЕНИЯ",,index.html
@@ -82,6 +82,14 @@ js.thanks.no.h,form,We’ll miss you!,Կկարոտենք ձեզ։,Будем с�
 js.thanks.no.p,form,Thank you for letting us know.,"Շնորհակալություն, որ տեղեկացրիք։","Спасибо, что дали знать.",,site.js (not yet wired)
 cfg.weddingDate,general,"October 24, 2026",2026 թ. հոկտեմբերի 24,24 октября 2026,,site.js CONFIG (not yet wired)
 cfg.coupleName,"invitation, closing",Gohar &amp; Roman,Գոհար և Ռոման,Гоар и Роман,,index.html
+wishes.label,hero ticker,Wishes from our guests,Մեր հյուրերի մաղթանքները,Пожелания наших гостей,,site.js (screen readers)
+wish.placeholder,hero ticker,Leave a wish…,Թողեք ձեր մաղթանքը…,Оставьте пожелание…,,site.js (field hint)
+wish.name,hero ticker,Your name,Ձեր անունը,Ваше имя,,site.js (field hint)
+wish.send,hero ticker,Send a wish,Ուղարկել,Отправить,,site.js (button)
+wish.sending,hero ticker,Sending…,Ուղարկվում է…,Отправляем…,,site.js
+wish.thanks,hero ticker,Thank you! ♥,Շնորհակալություն։ ♥,Спасибо! ♥,,site.js
+wish.error,hero ticker,Could not send. Please try again.,Չհաջողվեց ուղարկել։ Փորձեք կրկին։,Не отправилось. Попробуйте ещё раз.,,site.js
+wish.someone,hero ticker,A guest,Հյուր,Гость,,site.js (no name given)
 stat.daysPrefix,banner,,Մնացել է՝,Осталось:,,site.js (blank in English)
 stat.guestsPrefix,banner,,Գրանցվել է՝,Зарегистрировано:,,site.js (blank in English)
 stat.days.one,banner,day to go,օր,день,,site.js (plural form)

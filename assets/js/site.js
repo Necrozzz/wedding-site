@@ -42,7 +42,8 @@ const CONFIG = {
   // the guest count comes through Netlify's CDN, which asks Apps Script at
   // most once a minute. Registrations still post straight to the endpoint
   // above: a write should not be cached or proxied.
-  countEndpoint:    '/api/guests'
+  countEndpoint:    '/api/guests',
+  wishesLive:       true
 };
 
 /* -----------------------------------------------------------------
@@ -92,7 +93,7 @@ const I18N = {
     "f.side.groom": "Փեսա",
     "hero.cta": "Բացել հրավերը",
     "hero.sub": "Եվ շատ ուրախ կլինենք այդ գեղեցիկ օրը տոնել ձեզ հետ։",
-    "hero.title": "Մենք<br>ամուսնանում<br>ենք",
+    "hero.title": "Մենք<br>պսակվում<br>ենք",
     "hotel.p1": "Դիլիջանի անտառներում, գետի մոտ, DiliJazz-ը հարմարավետ վայր է՝ շրջապատված բնությամբ։",
     "hotel.p2": "Հյուրանոցում կան <strong>սպա, փակ լողավազան, սաունա, ջակուզի և գեղեցիկ սեփական այգիներ</strong>՝ բոլորը հյուրանոցի տարածքում։",
     "hotel.p3": "Մեր հարսանիքի օրը հյուրանոցը <strong>կընդունի միայն մեր հյուրերին. այդ օրը այլ հյուրեր չեն լինի։</strong>",
@@ -147,6 +148,14 @@ const I18N = {
     "wear.p1": "Գույնի սահմանափակումներ չկան՝ հագեք այն, ինչում ձեզ լավագույնս եք զգում։",
     "wear.p2": "Մի փոքր ժամանակ կանցկացնենք դրսում՝ հյուրանոցի այգում և բնության մեջ, հաշվի առեք դա կոշիկներն ու տաք հագուստն ընտրելիս։",
     "wear.sub": "Գույնի սահմանափակումներ չկան",
+    "wish.error": "Չհաջողվեց ուղարկել։ Փորձեք կրկին։",
+    "wish.name": "Ձեր անունը",
+    "wish.placeholder": "Թողեք ձեր մաղթանքը…",
+    "wish.send": "Ուղարկել",
+    "wish.sending": "Ուղարկվում է…",
+    "wish.someone": "Հյուր",
+    "wish.thanks": "Շնորհակալություն։ ♥",
+    "wishes.label": "Մեր հյուրերի մաղթանքները",
   },
   ru: {
     "break.dilijan": "Дилижан · октябрь",
@@ -243,6 +252,14 @@ const I18N = {
     "wear.p1": "Без ограничений по цвету — наденьте то, в чём вам лучше всего.",
     "wear.p2": "Мы немного побудем на свежем воздухе — на зелёной территории отеля, среди деревьев, у реки и мостиков. Имейте это в виду, выбирая обувь, и захватите что-нибудь потеплее.",
     "wear.sub": "Без ограничений по цвету",
+    "wish.error": "Не отправилось. Попробуйте ещё раз.",
+    "wish.name": "Ваше имя",
+    "wish.placeholder": "Оставьте пожелание…",
+    "wish.send": "Отправить",
+    "wish.sending": "Отправляем…",
+    "wish.someone": "Гость",
+    "wish.thanks": "Спасибо! ♥",
+    "wishes.label": "Пожелания наших гостей",
   }
 };
 
@@ -296,6 +313,10 @@ function applyLanguage(lang) {
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;
+  currentLang = lang;
+  currentLang = lang;
+  currentLang = lang;
+  currentLang = lang;
 
   const dict = I18N[lang] || {};
   document.documentElement.lang = HTML_LANG[lang] || 'en';
@@ -327,6 +348,7 @@ function applyLanguage(lang) {
   if (typeof renderCountdown === 'function') { renderCountdown(); paintGuestCount(); }
   // a longer language makes a taller bar; re-measure before the hero paints
   if (typeof syncBannerHeight === 'function') requestAnimationFrame(syncBannerHeight);
+  if (typeof labelWishes === 'function') labelWishes();
 
   try { localStorage.setItem('gr-lang', lang); } catch (e) { /* private mode */ }
 }
@@ -467,14 +489,14 @@ function cacheGuestCount(n) {
 
 /* One call, with a ceiling on how long it may hang. Returns null rather than
    throwing, so the caller can simply try again. */
-async function fetchGuestCount(url, timeoutMs) {
+async function fetchStats(url, timeoutMs) {
   const ctrl = ('AbortController' in window) ? new AbortController() : null;
   const timer = ctrl ? setTimeout(function () { ctrl.abort(); }, timeoutMs) : null;
   try {
     const res = await fetch(url, ctrl ? { signal: ctrl.signal } : undefined);
     const data = await res.json();
     if (data.status !== 'ok' || typeof data.guests !== 'number') return null;
-    return data.guests;
+    return data;
   } catch (e) {
     return null;
   } finally {
@@ -498,19 +520,20 @@ async function renderGuestCount() {
   }
 
   // the edge copy answers in milliseconds; it only misses on a cold cache
-  let n = await fetchGuestCount(CONFIG.countEndpoint, 6000);
-  if (n === null) {
+  let data = await fetchStats(CONFIG.countEndpoint, 6000);
+  if (data === null) {
     // no edge function (local preview) or it could not reach Google: ask direct
-    n = await fetchGuestCount(CONFIG.endpoint, 12000);
+    data = await fetchStats(CONFIG.endpoint, 12000);
   }
-  if (n === null) {
+  if (data === null) {
     // the script sleeps; give it a moment and ask once more
     await new Promise(function (r) { setTimeout(r, 2000); });
-    n = await fetchGuestCount(CONFIG.endpoint, 12000);
+    data = await fetchStats(CONFIG.endpoint, 12000);
   }
-  if (n === null) return;   // offline: keep whatever was remembered
+  if (data === null) { renderWishes(null); return; }   // offline: keep what was remembered
 
-  lastGuestCount = n;
+  renderWishes(data.notes);
+  lastGuestCount = data.guests;
   guestCountKnown = true;
   cacheGuestCount(n);
   paintGuestCount();
@@ -554,6 +577,214 @@ function scheduleMidnightRefresh() {
     renderCountdown();
     scheduleMidnightRefresh();
   }, midnight - now);
+}
+
+/* ------------------------------------------------------------ wishes -- */
+
+/* Only a first name is shown. The server sends only a first name too - this
+   is the second line of defence, not the first. */
+function firstName(full) {
+  const s = String(full || '').trim();
+  if (!s) return '';
+  return s.split(/[\s,&/]+/)[0].slice(0, 24);
+}
+
+
+
+const NOTES_CACHE_KEY = 'gr-notes';
+
+function readCachedNotes() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(NOTES_CACHE_KEY));
+    if (!saved || !Array.isArray(saved.list)) return null;
+    if (Date.now() - saved.at > GUEST_CACHE_MAX_AGE) return null;
+    return saved.list;
+  } catch (e) { return null; }
+}
+
+function cacheNotes(list) {
+  try {
+    localStorage.setItem(NOTES_CACHE_KEY, JSON.stringify({ list: list, at: Date.now() }));
+  } catch (e) { /* private mode */ }
+}
+
+let wishesShown = [];
+
+/* "Boooo", "Ku-ku", "pupipu" - asides to us in the registration form, not
+   wishes for the page. One short word alone is the tell; anything a dozen
+   characters long, or three words, is left alone. This is applied only to
+   registration notes: a wish typed into the form is deliberate. */
+/* Registration notes are shown unsigned, so a signature typed inside the text
+   would slip past that: "Vsem chmoki! - Dmitry Lyubim vas! - Viktoria" should
+   read as the words alone. Only a dash followed by one capitalised word goes -
+   nothing mid-sentence, and never from a wish left through the form. */
+function stripSignature(text) {
+  return String(text || '')
+    .replace(/\s*[-–—]\s*[A-ZА-ЯЁԱ-Ֆ][^\s]{1,20}(?=\s|$)/g, '')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+}
+
+function isSubstantial(text) {
+  const t = String(text || '').trim();
+  if (!t) return false;
+  return t.length >= 12 || t.split(/\s+/).length >= 3;
+}
+
+function wishItem(note) {
+  const li = document.createElement('li');
+  li.className = 'wishes__item';
+  const p = document.createElement('p');
+  p.className = 'wishes__text';
+  p.textContent = note.text;              // textContent: guests' words are data
+  li.appendChild(p);
+  // Only wishes left through the form are signed. What guests wrote when they
+  // registered was written to us, not to the page, so it stays unattributed.
+  if (note.name) {
+    const by = document.createElement('p');
+    by.className = 'wishes__by';
+    by.textContent = '\u2014 ' + firstName(note.name);
+    li.appendChild(by);
+  }
+  return li;
+}
+
+/* Paint the track twice and slide it by exactly half its height, so the loop
+   rejoins itself without a seam. */
+function paintWishes() {
+  const track = document.getElementById('wishes-track');
+  const box = document.getElementById('wishes');
+  if (!track || !box) return;
+
+  /* With nothing to show, the frame goes but the form stays: hiding the whole
+     panel would mean nobody could leave the first wish. */
+  const frame = box.querySelector('.wishes__frame');
+  if (!wishesShown.length) {
+    track.innerHTML = '';
+    if (frame) frame.hidden = true;
+    box.hidden = !CONFIG.wishesLive;
+    return;
+  }
+  if (frame) frame.hidden = false;
+
+  track.innerHTML = '';
+  for (let pass = 0; pass < 2; pass++) {
+    wishesShown.forEach(function (n) { track.appendChild(wishItem(n)); });
+  }
+  box.hidden = false;
+
+  requestAnimationFrame(function () {
+    // Four notes at a time, whatever length they are: a fixed height showed
+    // six short ones. Measure the first four and make the frame that tall,
+    // within limits so one rambling note cannot swallow the hero.
+    const frame = box.querySelector('.wishes__frame');
+    const items = track.querySelectorAll('.wishes__item');
+    if (frame && items.length) {
+      const show = Math.min(4, items.length);
+      let tall = 0;
+      for (let i = 0; i < show; i++) {
+        tall += items[i].getBoundingClientRect().height;
+      }
+      const gaps = parseFloat(getComputedStyle(items[0]).marginBottom) || 0;
+      const pad = parseFloat(getComputedStyle(frame).paddingTop) || 0;
+      const wanted = tall + gaps * (show - 1) + pad * 2;
+      const cap = Math.round(Math.min(innerHeight * 0.36, 290));
+      frame.style.height = Math.round(Math.max(76, Math.min(wanted, cap))) + 'px';
+    }
+
+    // a steady reading pace rather than a fixed duration, so five notes do not
+    // race past and forty do not crawl
+    const full = track.scrollHeight / 2;
+    const seconds = Math.max(18, Math.round(full / 26));
+    track.style.setProperty('--wishes-duration', seconds + 's');
+  });
+}
+
+function renderWishes(notes) {
+  let list = Array.isArray(notes) ? notes : [];
+  list = list
+    .map(function (n) {
+      const who = firstName(n && n.name);
+      let body = String((n && n.text) || '').trim();
+      if (!who) body = stripSignature(body);   // unsigned notes carry no name
+      return { name: who, text: body };
+    })
+    // a name means it came from the form, and is kept whatever its length
+    .filter(function (n) { return n.text && (n.name || isSubstantial(n.text)); });
+
+  if (list.length) {
+    cacheNotes(list);
+  } else if (notes === null) {
+    // the request has not landed yet, or failed: show what we saw last time
+    list = readCachedNotes() || [];
+  }
+  wishesShown = list;
+  paintWishes();
+}
+
+function labelWishes() {
+  const box = document.getElementById('wishes');
+  const text = document.getElementById('wish-text');
+  const name = document.getElementById('wish-name');
+  const send = document.getElementById('wish-send');
+  if (box) box.setAttribute('aria-label', t('wishes.label', 'Wishes from our guests'));
+  if (text) text.placeholder = t('wish.placeholder', 'Leave a wish…');
+  if (name) name.placeholder = t('wish.name', 'Your name');
+  if (send) send.textContent = t('wish.send', 'Send a wish');
+}
+
+function initWishes() {
+  labelWishes();
+  renderWishes(null);   // whatever was remembered, on screen immediately
+  const form = document.getElementById('wish-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const text = document.getElementById('wish-text');
+    const name = document.getElementById('wish-name');
+    const send = document.getElementById('wish-send');
+    const status = document.getElementById('wish-status');
+
+    const wish = text.value.trim();
+    const who = firstName(name.value) || t('wish.someone', 'A guest');
+    if (!wish) { text.focus(); return; }
+
+    status.className = '';
+    status.textContent = t('wish.sending', 'Sending…');
+    send.disabled = true;
+
+    let ok = true;
+    if (CONFIG.wishesLive) {
+      try {
+        const body = new URLSearchParams();
+        body.append('type', 'wish');
+        body.append('name', who);
+        body.append('wish', wish);
+        const res = await fetch(CONFIG.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body
+        });
+        const data = await res.json();
+        ok = data.result === 'success';
+      } catch (err) { ok = false; }
+    }
+
+    if (!ok) {
+      status.className = 'error';
+      status.textContent = t('wish.error', 'Could not send. Please try again.');
+      send.disabled = false;
+      return;
+    }
+
+    // show it straight away rather than waiting for the next read
+    wishesShown.unshift({ name: who, text: wish });
+    paintWishes();
+    text.value = '';
+    status.textContent = t('wish.thanks', 'Thank you! ♥');
+    send.disabled = false;
+  });
 }
 
 function initBanner() {
@@ -741,6 +972,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCover();
   initChrome();
   initBanner();
+  initWishes();
   initMenu();
   initReveal();
   initRSVP();

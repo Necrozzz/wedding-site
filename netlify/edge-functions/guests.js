@@ -5,8 +5,11 @@
  * answers. This sits in front of it, so guests hit an edge node a few
  * milliseconds away and Google is asked at most once a minute.
  *
- * Only the number crosses this boundary. The upstream returns nothing else -
- * no names, no emails, no notes - and this passes through only `guests`.
+ * Two things cross this boundary and nothing else: the number, and the notes
+ * guests chose to write - a message, and a first name only when the wish came
+ * from the page's own form. The upstream sends
+ * no email, no attendance and no party size, and this re-builds the payload
+ * field by field rather than forwarding whatever arrives.
  *
  * Registrations do NOT go through here: the form still posts straight to Apps
  * Script, because a write should not be cached or proxied.
@@ -52,8 +55,20 @@ export default async function guests() {
       throw new Error('unexpected payload');
     }
 
+    // rebuilt field by field: whatever else upstream might ever add, only
+    // these three values can reach the page
+    const notes = Array.isArray(data.notes)
+      ? data.notes
+          .slice(0, 60)
+          .map((n) => ({
+            name: String((n && n.name) || '').slice(0, 24),
+            text: String((n && n.text) || '').slice(0, 200),
+          }))
+          .filter((n) => n.text)
+      : [];
+
     return json(
-      { status: 'ok', guests: data.guests },
+      { status: 'ok', guests: data.guests, notes },
       {
         'cache-control': 'public, max-age=30',
         'netlify-cdn-cache-control': CDN_CACHE,

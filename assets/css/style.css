@@ -1636,3 +1636,183 @@ html[lang="hy"] #submit-btn {
     font-size: 0.58rem;
   }
 }
+
+
+/* ============================================== HERO WISHES TICKER == */
+/* Guests' notes drift upward like closing credits and dissolve out of the
+   top of the frame. The frame keeps its own edges: the fade is masked onto
+   the scrolling viewport inside it, not onto the panel, or the panel would
+   fade away with the text. */
+
+.wishes {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  /* the form is its own panel, not a lid on the frame */
+  gap: 15px;
+  /* phone: the band beside the copy, over the lights */
+  /* Sized to clear the hero copy without altering it: the subtitle's longest
+     line reaches about 188px, so the panel starts to the right of that and
+     ends above the invitation button. */
+  top: 14%;
+  right: 3%;
+  width: 40%;
+  max-width: 168px;
+}
+.wishes[hidden] { display: none; }
+.wishes__frame[hidden] { display: none; }
+
+.wishes__frame {
+  height: clamp(84px, 12.5svh, 112px);
+  padding: 7px 9px;
+  border-radius: 4px;
+  background: rgba(252, 250, 245, 0.34);
+  border: 1px solid rgba(58, 46, 38, 0.10);
+  box-shadow: 0 2px 10px rgba(24, 36, 57, 0.10);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+.wishes__viewport {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  /* solid where notes enter at the bottom, gone by the top edge */
+  mask-image: linear-gradient(to top, transparent 0, #000 9%, #000 44%, transparent 97%);
+  -webkit-mask-image: linear-gradient(to top, transparent 0, #000 9%, #000 44%, transparent 97%);
+}
+
+.wishes__track {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: wishes-credits var(--wishes-duration, 48s) linear infinite;
+}
+/* margin, not gap: the loop jumps back by exactly half the track, and only
+   margins make both halves measure the same */
+.wishes__item { margin: 0 0 10px; }
+
+@keyframes wishes-credits {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+.wishes:hover .wishes__track,
+.wishes:focus-within .wishes__track { animation-play-state: paused; }
+
+.wishes__text {
+  margin: 0;
+  font: 300 clamp(9.5px, 2.5cqw, 11.5px)/1.32 var(--sans);
+  color: var(--espresso);
+}
+.wishes__by {
+  margin: 1px 0 0;
+  font: 400 clamp(8px, 2.1cqw, 9.5px)/1.2 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(48, 43, 39, .60);
+}
+
+/* ---- the form ------------------------------------------------------ */
+
+.wishes__form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 4px;
+  background: rgba(252, 250, 245, 0.34);
+  border: 1px solid rgba(58, 46, 38, 0.10);
+  box-shadow: 0 2px 10px rgba(24, 36, 57, 0.10);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+}
+
+/* input[type="text"] above is element+attribute, which outranks a plain
+   class: matched here so these fields can actually be small. Same size and
+   weight as the notes drifting past above them. */
+.wishes__form .wishes__input {
+  grid-column: 1 / -1;
+  min-width: 0;
+  padding: 3px 6px;
+  border: 1px solid rgba(58, 46, 38, 0.13);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.34);
+  font: 300 clamp(9.5px, 2.5cqw, 11.5px)/1.32 var(--sans);
+  color: var(--espresso);
+}
+.wishes__form .wishes__input::placeholder { color: rgba(48, 43, 39, .46); }
+.wishes__input--name { grid-column: 1 / -1; }
+
+
+.wishes__send {
+  grid-column: 2 / 3;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 3px;
+  background: rgba(156, 74, 47, 0.78);
+  color: #fff;
+  font: 400 clamp(8.5px, 2.1cqw, 9.5px)/1.2 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.wishes__send:disabled { opacity: .6; cursor: default; }
+
+.wishes__status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font: 300 clamp(9px, 2.2cqw, 10.5px)/1.3 var(--sans);
+  color: rgba(48, 43, 39, .60);
+}
+.wishes__status:empty { display: none; }
+.wishes__status.error { color: var(--rust, #9c4a2f); }
+
+/* On a phone the panel is about 180px wide: the name box and the button
+   cannot share a row without both being cut, so each field gets its own. */
+@media (max-width: 999px) {
+  .wishes__form { grid-template-columns: 1fr; gap: 4px; padding: 6px; }
+    .wishes__form .wishes__input,
+  .wishes__form .wishes__input--name { grid-column: 1 / -1; padding: 3px 6px; }
+  .wishes__send { grid-column: 1 / -1; padding: 6px 8px; }
+}
+
+/* ---- desktop: the gap between the copy and the photograph ---------- */
+
+@media (min-width: 1000px) {
+  .wishes {
+    top: clamp(112px, 15svh, 178px);
+    left: 31%;
+    right: auto;
+    width: min(268px, 21vw);
+    max-width: none;
+    gap: 18px;
+  }
+  .wishes__frame { height: clamp(116px, 18svh, 158px); padding: 10px 12px; }
+  .wishes__item { margin-bottom: 13px; }
+  .wishes__text { font-size: 11.5px; }
+  .wishes__by { font-size: 9.5px; }
+  .wishes__form .wishes__input { font-size: 11.5px; }
+  .wishes__send { font-size: 9.5px; }
+}
+
+/* a ticker that never stops is exactly what this setting is for */
+@media (prefers-reduced-motion: reduce) {
+  .wishes__track { animation: none; }
+  .wishes__viewport { overflow-y: auto; }
+}
+
+
+/* Armenian words run longer than the English the hero size was set for, and
+   the headline was running under the wishes panel - by 91px at 360 and 134px
+   at 1440. Its own scale, alongside the shorter verb, clears it. */
+html[lang="hy"] .hero__title { font-size: clamp(44px, 11.6cqw, 92px); }
+/* the subtitle runs long in Armenian too; wrapping it earlier keeps the type
+   the same size and still clears the panel */
+@media (max-width: 999px) {
+  html[lang="hy"] .hero__sub { max-width: 15ch; }
+}
+@media (min-width: 1000px) {
+  html[lang="hy"] .hero__title { font-size: clamp(56px, min(6.4vw, 9.4svh), 96px); }
+}

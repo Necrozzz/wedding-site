@@ -26,7 +26,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F6F1E8'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' fill='%23302B27' text-anchor='middle'%3EG%26amp;R%3C/text%3E%3C/svg%3E">
 
 <link rel="stylesheet" href="assets/css/fonts.css">
-<link rel="stylesheet" href="assets/css/style.css?v=83">
+<link rel="stylesheet" href="assets/css/style.css?v=95">
 </head>
 <body>
 
@@ -133,6 +133,26 @@
           </a>
         </div>
       </div>
+
+      <aside class="wishes" id="wishes" hidden>
+        <div class="wishes__frame">
+          <!-- aria-live is deliberately off: a ticker that announced every
+               note would talk over a screen reader continuously. The same
+               notes are reachable as a plain list below. -->
+          <div class="wishes__viewport">
+            <ul class="wishes__track" id="wishes-track"></ul>
+          </div>
+        </div>
+
+        <form class="wishes__form" id="wish-form" novalidate>
+          <input class="wishes__input" id="wish-text" name="wish" type="text"
+                 maxlength="140" autocomplete="off" required>
+          <input class="wishes__input wishes__input--name" id="wish-name" name="name"
+                 type="text" maxlength="32" autocomplete="given-name">
+          <button class="wishes__send" id="wish-send" type="submit"></button>
+          <p class="wishes__status" id="wish-status" role="status"></p>
+        </form>
+      </aside>
 
       <figure class="hero__figure">
         <img class="hero__source-shoulder" src="assets/img/hero-couple.jpg" alt="" aria-hidden="true" width="1600" height="960">
@@ -437,6 +457,6 @@
   Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
 </p>
 
-<script src="assets/js/site.js?v=banner14"></script>
+<script src="assets/js/site.js?v=live2"></script>
 </body>
 </html>

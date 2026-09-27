@@ -734,10 +734,25 @@ function wishItem(note) {
 
 /* Paint the track twice and slide it by exactly half its height, so the loop
    rejoins itself without a seam. */
+/* What is on screen, so an unchanged list can be left alone. Rebuilding the
+   track mid-run replaces every item and re-sets the animation's duration,
+   which lurches the credits. The list is re-read every minute and is almost
+   always identical, so that lurch was happening roughly once a minute for no
+   reason at all. */
+let paintedSignature = null;
+
+function wishSignature(list) {
+  return list.map(function (n) { return n.name + ' ' + n.text; }).join('');
+}
+
 function paintWishes() {
   const track = document.getElementById('wishes-track');
   const box = document.getElementById('wishes');
   if (!track || !box) return;
+
+  const signature = wishSignature(wishesShown);
+  if (signature === paintedSignature) return;   // nothing new: let it roll on
+  paintedSignature = signature;
 
   /* With nothing to show, the frame goes but the form stays: hiding the whole
      panel would mean nobody could leave the first wish. */
@@ -779,7 +794,10 @@ function paintWishes() {
     // race past and forty do not crawl
     const full = track.scrollHeight / 2;
     const seconds = Math.max(18, Math.round(full / 26));
-    track.style.setProperty('--wishes-duration', seconds + 's');
+    const current = track.style.getPropertyValue('--wishes-duration');
+    if (current !== seconds + 's') {
+      track.style.setProperty('--wishes-duration', seconds + 's');
+    }
   });
 }
 

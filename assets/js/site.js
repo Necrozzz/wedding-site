@@ -677,6 +677,21 @@ function cacheNotes(list) {
 }
 
 let wishesShown = [];
+/* Wishes left from this browser, kept until the server starts returning them.
+   Apps Script caches the list for a minute and the edge copy for thirty
+   seconds, so without this the next read would quietly erase a wish that had
+   only just been written. */
+let pendingWishes = [];
+let lastServerNotes = [];
+
+function mergePending(list) {
+  if (!pendingWishes.length) return list;
+  const seen = list.map(function (n) { return n.text; });
+  pendingWishes = pendingWishes.filter(function (p) {
+    return seen.indexOf(p.text) === -1;
+  });
+  return pendingWishes.concat(list);
+}
 
 /* "Boooo", "Ku-ku", "pupipu" - asides to us in the registration form, not
    wishes for the page. One short word alone is the tell; anything a dozen
@@ -786,7 +801,8 @@ function renderWishes(notes) {
     // the request has not landed yet, or failed: show what we saw last time
     list = readCachedNotes() || [];
   }
-  wishesShown = list;
+  lastServerNotes = list;
+  wishesShown = mergePending(list);
   paintWishes();
 }
 
@@ -846,12 +862,26 @@ function initWishes() {
       return;
     }
 
-    // show it straight away rather than waiting for the next read
-    wishesShown.unshift({ name: who, text: wish });
+    // Show it straight away rather than waiting for the next read, and keep
+    // it through the reads that are still answering from cache.
+    pendingWishes.unshift({ name: who, text: wish });
+    wishesShown = mergePending(lastServerNotes);
     paintWishes();
+
+    /* Restart the run so it comes round promptly. Without this the track
+       carries on from wherever it had got to, and a wish added at the top sits
+       in the faded band waiting out the rest of the cycle. */
+    const track = document.getElementById('wishes-track');
+    if (track) {
+      track.style.animation = 'none';
+      void track.offsetHeight;          // forces the restart
+      track.style.animation = '';
+    }
+
     text.value = '';
     status.textContent = t('wish.thanks', 'Thank you! ♥');
     send.disabled = false;
+    send.blur();                        // nothing left focused to pause it
   });
 }
 

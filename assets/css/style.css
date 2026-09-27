@@ -1699,8 +1699,11 @@ html[lang="hy"] #submit-btn {
   from { transform: translateY(0); }
   to   { transform: translateY(-50%); }
 }
-.wishes:hover .wishes__track,
-.wishes:focus-within .wishes__track { animation-play-state: paused; }
+/* Pause while someone is reading the frame - but only the frame. This used
+   to sit on .wishes, which wraps the form too, so after sending a wish the
+   focus stayed on the button and the ticker never started again. */
+.wishes__frame:hover .wishes__track,
+.wishes__frame:focus-within .wishes__track { animation-play-state: paused; }
 
 .wishes__text {
   margin: 0;

@@ -32,17 +32,47 @@ function setupTelegram() {
                'send it any message, then run this again.');
     return;
   }
-  const last = data.result[data.result.length - 1];
-  const chat = (last.message && last.message.chat) ||
-               (last.channel_post && last.channel_post.chat);
-  if (!chat) {
-    Logger.log('Could not read a chat id from the last update.');
+  /* Everyone who has written to the bot, added to whoever is already stored.
+     Sharing the bot does not subscribe anyone: Telegram only lets a bot write
+     to a chat that has messaged it, and the script has to be told the id. So
+     each new person presses Start, sends anything, and this is run again. */
+  const known = String(props.getProperty('TELEGRAM_CHAT_ID') || '')
+    .split(',').map(function (c) { return c.trim(); }).filter(function (c) { return c; });
+  const added = [];
+
+  data.result.forEach(function (u) {
+    const chat = (u.message && u.message.chat) ||
+                 (u.channel_post && u.channel_post.chat);
+    if (!chat) return;
+    const id = String(chat.id);
+    if (known.indexOf(id) !== -1) return;
+    known.push(id);
+    added.push(id + ' (' + (chat.username || chat.title || chat.first_name || '?') + ')');
+  });
+
+  if (!known.length) {
+    Logger.log('Could not read a chat id from any update.');
     return;
   }
-  props.setProperty('TELEGRAM_CHAT_ID', String(chat.id));
-  Logger.log('Saved chat id ' + chat.id + ' (' + (chat.username || chat.title || chat.first_name) + ')');
-  notifyTelegram('Wedding site alerts are on. You will get a message here on ' +
-                 'every registration and every wish.');
+
+  props.setProperty('TELEGRAM_CHAT_ID', known.join(','));
+  Logger.log('Now notifying ' + known.length + ' chat(s): ' + known.join(', '));
+  Logger.log(added.length ? 'Added this run: ' + added.join('; ') : 'Nobody new this run.');
+
+  added.forEach(function (entry) {
+    const id = entry.split(' ')[0];
+    try {
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+        method: 'post',
+        payload: {
+          chat_id: id,
+          text: 'Wedding site alerts are on. You will get a message here on ' +
+                'every registration and every wish.'
+        },
+        muteHttpExceptions: true
+      });
+    } catch (err) { /* ignore */ }
+  });
 }
 
 function doPost(e) {
@@ -108,18 +138,26 @@ function doPost(e) {
 function notifyTelegram(text) {
   const props = PropertiesService.getScriptProperties();
   const token = props.getProperty('TELEGRAM_TOKEN');
-  const chat = props.getProperty('TELEGRAM_CHAT_ID');
-  if (!token || !chat) return;   // not configured yet: stay quiet
+  const chats = String(props.getProperty('TELEGRAM_CHAT_ID') || '')
+    .split(',')
+    .map(function (c) { return c.trim(); })
+    .filter(function (c) { return c; });
+  if (!token || !chats.length) return;   // not configured yet: stay quiet
 
-  UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
-    method: 'post',
-    payload: {
-      chat_id: chat,
-      text: text,
-      parse_mode: 'HTML',
-      disable_web_page_preview: 'true'
-    },
-    muteHttpExceptions: true
+  // one failure must not stop the others being told
+  chats.forEach(function (chat) {
+    try {
+      UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+        method: 'post',
+        payload: {
+          chat_id: chat,
+          text: text,
+          parse_mode: 'HTML',
+          disable_web_page_preview: 'true'
+        },
+        muteHttpExceptions: true
+      });
+    } catch (err) { /* blocked the bot, or a stale id */ }
   });
 }
 

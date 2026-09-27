@@ -469,8 +469,12 @@ function renderCountdown() {
 /* How many guests have said yes. Read-only, and the banner simply stays
    quiet if the request fails - it must never block the page. */
 const GUEST_CACHE_KEY = 'gr-guests';
-// beyond a fortnight a remembered figure is more misleading than useful
-const GUEST_CACHE_MAX_AGE = 14 * 24 * 60 * 60 * 1000;
+/* A remembered total is shown only while it is minutes old. It used to stand
+   for a fortnight, which is how a phone came to show 28 and then 32 on the
+   next refresh. The notes may be remembered far longer: they only ever get
+   added to, so an old set reads as incomplete rather than wrong. */
+const GUEST_CACHE_MAX_AGE = 5 * 60 * 1000;
+const NOTES_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 function readCachedGuestCount() {
   try {
@@ -601,7 +605,7 @@ function readCachedNotes() {
   try {
     const saved = JSON.parse(localStorage.getItem(NOTES_CACHE_KEY));
     if (!saved || !Array.isArray(saved.list)) return null;
-    if (Date.now() - saved.at > GUEST_CACHE_MAX_AGE) return null;
+    if (Date.now() - saved.at > NOTES_CACHE_MAX_AGE) return null;
     return saved.list;
   } catch (e) { return null; }
 }
@@ -833,6 +837,17 @@ function initBanner() {
   // a safety net, in case a sleeping laptop swallows the midnight timer
   setInterval(renderCountdown, 60 * 60 * 1000);
   renderGuestCount();
+
+  /* Re-read while the page is open, so a guest watching it sees the number
+     move as others register. Only while the tab is actually in front - a
+     backgrounded phone should not be polling. */
+  setInterval(function () {
+    if (!document.hidden) refreshGuestCount();
+  }, 60 * 1000);
+
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) refreshGuestCount();
+  });
 
   syncBannerHeight();
   addEventListener('resize', syncBannerHeight);

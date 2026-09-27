@@ -113,6 +113,30 @@
   </div>
 </header>
 
+<script>
+  /* The guest tile as it was last rendered, restored the instant its markup
+     exists - so it appears with the page like the days tile, instead of a
+     second later when site.js has loaded and the sheet has answered. The real
+     figure overwrites this shortly afterwards. */
+  (function () {
+    try {
+      var raw = localStorage.getItem('gr-guests-tile');
+      if (!raw) return;
+      var saved = JSON.parse(raw);
+      var lang = localStorage.getItem('gr-lang') || 'en';
+      // 30 minutes, and only if it was rendered in the language now in use
+      if (!saved || saved.lang !== lang) return;
+      if (Date.now() - saved.at > 30 * 60 * 1000) return;
+      var box = document.getElementById('stat-guests');
+      if (!box) return;
+      document.getElementById('guests-prefix').textContent = saved.prefix || '';
+      document.getElementById('guests-num').textContent = saved.num || '';
+      document.getElementById('guests-word').textContent = saved.word || '';
+      box.hidden = false;
+    } catch (e) { /* nothing remembered, or storage refused: wait for the fetch */ }
+  })();
+</script>
+
 <nav class="menu" id="menu" aria-label="Sections" hidden>
   <ul class="menu__list">
     <li><a href="#invitation" data-i18n="nav.invitation">The Invitation</a></li>
@@ -479,6 +503,6 @@
   Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
 </p>
 
-<script src="assets/js/site.js?v=smooth1"></script>
+<script src="assets/js/site.js?v=instant1"></script>
 </body>
 </html>

@@ -622,6 +622,19 @@ function paintGuestCount() {
   word.textContent = plural(lastGuestCount, 'stat.guests',
                             'guest registered', 'guests registered');
   box.hidden = false;
+
+  /* Keep the rendered words, not just the number: the next visit can then put
+     the tile back without waiting for site.js to decide how to say it. */
+  try {
+    localStorage.setItem('gr-guests-tile', JSON.stringify({
+      prefix: prefix ? prefix.textContent : '',
+      num: num.textContent,
+      word: word ? word.textContent : '',
+      lang: currentLang,
+      at: Date.now()
+    }));
+  } catch (e) { /* private mode */ }
+
   // the count arrives after first paint and can add a tile to the bar
   if (typeof syncBannerHeight === 'function') syncBannerHeight();
 }

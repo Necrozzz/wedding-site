@@ -541,7 +541,7 @@ async function renderGuestCount() {
     ? Math.max(data.guests, guestFloor)   // the caches may still be a minute behind
     : data.guests;
   guestCountKnown = true;
-  cacheGuestCount(n);
+  cacheGuestCount(lastGuestCount);
   paintGuestCount();
 }
 
@@ -833,20 +833,26 @@ async function refreshGuestCount() {
 
 function initBanner() {
   renderCountdown();
+  // renderGuestCount is async and nothing awaits it: without this a thrown
+  // error disappears, which is exactly how a stale counter went unnoticed
   scheduleMidnightRefresh();
   // a safety net, in case a sleeping laptop swallows the midnight timer
   setInterval(renderCountdown, 60 * 60 * 1000);
-  renderGuestCount();
+  renderGuestCount().catch(function (e) { console.error('guest count:', e); });
 
   /* Re-read while the page is open, so a guest watching it sees the number
      move as others register. Only while the tab is actually in front - a
      backgrounded phone should not be polling. */
   setInterval(function () {
-    if (!document.hidden) refreshGuestCount();
+    if (!document.hidden) {
+      refreshGuestCount().catch(function (e) { console.error('guest count:', e); });
+    }
   }, 60 * 1000);
 
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) refreshGuestCount();
+    if (!document.hidden) {
+      refreshGuestCount().catch(function (e) { console.error('guest count:', e); });
+    }
   });
 
   syncBannerHeight();

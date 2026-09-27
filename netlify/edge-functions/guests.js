@@ -1,15 +1,28 @@
-/* Guest count, served from Netlify's CDN instead of Google.
+/* Guest count and wishes, answered from the edge instead of from Google.
  *
- * Apps Script is slow to wake: measured from the live site at 1.3-1.7s on a
- * good call and 10.5s on a bad one, and the banner tile cannot appear until it
- * answers. This sits in front of it, so guests hit an edge node a few
- * milliseconds away and Google is asked at most once a minute.
+ * Apps Script is slow and erratic: measured from the live site at 1.1s on a
+ * good call and 18s on a bad one - 18s being this function's own ceiling, so
+ * the real figure is worse. The banner cannot show a total until it answers.
+ *
+ * The CDN was supposed to absorb that. It does not: measured with the browser
+ * cache bypassed, every request reached the origin and no response carried an
+ * `age` header, so Netlify-CDN-Cache-Control was buying nothing here. The fast
+ * readings that hid this were the browser's own cache.
+ *
+ * So the copy is kept here instead, in the isolate. It survives between
+ * requests, so in practice almost every visitor is answered from memory:
+ *
+ *   under 30s old  -> answered straight away
+ *   under 10min    -> answered straight away, refreshed behind the request
+ *   older, or none -> the one unlucky request waits for Google
+ *
+ * A refresh that fails leaves the old copy in place rather than replacing it
+ * with an error, so one bad minute upstream cannot empty the banner.
  *
  * Two things cross this boundary and nothing else: the number, and the notes
  * guests chose to write - a message, and a first name only when the wish came
- * from the page's own form. The upstream sends
- * no email, no attendance and no party size, and this re-builds the payload
- * field by field rather than forwarding whatever arrives.
+ * from the page's own form. The payload is rebuilt field by field rather than
+ * forwarded, so nothing else can ever leak through.
  *
  * Registrations do NOT go through here: the form still posts straight to Apps
  * Script, because a write should not be cached or proxied.
@@ -18,82 +31,102 @@
 const UPSTREAM =
   'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
 
-/* How long the CDN may serve a stored answer, and how long it may keep serving
-   a stale one while it fetches a fresh one behind the request.
+const FRESH_MS = 30 * 1000;
+const STALE_MS = 10 * 60 * 1000;
+const UPSTREAM_TIMEOUT_MS = 12 * 1000;
 
-   A day-long stale window made the counter wrong: a visitor could be handed
-   a copy from yesterday while the next request got today's, so the number
-   appeared to change at random. Five minutes is long enough that a visitor
-   almost never waits on Apps Script waking up, and short enough that nobody
-   is looking at a figure from another day. */
-const CDN_CACHE = 'public, s-maxage=30, stale-while-revalidate=300';
+// kept between requests on the same isolate; empty after a cold start
+let cached = null;        // { payload, at }
+let inFlight = null;      // so a burst of arrivals makes one upstream call
 
-function json(body, headers) {
+function json(body, extraHeaders) {
   return new Response(JSON.stringify(body), {
     status: 200,
     headers: Object.assign(
-      { 'content-type': 'application/json; charset=utf-8' },
-      headers
+      {
+        'content-type': 'application/json; charset=utf-8',
+        // a short browser cache still helps a guest who reloads twice
+        'cache-control': 'public, max-age=20',
+        'netlify-cdn-cache-control': 'public, s-maxage=30, stale-while-revalidate=300',
+      },
+      extraHeaders
     ),
   });
 }
 
-export default async function guests() {
+/** Only these three values can ever reach the page. */
+function shape(data) {
+  const notes = Array.isArray(data.notes)
+    ? data.notes
+        .slice(0, 60)
+        .map((n) => ({
+          name: String((n && n.name) || '').slice(0, 24),
+          text: String((n && n.text) || '').slice(0, 200),
+        }))
+        .filter((n) => n.text)
+    : [];
+  return { status: 'ok', guests: data.guests, notes };
+}
+
+async function fetchUpstream() {
+  const abort = new AbortController();
+  const timer = setTimeout(() => abort.abort(), UPSTREAM_TIMEOUT_MS);
   try {
-    // Don't let a sleeping script hold the edge request open. 10s was too
-    // tight - a cold Apps Script call was measured at 10.5s and tripped it.
-    const abort = new AbortController();
-    const timer = setTimeout(() => abort.abort(), 18000);
-
-    let data;
-    try {
-      const res = await fetch(UPSTREAM, {
-        headers: { accept: 'application/json' },
-        signal: abort.signal,
-      });
-      if (!res.ok) throw new Error('upstream ' + res.status);
-      data = await res.json();
-    } finally {
-      clearTimeout(timer);
-    }
-
+    const res = await fetch(UPSTREAM, {
+      headers: { accept: 'application/json' },
+      signal: abort.signal,
+    });
+    if (!res.ok) throw new Error('upstream ' + res.status);
+    const data = await res.json();
     if (data.status !== 'ok' || typeof data.guests !== 'number') {
       throw new Error('unexpected payload');
     }
-
-    // rebuilt field by field: whatever else upstream might ever add, only
-    // these three values can reach the page
-    const notes = Array.isArray(data.notes)
-      ? data.notes
-          .slice(0, 60)
-          .map((n) => ({
-            name: String((n && n.name) || '').slice(0, 24),
-            text: String((n && n.text) || '').slice(0, 200),
-          }))
-          .filter((n) => n.text)
-      : [];
-
-    return json(
-      { status: 'ok', guests: data.guests, notes },
-      {
-        'cache-control': 'public, max-age=30',
-        'netlify-cdn-cache-control': CDN_CACHE,
-      }
-    );
-  } catch (err) {
-    // Stay a 200 with an error body: the page keeps the figure it already has
-    // and falls back to Apps Script directly, rather than treating this as a
-    // broken request. Never cached - pinning a failure at the edge would hand
-    // it to everyone who arrives in the next few seconds, and this site does
-    // not have the traffic for a stampede to matter.
-    return json(
-      { status: 'error' },
-      {
-        'cache-control': 'no-store',
-        'netlify-cdn-cache-control': 'no-store',
-      }
-    );
+    return shape(data);
+  } finally {
+    clearTimeout(timer);
   }
+}
+
+/** One upstream call at a time; a failure leaves the old copy alone. */
+function refresh() {
+  if (inFlight) return inFlight;
+  inFlight = fetchUpstream()
+    .then((payload) => {
+      cached = { payload, at: Date.now() };
+      return payload;
+    })
+    .catch(() => null)
+    .finally(() => {
+      inFlight = null;
+    });
+  return inFlight;
+}
+
+export default async function guests() {
+  const now = Date.now();
+
+  if (cached && now - cached.at < FRESH_MS) {
+    return json(cached.payload, { 'x-cache': 'fresh' });
+  }
+
+  if (cached && now - cached.at < STALE_MS) {
+    refresh();                                  // deliberately not awaited
+    return json(cached.payload, { 'x-cache': 'stale' });
+  }
+
+  const payload = await refresh();
+  if (payload) return json(payload, { 'x-cache': 'miss' });
+
+  // upstream is down and there is nothing worth serving: the page keeps
+  // whatever it has and tries again. Never cached.
+  return json(
+    { status: 'error' },
+    {
+      'cache-control': 'no-store',
+      'netlify-cdn-cache-control': 'no-store',
+      'x-cache': 'error',
+    }
+  );
 }
 
 export const config = { path: '/api/guests' };

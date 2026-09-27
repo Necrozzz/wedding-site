@@ -360,12 +360,63 @@ function dismissCover() {
   if (!cover) return;
   cover.classList.add('is-leaving');
   document.body.classList.remove('is-locked');
+  toTop();   // scrolling was locked until now, so this is the real starting point
   setTimeout(() => { cover.hidden = true; }, 850);
+}
+
+/* Browsers put a returning visitor back where they left off, on a reload and
+   on back/forward. Here that means landing halfway down the page behind the
+   language cover, and meeting the middle of the site rather than the hero.
+   A link that names a section - /#rsvp from the menu or a message - still
+   goes where it says.
+
+   html has scroll-behavior: smooth, so these jumps are forced instant;
+   animating to the top on arrival would be worse than the problem. */
+function toTop() {
+  if (location.hash) return;
+  try {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  } catch (e) {
+    window.scrollTo(0, 0);   // older browsers reject the options form
+  }
+}
+
+/* A named section must still be reached. The browser tries once, early, when
+   the images above have no height yet and the target is not where it will end
+   up - so it can land nowhere. Doing it again after load fixes that. */
+function toHash() {
+  if (!location.hash) return;
+  let el = null;
+  try { el = document.querySelector(location.hash); } catch (e) { return; }
+  if (!el) return;
+  try {
+    el.scrollIntoView({ behavior: 'instant', block: 'start' });
+  } catch (e) {
+    el.scrollIntoView();
+  }
+}
+
+function initScrollTop() {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  toTop();
+  // Chrome restores after load, and a page coming back from the bfcache is
+  // never re-parsed at all - only pageshow tells us it happened.
+  addEventListener('load', function () { toTop(); toHash(); });
+  addEventListener('pageshow', function (e) {
+    if (e.persisted) { toTop(); toHash(); }
+  });
 }
 
 function initCover() {
   const cover = document.getElementById('cover');
   if (!cover) return;
+
+  // already chosen on an earlier visit: the cover is gone, so do not lock
+  // the page behind it
+  if (document.documentElement.classList.contains('lang-chosen')) {
+    cover.hidden = true;
+    return;
+  }
 
   document.body.classList.add('is-locked');
 
@@ -1028,6 +1079,7 @@ function showThanks(card, coming) {
 /* ----------------------------------------------------------------- boot -- */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initScrollTop();
   applyVariables();
 
   let saved = null;

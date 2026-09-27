@@ -165,6 +165,8 @@ a { color: inherit; }
   transition: opacity .8s ease, visibility .8s ease;
 }
 .cover[hidden] { display: none; }
+/* a returning guest has chosen already - straight to the hero */
+html.lang-chosen .cover { display: none; }
 .cover.is-leaving { opacity: 0; visibility: hidden; }
 .cover__forest {
   position: absolute; inset: 0; z-index: -1;

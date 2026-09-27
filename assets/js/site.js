@@ -784,34 +784,46 @@ function paintWishes() {
   }
   box.hidden = false;
 
-  requestAnimationFrame(function () {
-    // Four notes at a time, whatever length they are: a fixed height showed
-    // six short ones. Measure the first four and make the frame that tall,
-    // within limits so one rambling note cannot swallow the hero.
-    const frame = box.querySelector('.wishes__frame');
-    const items = track.querySelectorAll('.wishes__item');
-    if (frame && items.length) {
-      const show = Math.min(4, items.length);
-      let tall = 0;
-      for (let i = 0; i < show; i++) {
-        tall += items[i].getBoundingClientRect().height;
-      }
-      const gaps = parseFloat(getComputedStyle(items[0]).marginBottom) || 0;
-      const pad = parseFloat(getComputedStyle(frame).paddingTop) || 0;
-      const wanted = tall + gaps * (show - 1) + pad * 2;
-      const cap = Math.round(Math.min(innerHeight * 0.36, 290));
-      frame.style.height = Math.round(Math.max(76, Math.min(wanted, cap))) + 'px';
-    }
+  // one frame is not enough: the webfont and the container-query widths are
+  // still settling, and a track measured then is far taller than it ends up
+  requestAnimationFrame(function () { requestAnimationFrame(tuneTicker); });
+}
 
-    // a steady reading pace rather than a fixed duration, so five notes do not
-    // race past and forty do not crawl
-    const full = track.scrollHeight / 2;
-    const seconds = Math.max(18, Math.round(full / 26));
-    const current = track.style.getPropertyValue('--wishes-duration');
-    if (current !== seconds + 's') {
-      track.style.setProperty('--wishes-duration', seconds + 's');
-    }
-  });
+/* Height of the frame and pace of the run, both measured from what is on
+   screen. Kept out of paintWishes so it can be re-run when the layout changes
+   under it - a webfont landing, or the window being resized - without
+   rebuilding the track and interrupting the scroll. */
+function tuneTicker() {
+  const track = document.getElementById('wishes-track');
+  const box = document.getElementById('wishes');
+  if (!track || !box) return;
+  const frame = box.querySelector('.wishes__frame');
+  const items = track.querySelectorAll('.wishes__item');
+  if (!frame || !items.length) return;
+
+  // Four notes at a time, whatever length they are: a fixed height showed
+  // six short ones. Measure the first four and make the frame that tall,
+  // within limits so one rambling note cannot swallow the hero.
+  const show = Math.min(4, items.length);
+  let tall = 0;
+  for (let i = 0; i < show; i++) {
+    tall += items[i].getBoundingClientRect().height;
+  }
+  const gaps = parseFloat(getComputedStyle(items[0]).marginBottom) || 0;
+  const pad = parseFloat(getComputedStyle(frame).paddingTop) || 0;
+  const wanted = tall + gaps * (show - 1) + pad * 2;
+  const cap = Math.round(Math.min(innerHeight * 0.36, 290));
+  const height = Math.round(Math.max(76, Math.min(wanted, cap))) + 'px';
+  if (frame.style.height !== height) frame.style.height = height;
+
+  /* A steady reading pace rather than a fixed duration, so five notes do not
+     race past and forty do not crawl. 18px a second: slower than the 26 it
+     started at, which read as hurried. */
+  const full = track.scrollHeight / 2;
+  const seconds = Math.max(26, Math.round(full / 18));
+  if (track.style.getPropertyValue('--wishes-duration') !== seconds + 's') {
+    track.style.setProperty('--wishes-duration', seconds + 's');
+  }
 }
 
 function renderWishes(notes) {
@@ -851,6 +863,17 @@ function labelWishes() {
 function initWishes() {
   labelWishes();
   renderWishes(null);   // whatever was remembered, on screen immediately
+
+  // the webfont lands after the first measurement, and a rotated phone
+  // changes every width the pace was worked out from
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { tuneTicker(); });
+  }
+  let resizeTimer = null;
+  addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(tuneTicker, 250);
+  });
   const form = document.getElementById('wish-form');
   if (!form) return;
 

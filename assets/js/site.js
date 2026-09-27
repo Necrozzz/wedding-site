@@ -574,8 +574,17 @@ async function renderGuestCount() {
     paintGuestCount();
   }
 
-  // the edge copy answers in milliseconds; it only misses on a cold cache
-  let data = await fetchStats(CONFIG.countEndpoint, 6000);
+  /* The request was started in the document head, long before this ran.
+     Take that answer if it is good; fall back to asking again if it is not. */
+  let data = null;
+  if (window.__guests) {
+    try { data = await window.__guests; } catch (e) { data = null; }
+    window.__guests = null;            // one use only; refreshes ask again
+    if (!data || data.status !== 'ok' || typeof data.guests !== 'number') data = null;
+  }
+
+  // the edge copy answers in milliseconds; it only misses on a cold isolate
+  if (data === null) data = await fetchStats(CONFIG.countEndpoint, 6000);
   if (data === null) {
     // no edge function (local preview) or it could not reach Google: ask direct
     data = await fetchStats(CONFIG.endpoint, 12000);

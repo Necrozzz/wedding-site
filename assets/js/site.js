@@ -536,6 +536,17 @@ function readCachedGuestCount() {
   } catch (e) { return null; }
 }
 
+/* The five-minute rule above governs what may be shown BEFORE the request
+   answers, so nobody watches a stale figure flip to a different one. This is
+   the other case: the request has failed outright, and an empty tile helps
+   nobody. The last number we were given is shown however old it is. */
+function readLastKnownGuestCount() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(GUEST_CACHE_KEY));
+    return (saved && typeof saved.n === 'number') ? saved.n : null;
+  } catch (e) { return null; }
+}
+
 function cacheGuestCount(n) {
   try {
     localStorage.setItem(GUEST_CACHE_KEY, JSON.stringify({ n: n, at: Date.now() }));
@@ -594,7 +605,20 @@ async function renderGuestCount() {
     await new Promise(function (r) { setTimeout(r, 2000); });
     data = await fetchStats(CONFIG.endpoint, 12000);
   }
-  if (data === null) { renderWishes(null); return; }   // offline: keep what was remembered
+  if (data === null) {
+    renderWishes(null);
+    // nothing was painted from the recent copy either: show the last figure
+    // rather than a gap, without restamping it as if it were current
+    if (!guestCountKnown) {
+      const last = readLastKnownGuestCount();
+      if (last !== null) {
+        lastGuestCount = last;
+        guestCountKnown = true;
+        paintGuestCount(false);
+      }
+    }
+    return;
+  }
 
   renderWishes(data.notes);
   lastGuestCount = (Date.now() < guestFloorUntil)
@@ -610,7 +634,7 @@ let guestCountKnown = false;   // zero is a real answer, so track it separately
 let guestFloor = 0;            // set by a registration made on this page
 let guestFloorUntil = 0;
 
-function paintGuestCount() {
+function paintGuestCount(remember) {
   const box = document.getElementById('stat-guests');
   const num = document.getElementById('guests-num');
   const word = document.getElementById('guests-word');
@@ -624,16 +648,20 @@ function paintGuestCount() {
   box.hidden = false;
 
   /* Keep the rendered words, not just the number: the next visit can then put
-     the tile back without waiting for site.js to decide how to say it. */
-  try {
-    localStorage.setItem('gr-guests-tile', JSON.stringify({
-      prefix: prefix ? prefix.textContent : '',
-      num: num.textContent,
-      word: word ? word.textContent : '',
-      lang: currentLang,
-      at: Date.now()
-    }));
-  } catch (e) { /* private mode */ }
+     the tile back without waiting for site.js to decide how to say it. A
+     figure recovered from storage is not restamped - it would then look
+     current to the next visit, and the staleness would never age out. */
+  if (remember !== false) {
+    try {
+      localStorage.setItem('gr-guests-tile', JSON.stringify({
+        prefix: prefix ? prefix.textContent : '',
+        num: num.textContent,
+        word: word ? word.textContent : '',
+        lang: currentLang,
+        at: Date.now()
+      }));
+    } catch (e) { /* private mode */ }
+  }
 
   // the count arrives after first paint and can add a tile to the bar
   if (typeof syncBannerHeight === 'function') syncBannerHeight();

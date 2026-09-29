@@ -594,11 +594,15 @@ async function renderGuestCount() {
     if (!data || data.status !== 'ok' || typeof data.guests !== 'number') data = null;
   }
 
-  // the edge copy answers in milliseconds; it only misses on a cold isolate
-  if (data === null) data = await fetchStats(CONFIG.countEndpoint, 6000);
+  /* Six seconds was shorter than the thing it was waiting for. Measured on the
+     live site: the edge answered in 6453ms and this aborted its own request at
+     6003ms, so the tile never appeared at all. The edge is milliseconds when
+     its copy is warm and seconds when the isolate is cold, and waiting through
+     the cold case costs nothing - there is nothing else to show meanwhile. */
+  if (data === null) data = await fetchStats(CONFIG.countEndpoint, 20000);
   if (data === null) {
     // no edge function (local preview) or it could not reach Google: ask direct
-    data = await fetchStats(CONFIG.endpoint, 12000);
+    data = await fetchStats(CONFIG.endpoint, 20000);
   }
   if (data === null) {
     // the script sleeps; give it a moment and ask once more

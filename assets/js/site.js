@@ -983,13 +983,20 @@ function countNewRegistration(guests) {
 
   // ?fresh= is what gets us past the CDN copy; the script's own cache needs
   // the second read, after its minute is up
-  setTimeout(function () { refreshGuestCount(); }, 1500);
-  setTimeout(function () { refreshGuestCount(); }, 65 * 1000);
+  setTimeout(function () { refreshGuestCount(true); }, 1500);
+  setTimeout(function () { refreshGuestCount(true); }, 65 * 1000);
 }
 
-async function refreshGuestCount() {
-  const url = CONFIG.countEndpoint +
-    (CONFIG.countEndpoint.indexOf('?') === -1 ? '?' : '&') + 'fresh=' + Date.now();
+/* `force` sends the request past every cache, all the way to the sheet. That
+   is right after a registration, when we know the total has moved and the
+   caches have not caught up. It is wrong for the routine minute-by-minute
+   read: forcing there would put every open page through to Apps Script every
+   sixty seconds, which is exactly the load the edge copy exists to absorb. */
+async function refreshGuestCount(force) {
+  let url = CONFIG.countEndpoint;
+  if (force) {
+    url += (url.indexOf('?') === -1 ? '?' : '&') + 'fresh=' + Date.now();
+  }
   let data = await fetchStats(url, 12000);
   if (data === null) data = await fetchStats(CONFIG.endpoint, 12000);
   if (data === null) return;

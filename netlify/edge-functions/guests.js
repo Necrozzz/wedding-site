@@ -32,7 +32,12 @@ const UPSTREAM =
   'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
 
 const FRESH_MS = 30 * 1000;
-const STALE_MS = 10 * 60 * 1000;
+/* Ten minutes was far too generous. This runs on many isolates, each with its
+   own memory, so after a registration some held the old total and some the new
+   one - five consecutive calls returned 32, 34, 34, 32, 32 when the answer was
+   34. A stale copy may now be served for two minutes at most, and every stale
+   answer kicks off a refresh behind it. */
+const STALE_MS = 2 * 60 * 1000;
 const UPSTREAM_TIMEOUT_MS = 12 * 1000;
 
 // kept between requests on the same isolate; empty after a cold start
@@ -102,8 +107,23 @@ function refresh() {
   return inFlight;
 }
 
-export default async function guests() {
+export default async function guests(request) {
   const now = Date.now();
+
+  /* The page appends ?fresh= after a registration, to get past the caches and
+     see the guest it has just added. That has to mean something here: without
+     this the request was answered from the same memory as any other, and the
+     new figure could not arrive until the copy expired on its own. */
+  let forced = false;
+  try {
+    forced = new URL(request.url).searchParams.has('fresh');
+  } catch (e) { /* malformed url: treat as a normal read */ }
+
+  if (forced) {
+    const fresh = await refresh();
+    if (fresh) return json(fresh, { 'x-cache': 'forced' });
+    if (cached) return json(cached.payload, { 'x-cache': 'forced-fallback' });
+  }
 
   if (cached && now - cached.at < FRESH_MS) {
     return json(cached.payload, { 'x-cache': 'fresh' });

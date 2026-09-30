@@ -40,9 +40,64 @@ const FRESH_MS = 30 * 1000;
 const STALE_MS = 2 * 60 * 1000;
 const UPSTREAM_TIMEOUT_MS = 12 * 1000;
 
+const BLOB_STORE = 'wedding';
+const BLOB_KEY = 'guests';
+
 // kept between requests on the same isolate; empty after a cold start
 let cached = null;        // { payload, at }
 let inFlight = null;      // so a burst of arrivals makes one upstream call
+
+/* The shared copy. Memory alone was not enough: this function runs on many
+   isolates, each starting empty, so at this site's traffic a visitor regularly
+   landed on a cold one and waited on Apps Script - measured at 6.4s, 10.8s and
+   worse. A blob is shared by every isolate and survives between them, so a
+   cold isolate still answers in milliseconds.
+
+   Loaded lazily and defensively. If the module cannot be resolved at all, this
+   returns null for ever after and the function behaves exactly as it did
+   before: memory, then upstream. A missing shared copy must never be worse
+   than not having had one. */
+let blobsApi;             // undefined = untried, null = unavailable
+
+async function getBlobs() {
+  if (blobsApi === undefined) {
+    blobsApi = null;
+    for (const specifier of ['@netlify/blobs', 'npm:@netlify/blobs']) {
+      try {
+        const mod = await import(specifier);
+        if (mod && typeof mod.getStore === 'function') {
+          blobsApi = mod;
+          break;
+        }
+      } catch (err) { /* try the next form */ }
+    }
+  }
+  if (!blobsApi) return null;
+  try {
+    return blobsApi.getStore(BLOB_STORE);
+  } catch (err) {
+    return null;            // no site context, or the store is unavailable
+  }
+}
+
+async function readShared() {
+  const store = await getBlobs();
+  if (!store) return null;
+  try {
+    const saved = await store.get(BLOB_KEY, { type: 'json' });
+    if (!saved || typeof saved.at !== 'number') return null;
+    if (!saved.payload || typeof saved.payload.guests !== 'number') return null;
+    return saved;
+  } catch (err) { return null; }
+}
+
+async function writeShared(payload) {
+  const store = await getBlobs();
+  if (!store) return;
+  try {
+    await store.setJSON(BLOB_KEY, { payload: payload, at: Date.now() });
+  } catch (err) { /* the answer still went out; the copy just was not kept */ }
+}
 
 function json(body, extraHeaders) {
   return new Response(JSON.stringify(body), {
@@ -98,6 +153,7 @@ function refresh() {
   inFlight = fetchUpstream()
     .then((payload) => {
       cached = { payload, at: Date.now() };
+      writeShared(payload);        // deliberately not awaited
       return payload;
     })
     .catch(() => null)
@@ -134,8 +190,22 @@ export default async function guests(request) {
     return json(cached.payload, { 'x-cache': 'stale' });
   }
 
+  /* Nothing usable in this isolate. Before making anyone wait on Apps Script,
+     look at the copy every isolate shares. */
+  const shared = await readShared();
+  if (shared) {
+    cached = { payload: shared.payload, at: shared.at };
+    const age = Date.now() - shared.at;
+    if (age < FRESH_MS) return json(shared.payload, { 'x-cache': 'shared' });
+    refresh();                                  // deliberately not awaited
+    return json(shared.payload, { 'x-cache': 'shared-stale' });
+  }
+
   const payload = await refresh();
   if (payload) return json(payload, { 'x-cache': 'miss' });
+
+  const lastResort = await readShared();
+  if (lastResort) return json(lastResort.payload, { 'x-cache': 'shared-fallback' });
 
   // upstream is down and there is nothing worth serving: the page keeps
   // whatever it has and tries again. Never cached.

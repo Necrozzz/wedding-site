@@ -124,9 +124,14 @@
       if (!raw) return;
       var saved = JSON.parse(raw);
       var lang = localStorage.getItem('gr-lang') || 'en';
-      // 30 minutes, and only if it was rendered in the language now in use
+      /* A day, not half an hour. Thirty minutes meant that anyone opening the
+         site once a day always found it expired, waited on the request, and
+         on a cold edge - measured at up to 11s - saw no tile at all and
+         concluded it was broken. The figure is replaced as soon as the real
+         one arrives, so the cost of showing it is a moment of being slightly
+         behind; the cost of not showing it is an empty banner. */
       if (!saved || saved.lang !== lang) return;
-      if (Date.now() - saved.at > 30 * 60 * 1000) return;
+      if (Date.now() - saved.at > 24 * 60 * 60 * 1000) return;
       var box = document.getElementById('stat-guests');
       if (!box) return;
       document.getElementById('guests-prefix').textContent = saved.prefix || '';
@@ -503,6 +508,6 @@
   Hotel photographs courtesy of <a href="https://www.dilijazz.am/en/" target="_blank" rel="noopener">DiliJazz Hotel</a>.
 </p>
 
-<script src="assets/js/site.js?v=wait1"></script>
+<script src="assets/js/site.js?v=keep1"></script>
 </body>
 </html>

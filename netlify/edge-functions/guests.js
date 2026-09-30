@@ -45,7 +45,7 @@ const STALE_MS = 2 * 60 * 1000;
    completed. Nothing is lost by waiting - there is nothing else to serve. */
 const UPSTREAM_TIMEOUT_MS = 25 * 1000;
 
-const BLOB_STORE = 'wedding';
+const BLOB_STORE = 'wedding';   // site-wide: survives deploys
 const BLOB_KEY = 'guests';   // shared across isolates and across deploys
 
 // kept between requests on the same isolate; empty after a cold start

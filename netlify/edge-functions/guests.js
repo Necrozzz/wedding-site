@@ -41,7 +41,7 @@ const STALE_MS = 2 * 60 * 1000;
 const UPSTREAM_TIMEOUT_MS = 12 * 1000;
 
 const BLOB_STORE = 'wedding';
-const BLOB_KEY = 'guests';
+const BLOB_KEY = 'guests';   // shared across isolates and across deploys
 
 // kept between requests on the same isolate; empty after a cold start
 let cached = null;        // { payload, at }

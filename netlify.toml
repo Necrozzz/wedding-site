@@ -1,0 +1,7 @@
+# The site has no build step - the files are served exactly as they are in the
+# repository. This is pinned explicitly because adding a package.json makes
+# Netlify look for a framework to build, and a wrong guess about the publish
+# directory would take the whole site down.
+[build]
+  command = ""
+  publish = "."

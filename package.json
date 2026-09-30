@@ -1,0 +1,8 @@
+{
+  "name": "gohar-and-roman-wedding",
+  "private": true,
+  "description": "Static wedding site. No build step: the pages are served as they are. This file exists only so Netlify can resolve the one package the edge function imports.",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}

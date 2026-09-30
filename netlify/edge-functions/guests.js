@@ -28,6 +28,8 @@
  * Script, because a write should not be cached or proxied.
  */
 
+import { getStore } from '@netlify/blobs';
+
 const UPSTREAM =
   'https://script.google.com/macros/s/AKfycbz0f8-QdNc8HUF-Ply9pbPBXBPtxtwnbP39FELdrRScphZ9UjC-AQAmOPfD5N-P1iZhgg/exec';
 
@@ -38,7 +40,10 @@ const FRESH_MS = 30 * 1000;
    34. A stale copy may now be served for two minutes at most, and every stale
    answer kicks off a refresh behind it. */
 const STALE_MS = 2 * 60 * 1000;
-const UPSTREAM_TIMEOUT_MS = 12 * 1000;
+/* 12s was turning a slow answer into no answer: three cold calls in a row
+   timed out at 12s and returned an error, when the request would have
+   completed. Nothing is lost by waiting - there is nothing else to serve. */
+const UPSTREAM_TIMEOUT_MS = 25 * 1000;
 
 const BLOB_STORE = 'wedding';
 const BLOB_KEY = 'guests';   // shared across isolates and across deploys
@@ -57,31 +62,16 @@ let inFlight = null;      // so a burst of arrivals makes one upstream call
    returns null for ever after and the function behaves exactly as it did
    before: memory, then upstream. A missing shared copy must never be worse
    than not having had one. */
-let blobsApi;             // undefined = untried, null = unavailable
-
-async function getBlobs() {
-  if (blobsApi === undefined) {
-    blobsApi = null;
-    for (const specifier of ['@netlify/blobs', 'npm:@netlify/blobs']) {
-      try {
-        const mod = await import(specifier);
-        if (mod && typeof mod.getStore === 'function') {
-          blobsApi = mod;
-          break;
-        }
-      } catch (err) { /* try the next form */ }
-    }
-  }
-  if (!blobsApi) return null;
+function getBlobs() {
   try {
-    return blobsApi.getStore(BLOB_STORE);
+    return getStore(BLOB_STORE);
   } catch (err) {
     return null;            // no site context, or the store is unavailable
   }
 }
 
 async function readShared() {
-  const store = await getBlobs();
+  const store = getBlobs();
   if (!store) return null;
   try {
     const saved = await store.get(BLOB_KEY, { type: 'json' });
@@ -92,7 +82,7 @@ async function readShared() {
 }
 
 async function writeShared(payload) {
-  const store = await getBlobs();
+  const store = getBlobs();
   if (!store) return;
   try {
     await store.setJSON(BLOB_KEY, { payload: payload, at: Date.now() });

@@ -1809,15 +1809,17 @@ html[lang="hy"] #submit-btn {
 }
 
 
-/* Armenian words run longer than the English the hero size was set for, and
-   the headline was running under the wishes panel - by 91px at 360 and 134px
-   at 1440. Its own scale, alongside the shorter verb, clears it. */
-html[lang="hy"] .hero__title { font-size: clamp(44px, 11.6cqw, 92px); }
+/* Armenian runs far longer than the English this hero was sized for.
+   "ամուսնանում" on one line overlapped the wishes panel by 42px at 360 and
+   63px at 1440, so the headline has a scale of its own. It is noticeably
+   smaller than the English and Russian: that is the cost of the word, not a
+   mistake. */
+html[lang="hy"] .hero__title { font-size: clamp(33px, 8.7cqw, 70px); }
 /* the subtitle runs long in Armenian too; wrapping it earlier keeps the type
    the same size and still clears the panel */
 @media (max-width: 999px) {
   html[lang="hy"] .hero__sub { max-width: 15ch; }
 }
 @media (min-width: 1000px) {
-  html[lang="hy"] .hero__title { font-size: clamp(56px, min(6.4vw, 9.4svh), 96px); }
+  html[lang="hy"] .hero__title { font-size: clamp(44px, min(4.7vw, 7svh), 72px); }
 }

@@ -93,7 +93,7 @@ const I18N = {
     "f.side.groom": "Փեսա",
     "hero.cta": "Բացել հրավերը",
     "hero.sub": "Եվ շատ ուրախ կլինենք այդ գեղեցիկ օրը տոնել ձեզ հետ։",
-    "hero.title": "Մենք<br>պսակվում<br>ենք",
+    "hero.title": "Մենք<br>ամուսնանում<br>ենք",
     "hotel.p1": "Դիլիջանի անտառներում, գետի մոտ, DiliJazz-ը հարմարավետ վայր է՝ շրջապատված բնությամբ։",
     "hotel.p2": "Հյուրանոցում կան <strong>սպա, փակ լողավազան, սաունա, ջակուզի և գեղեցիկ սեփական այգիներ</strong>՝ բոլորը հյուրանոցի տարածքում։",
     "hotel.p3": "Մեր հարսանիքի օրը հյուրանոցը <strong>կընդունի միայն մեր հյուրերին. այդ օրը այլ հյուրեր չեն լինի։</strong>",
@@ -300,6 +300,7 @@ function t(key, fallback) {
 
 function applyLanguage(lang) {
   if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
+  currentLang = lang;
   currentLang = lang;
   currentLang = lang;
   currentLang = lang;
@@ -844,7 +845,22 @@ function tuneTicker() {
   const gaps = parseFloat(getComputedStyle(items[0]).marginBottom) || 0;
   const pad = parseFloat(getComputedStyle(frame).paddingTop) || 0;
   const wanted = tall + gaps * (show - 1) + pad * 2;
-  const cap = Math.round(Math.min(innerHeight * 0.36, 290));
+  /* The frame grows with the notes, and the notes got longer as real wishes
+     came in: at 375x812 in Russian the panel reached 313px and covered the
+     invitation button by 9px. So the ceiling is not a fixed number - it is
+     whatever room there is between the top of the panel and that button. */
+  let room = Infinity;
+  const cta = document.querySelector('.hero__cta .btn');
+  const form = box.querySelector('.wishes__form');
+  if (cta) {
+    const panelTop = box.getBoundingClientRect().top;
+    const formH = form ? form.getBoundingClientRect().height : 0;
+    const styles = getComputedStyle(box);
+    const gap = parseFloat(styles.rowGap || styles.gap) || 0;
+    room = cta.getBoundingClientRect().top - panelTop - formH - gap - 14;
+  }
+
+  const cap = Math.round(Math.min(innerHeight * 0.36, 290, room));
   const height = Math.round(Math.max(76, Math.min(wanted, cap))) + 'px';
   if (frame.style.height !== height) frame.style.height = height;
 
